@@ -212,97 +212,311 @@ class MySceneGraph {
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <views> block.
+     * @param {views block element} viewsNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseViews(viewsNode) {
+        // TODO: Parse Views node
 
-        this.log("Parsed illumination");
+        this.log("Parsed views");
 
         return null;
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <ambient> block.
+     * @param {ambient block element} ambientNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseAmbient(ambientNode) {
+        // TODO: Parse Ambient node
 
-        this.log("Parsed illumination");
+        this.log("Parsed ambient");
 
         return null;
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <lights> block.
+     * @param {lights block element} lightsNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseLights(lightsNode) {
 
-        this.log("Parsed illumination");
+        var children = lightsNode.children;
+
+        this.lights = [];
+        var numLights = 0;
+
+        var grandChildren = [];
+        var nodeNames = [];
+
+        // Any number of lights.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "omni" && children[i].nodeName != "spot") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current light.
+            var lightId = this.reader.getString(children[i], 'id');
+            if (lightId == null)
+                return "no ID defined for light";
+
+            // Checks for repeated IDs.
+            if (this.lights[lightId] != null)
+                return "ID must be unique for each light (conflict: ID = " + lightId + ")";
+
+            grandChildren = children[i].children;
+            // Specifications for the current light.
+
+            nodeNames = [];
+            for (var j = 0; j < grandChildren.length; j++) {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+
+            // Gets indices of each element.
+            var locationIndex = nodeNames.indexOf("location");
+            var ambientIndex = nodeNames.indexOf("ambient");
+            var diffuseIndex = nodeNames.indexOf("diffuse");
+            var specularIndex = nodeNames.indexOf("specular");
+            var targetIndex = nodeNames.indexOf("target");
+
+            // Retrieves the light location.
+            var locationLight = [];
+            if (locationIndex != -1) {
+                // x
+                var x = this.reader.getFloat(grandChildren[locationIndex], 'x');
+                if (!(x != null && !isNaN(x)))
+                    return "unable to parse x-coordinate of the light location for ID = " + lightId;
+                else
+                    locationLight.push(x);
+
+                // y
+                var y = this.reader.getFloat(grandChildren[locationIndex], 'y');
+                if (!(y != null && !isNaN(y)))
+                    return "unable to parse y-coordinate of the light location for ID = " + lightId;
+                else
+                    locationLight.push(y);
+
+                // z
+                var z = this.reader.getFloat(grandChildren[locationIndex], 'z');
+                if (!(z != null && !isNaN(z)))
+                    return "unable to parse z-coordinate of the light location for ID = " + lightId;
+                else
+                    locationLight.push(z);
+
+                // w
+                var w = this.reader.getFloat(grandChildren[locationIndex], 'w');
+                if (!(w != null && !isNaN(w) && w >= 0 && w <= 1))
+                    return "unable to parse x-coordinate of the light location for ID = " + lightId;
+                else
+                    locationLight.push(w);
+            }
+            else
+                return "light location undefined for ID = " + lightId;
+
+            // Retrieves the ambient component.
+            var ambientIllumination = [];
+            if (ambientIndex != -1) {
+                // R
+                var r = this.reader.getFloat(grandChildren[ambientIndex], 'r');
+                if (!(r != null && !isNaN(r) && r >= 0 && r <= 1))
+                    return "unable to parse R component of the ambient illumination for ID = " + lightId;
+                else
+                    ambientIllumination.push(r);
+
+                // G
+                var g = this.reader.getFloat(grandChildren[ambientIndex], 'g');
+                if (!(g != null && !isNaN(g) && g >= 0 && g <= 1))
+                    return "unable to parse G component of the ambient illumination for ID = " + lightId;
+                else
+                    ambientIllumination.push(g);
+
+                // B
+                var b = this.reader.getFloat(grandChildren[ambientIndex], 'b');
+                if (!(b != null && !isNaN(b) && b >= 0 && b <= 1))
+                    return "unable to parse B component of the ambient illumination for ID = " + lightId;
+                else
+                    ambientIllumination.push(b);
+
+                // A
+                var a = this.reader.getFloat(grandChildren[ambientIndex], 'a');
+                if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
+                    return "unable to parse A component of the ambient illumination for ID = " + lightId;
+                else
+                    ambientIllumination.push(a);
+            }
+            else
+                return "ambient component undefined for ID = " + lightId;
+
+            // Retrieve the diffuse component
+            var diffuseIllumination = [];
+            if (diffuseIndex != -1) {
+                // R
+                var r = this.reader.getFloat(grandChildren[diffuseIndex], 'r');
+                if (!(r != null && !isNaN(r) && r >= 0 && r <= 1))
+                    return "unable to parse R component of the diffuse illumination for ID = " + lightId;
+                else
+                    diffuseIllumination.push(r);
+
+                // G
+                var g = this.reader.getFloat(grandChildren[diffuseIndex], 'g');
+                if (!(g != null && !isNaN(g) && g >= 0 && g <= 1))
+                    return "unable to parse G component of the diffuse illumination for ID = " + lightId;
+                else
+                    diffuseIllumination.push(g);
+
+                // B
+                var b = this.reader.getFloat(grandChildren[diffuseIndex], 'b');
+                if (!(b != null && !isNaN(b) && b >= 0 && b <= 1))
+                    return "unable to parse B component of the diffuse illumination for ID = " + lightId;
+                else
+                    diffuseIllumination.push(b);
+
+                // A
+                var a = this.reader.getFloat(grandChildren[diffuseIndex], 'a');
+                if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
+                    return "unable to parse A component of the diffuse illumination for ID = " + lightId;
+                else
+                    diffuseIllumination.push(a);
+            }
+            else
+                return "diffuse component undefined for ID = " + lightId;
+
+            // Retrieve the specular component
+            var specularIllumination = [];
+            if (specularIndex != -1) {
+                // R
+                var r = this.reader.getFloat(grandChildren[specularIndex], 'r');
+                if (!(r != null && !isNaN(r) && r >= 0 && r <= 1))
+                    return "unable to parse R component of the specular illumination for ID = " + lightId;
+                else
+                    specularIllumination.push(r);
+
+                // G
+                var g = this.reader.getFloat(grandChildren[specularIndex], 'g');
+                if (!(g != null && !isNaN(g) && g >= 0 && g <= 1))
+                    return "unable to parse G component of the specular illumination for ID = " + lightId;
+                else
+                    specularIllumination.push(g);
+
+                // B
+                var b = this.reader.getFloat(grandChildren[specularIndex], 'b');
+                if (!(b != null && !isNaN(b) && b >= 0 && b <= 1))
+                    return "unable to parse B component of the specular illumination for ID = " + lightId;
+                else
+                    specularIllumination.push(b);
+
+                // A
+                var a = this.reader.getFloat(grandChildren[specularIndex], 'a');
+                if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
+                    return "unable to parse A component of the specular illumination for ID = " + lightId;
+                else
+                    specularIllumination.push(a);
+            }
+            else
+                return "specular component undefined for ID = " + lightId;
+
+            // Retrieve the target component if spot light
+            var targetLight = [];
+            if (targetIndex != -1) {
+                // x
+                var x = this.reader.getFloat(grandChildren[targetIndex], 'x');
+                if (!(x != null && !isNaN(x)))
+                    return "unable to parse x-coordinate of the light location for ID = " + lightId;
+                else
+                    targetLight.push(x);
+
+                // y
+                var y = this.reader.getFloat(grandChildren[targetIndex], 'y');
+                if (!(y != null && !isNaN(y)))
+                    return "unable to parse y-coordinate of the light location for ID = " + lightId;
+                else
+                    targetLight.push(y);
+
+                // z
+                var z = this.reader.getFloat(grandChildren[targetIndex], 'z');
+                if (!(z != null && !isNaN(z)))
+                    return "unable to parse z-coordinate of the light location for ID = " + lightId;
+                else
+                    targetLight.push(z);
+            }
+            else if (children[i].nodeName == "spot")
+                return "light target undefined for ID = " + lightId;
+            else
+                targetLight = null;
+
+            this.lights[lightId] = [locationLight, ambientIllumination, diffuseIllumination, specularIllumination, targetLight];
+            
+            numLights++;
+        }
+
+        if (numLights == 0)
+            return "at least one light must be defined";
+        else if (numLights > 8)
+            this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
+
+        this.log("Parsed lights");
 
         return null;
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <textures> block.
+     * @param {textures block element} texturesNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseTextures(texturesNode) {
+        // TODO: Parse Textures node
 
-        this.log("Parsed illumination");
+        this.log("Parsed textures");
 
         return null;
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <materials> block.
+     * @param {materials block element} materialsNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseMaterials(materialsNode) {
+        // TODO: Parse Materials node
 
-        this.log("Parsed illumination");
+        this.log("Parsed materials");
 
         return null;
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <transformations> block.
+     * @param {transformations block element} transformationsNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseTransformations(transformationsNode) {
+        // TODO: Parse Transformations node
 
-        this.log("Parsed illumination");
+        this.log("Parsed transformations");
 
         return null;
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <primitives> block.
+     * @param {primitives block element} primitivesNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parsePrimitives(primitivesNode) {
+        // TODO: Parse Primitives node
 
-        this.log("Parsed illumination");
+        this.log("Parsed primitives");
 
         return null;
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <components> block.
+     * @param {components block element} componentsNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseComponents(componentsNode) {
+        // TODO: Parse Components node
 
-        this.log("Parsed illumination");
+        this.log("Parsed components");
 
         return null;
     }
