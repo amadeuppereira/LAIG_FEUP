@@ -262,6 +262,26 @@ class MySceneGraph {
             if (lightId == null)
                 return "no ID defined for light";
 
+            // Get current light state.
+            var enabledLight = this.reader.getString(children[i], 'enabled');
+            if (enabledLight == null)
+                return "no light state";
+            
+            var angleLight = null;
+            var exponentLight = null;
+
+            if (children[i].nodeName == "spot") {
+                // Get current light angle.
+                angleLight = this.reader.getString(children[i], 'angle');
+                if (angleLight == null)
+                    return "no angle defined for light";
+
+                // Get current light exponent.
+                exponentLight = this.reader.getString(children[i], 'exponent');
+                if (exponentLight == null)
+                    return "no exponent defined for light";
+            }
+
             // Checks for repeated IDs.
             if (this.lights[lightId] != null)
                 return "ID must be unique for each light (conflict: ID = " + lightId + ")";
@@ -446,8 +466,17 @@ class MySceneGraph {
             else
                 targetLight = null;
 
-            this.lights[lightId] = [locationLight, ambientIllumination, diffuseIllumination, specularIllumination, targetLight];
-            
+            //this.lights[lightId] = [locationLight, ambientIllumination, diffuseIllumination, specularIllumination, targetLight];
+            this.lights[lightId] = {
+                enabled: enabledLight,
+                angle: angleLight,
+                exponent: exponentLight,
+                location: locationLight,
+                ambient: ambientIllumination,
+                diffuse: diffuseIllumination,
+                specular: specularIllumination,
+                target: targetLight
+            }
             numLights++;
         }
 
@@ -457,7 +486,7 @@ class MySceneGraph {
             this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
 
         this.log("Parsed lights");
-
+        Console.log(this.lights);
         return null;
     }
 
