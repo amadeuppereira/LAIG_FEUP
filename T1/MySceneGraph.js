@@ -208,7 +208,9 @@ class MySceneGraph {
         if(root == null) return "no root object defined";
         var axisLength = this.reader.getFloat(sceneNode, 'axis_length');
         if(axisLength == null || isNaN(axisLength)) return "error parsing axis length";
-        
+
+        this.idRoot = root;
+        this.axisLength = axisLength;
         
         this.log("Parsed scene");
 
