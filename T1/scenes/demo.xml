@@ -1,8 +1,3 @@
-<!-- Os comentarios devem ter espacos no inicio e no fim, a -->
-<!-- separar dos hifens -->
-<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) -->
-<!-- Todas as tags e atributos sao obrigatorios, exceto onde for -->
-<!-- referido o contrario -->
 <!-- Na descricao abaixo, os simbolos utilizados tem o seguinte significado: -->
     <!-- ii: integer value -->
     <!-- ff: float value -->
@@ -17,16 +12,16 @@
 
     <scene root="root_object" axis_length="1" />
 
-    <views default="ss" >
+    <views default="view1" >
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
 
-        <perspective id="ss" near="ff" far="ff" angle="ff">
-            <from x="ff" y="ff" z="ff" />
-            <to x="ff" y="ff" z="ff" />
+        <perspective id="view1" near="1" far="2" angle="3">
+            <from x="10" y="11" z="12" />
+            <to x="20" y="21" z="22" />
         </perspective>
 
-        <ortho id="ss" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" />
+        <ortho id="view2" near="4" far="5" left="6" right="7" top="8" bottom="9" />
 
     </views>
 

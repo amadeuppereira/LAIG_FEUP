@@ -19,6 +19,7 @@ class MySceneGraph {
      * @constructor
      */
     constructor(filename, scene) {
+  
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
@@ -28,6 +29,8 @@ class MySceneGraph {
         this.nodes = [];
 
         this.idRoot = null;                    // The id of the root element.
+        this.defaultView = null;               // The id of the default view.
+        this.axisLength = 1;                   // The axis length.
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -222,7 +225,130 @@ class MySceneGraph {
      * @param {views block element} viewsNode
      */
     parseViews(viewsNode) {
-        // TODO: Parse Views node
+        var children = viewsNode.children;
+
+        this.views = [];
+        var numViews = 0;
+
+        for (let i = 0; i < children.length; i++) {
+
+            var nodeName = children[i].nodeName;
+            if(nodeName != "perspective" && nodeName != "ortho") {
+                this.onXMLMinorError("unknown tag <" + nodeName + ">");
+                continue;
+            }
+
+            //get the id of the current view
+            var viewId = this.reader.getString(children[i], 'id');
+            if (viewId == null) return "no ID defined for view";
+
+            // Checks for repeated IDs.
+            if (this.views[viewId] != null)
+            return "ID must be unique for each view (conflict: ID = " + viewId + ")";
+
+            //get the near field value of the current view
+            var near = this.reader.getFloat(children[i], 'near');
+            if (near == null || isNaN(near)) return "error parsing view 'near' value";
+
+            //get the far field value of the current view
+            var far = this.reader.getFloat(children[i], 'far');
+            if (far == null || isNaN(far)) return "error parsing view 'far' value";
+
+            var left = null, right = null, top = null, bottom = null, angle = null, from = {x: null, y: null, z: null}, to = {x: null, y: null, z: null};
+            if(nodeName == "ortho") {
+                //get the left field value of the current view
+                var left = this.reader.getFloat(children[i], 'left');
+                if (left == null || isNaN(left)) return "error parsing view 'left' value";
+
+                //get the right field value of the current view
+                var right = this.reader.getFloat(children[i], 'right');
+                if (right == null || isNaN(right)) return "error parsing view 'right' value";
+
+                //get the top field value of the current view
+                var top = this.reader.getFloat(children[i], 'top');
+                if (top == null || isNaN(top)) return "error parsing view 'top' value";
+
+                //get the bottom field value of the current view
+                var bottom = this.reader.getFloat(children[i], 'bottom');
+                if (bottom == null || isNaN(bottom)) return "error parsing view 'bottom' value";
+
+            } else {
+                //get the angle field value of the current view
+                var angle = this.reader.getFloat(children[i], 'angle');
+                if (angle == null || isNaN(angle)) return "error parsing view 'angle' value";
+
+                var grandChildren = children[i].children;
+
+                var nodeNames = [];
+                for (var j = 0; j < grandChildren.length; j++) {
+                    nodeNames.push(grandChildren[j].nodeName);
+                }
+                var fromIndex = nodeNames.indexOf("from");
+                var toIndex = nodeNames.indexOf("to");
+
+                if(fromIndex != -1) {
+                    //get the x (from) value of the current view
+                    var x = this.reader.getFloat(grandChildren[fromIndex], 'x');
+                    if (x == null || isNaN(x)) return "error parsing view x (from) value";
+
+                    //get the y (from) value of the current view
+                    var y = this.reader.getFloat(grandChildren[fromIndex], 'y');
+                    if (y == null || isNaN(y)) return "error parsing view y (from) value";
+
+                    //get the z (from) value of the current view
+                    var z = this.reader.getFloat(grandChildren[fromIndex], 'z');
+                    if (z == null || isNaN(z)) return "error parsing view z (from) value";
+
+                    from.x = x;
+                    from.y = y;
+                    from.z = z;
+
+                } else {
+                    return "'from' coordinate undifined for view " + viewId;
+                }
+
+                if(toIndex != -1) {
+                    //get the x (to) value of the current view
+                    var x = this.reader.getFloat(grandChildren[toIndex], 'x');
+                    if (x == null || isNaN(x)) return "error parsing view x (to) value";
+
+                    //get the y (to) value of the current view
+                    var y = this.reader.getFloat(grandChildren[toIndex], 'y');
+                    if (y == null || isNaN(y)) return "error parsing view y (to) value";
+
+                    //get the z (to) value of the current view
+                    var z = this.reader.getFloat(grandChildren[toIndex], 'z');
+                    if (z == null || isNaN(z)) return "error parsing view z (to) value";
+
+                    to.x = x;
+                    to.y = y;
+                    to.z = z;
+
+                } else {
+                    return "'to' coordinate undifined for view " + viewId;
+                }
+            }
+            this.views[viewId] = {
+                near: near,
+                far: far,
+                angle: angle,
+                left: left,
+                right: right,
+                top: top,
+                bottom: bottom,
+                from: from,
+                to: to
+            }
+
+            numViews++;
+        }
+        if(numViews == 0) return "There must be, at least, one of the following views: perspective, ortho";
+
+        //get the id of the default view
+        var defaultView = this.reader.getString(viewsNode, 'default');
+        if (viewId == null) return "no default ID defined for view";
+        this.defaultView = defaultView;
+
 
         this.log("Parsed views");
 
@@ -472,7 +598,6 @@ class MySceneGraph {
             else
                 targetLight = null;
 
-            //this.lights[lightId] = [locationLight, ambientIllumination, diffuseIllumination, specularIllumination, targetLight];
             this.lights[lightId] = {
                 enabled: enabledLight,
                 angle: angleLight,
@@ -492,7 +617,6 @@ class MySceneGraph {
             this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
 
         this.log("Parsed lights");
-        Console.log(this.lights);
         return null;
     }
 
