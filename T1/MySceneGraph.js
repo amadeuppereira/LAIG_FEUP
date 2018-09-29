@@ -472,12 +472,10 @@ class MySceneGraph {
                 return "no ID defined for light";
 
             // Get current light state.
-            var enabled = this.reader.getFloat(children[i], 'enabled');
+            var enabled = this.reader.getBoolean(children[i], 'enabled');
             if (enabled == null || (enabled != 0 && enabled != 1))
                 return "error parsing state for " + lightId;
-            
-            enabled = enabled == 1 ? true : false;
-            
+                        
             var lightAngle = null;
             var lightExponent = null;
 
@@ -942,7 +940,99 @@ class MySceneGraph {
      * @param {transformations block element} transformationsNode
      */
     parseTransformations(transformationsNode) {
-        // TODO: Parse Transformations node
+        var children = transformationsNode.children;
+
+        this.transformations = [];
+        var numTransformations = 0;
+
+        for(let i = 0; i < children.length; i++) {
+            if(children[i].nodeName != "transformation") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            //get the id of the current transformation
+            var transformationId = this.reader.getString(children[i], 'id');
+            if (transformationId == null)
+                return "no ID defined for transformation";
+                
+            // Checks for repeated IDs.
+            if (this.transformations[transformationId] != null)
+                return "ID must be unique for each transformation (conflict: ID = " + transformationId + ")";
+
+            var grandChildren = children[i].children;
+
+            var innerTransformations = [];
+            var innerTCounter = 0;
+            for(let j = 0; j < grandChildren.length; j++) {
+                if(grandChildren[j].nodeName == "translate") {
+                    // x
+                    var x = this.reader.getFloat(grandChildren[j], 'x');
+                    if (!(x != null && !isNaN(x)))
+                        return "unable to parse translation x for transformation with ID = " + transformationId;
+
+                    // y
+                    var y = this.reader.getFloat(grandChildren[j], 'y');
+                    if (!(y != null && !isNaN(y)))
+                        return "unable to parse translation y for transformation with ID = " + transformationId;
+
+                    // z
+                    var z = this.reader.getFloat(grandChildren[j], 'z');
+                    if (!(z != null && !isNaN(z)))
+                        return "unable to parse translation z for transformation with ID = " + transformationId;
+                    
+                    innerTransformations.push({type: 1, x: x, y: y, z: z});
+
+
+                } else if(grandChildren[j].nodeName == "rotate") {
+                    // axis
+                    var axis = this.reader.getString(grandChildren[j], 'axis');
+                    if (!(axis != null) || (axis != "x" && axis != "y" && axis != "z"))
+                        return "unable to parse rotation axis for transformation with ID = " + transformationId;
+
+                    // angle
+                    var angle = this.reader.getFloat(grandChildren[j], 'angle');
+                    if (!(angle != null && !isNaN(angle)))
+                        return "unable to parse rotation angle for transformation with ID = " + transformationId;
+                    
+                    innerTransformations.push({type: 2, axis: axis, angle: angle*DEGREE_TO_RAD});
+
+                } else if(grandChildren[j].nodeName == "scale") {
+                    // x
+                    var x = this.reader.getFloat(grandChildren[j], 'x');
+                    if (!(x != null && !isNaN(x)))
+                        return "unable to parse scale x value for transformation with ID = " + transformationId;
+
+                    // y
+                    var y = this.reader.getFloat(grandChildren[j], 'y');
+                    if (!(y != null && !isNaN(y)))
+                        return "unable to parse scale y value for transformation with ID = " + transformationId;
+
+                    // z
+                    var z = this.reader.getFloat(grandChildren[j], 'z');
+                    if (!(z != null && !isNaN(z)))
+                        return "unable to parse scale y value for transformation with ID = " + transformationId;
+                    
+                    innerTransformations.push({type: 3, x: x, y: y, z: z});
+
+                } else {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
+                    continue;
+                }
+                innerTCounter++;
+            }
+
+            if(innerTCounter == 0) {
+                return "at least on action must be defined for tansformation with ID = " + transformationId;
+            }
+            
+            this.transformations[transformationId] = innerTransformations;
+            numTransformations++;
+
+        }
+
+        if (numTransformations == 0)
+            return "at least one transformation must be defined";
 
         this.log("Parsed transformations");
 
@@ -986,7 +1076,7 @@ class MySceneGraph {
      * Callback to be executed on any minor error, showing a warning on the console.
      * @param {string} message
      */
-    onXMLMinorErro(message) {
+    onXMLMinorError(message) {
         console.warn("Warning: " + message);
     }
 
