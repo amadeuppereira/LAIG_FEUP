@@ -15,7 +15,7 @@
     <!-- como o comprimento dos tres eixos (cilindros) -->
 
 
-    <scene root="ss" axis_length="ff" />
+    <scene root="aaa" />
 
     <views default="ss" >
         <!-- tem de existir, pelo menos, uma vista de -->
