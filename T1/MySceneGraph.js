@@ -129,6 +129,10 @@ class MySceneGraph {
                 return error;
         }
 
+        console.log(this.ambientIllumination);
+        console.log(this.backgroundColor);
+
+
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1)
             return "tag <lights> missing";
@@ -346,7 +350,8 @@ class MySceneGraph {
 
         //get the id of the default view
         var defaultView = this.reader.getString(viewsNode, 'default');
-        if (viewId == null) return "no default ID defined for view";
+        if (defaultView == null) return "no default ID defined for view";
+        else if (this.views[defaultView] == null) return "invalid default view";
         this.defaultView = defaultView;
 
 
@@ -360,7 +365,83 @@ class MySceneGraph {
      * @param {ambient block element} ambientNode
      */
     parseAmbient(ambientNode) {
-        // TODO: Parse Ambient node
+        var children = ambientNode.children;
+
+        var nodeNames = [];
+        for (var i = 0; i < children.length; i++) {
+            nodeNames.push(children[i].nodeName);
+        }
+        var ambientIndex = nodeNames.indexOf("ambient");
+        var backgroundIndex = nodeNames.indexOf("background");
+
+        var ambientIllumination = [];
+        if (ambientIndex != -1) {
+            // R
+            var r = this.reader.getFloat(children[ambientIndex], 'r');
+            if (!(r != null && !isNaN(r) && r >= 0 && r <= 1))
+                return "unable to parse R component of the ambient illumination";
+            else
+                ambientIllumination.push(r);
+
+            // G
+            var g = this.reader.getFloat(children[ambientIndex], 'g');
+            if (!(g != null && !isNaN(g) && g >= 0 && g <= 1))
+                return "unable to parse G component of the ambient illumination";
+            else
+                ambientIllumination.push(g);
+
+            // B
+            var b = this.reader.getFloat(children[ambientIndex], 'b');
+            if (!(b != null && !isNaN(b) && b >= 0 && b <= 1))
+                return "unable to parse B component of the ambient illumination";
+            else
+                ambientIllumination.push(b);
+
+            // A
+            var a = this.reader.getFloat(children[ambientIndex], 'a');
+            if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
+                return "unable to parse A component of the ambient illumination";
+            else
+                ambientIllumination.push(a);
+        }
+        else
+            return "ambient ilumination component undifined";
+
+        var backgroundColor = [];
+        if (backgroundIndex != -1) {
+            // R
+            var r = this.reader.getFloat(children[backgroundIndex], 'r');
+            if (!(r != null && !isNaN(r) && r >= 0 && r <= 1))
+                return "unable to parse R component of background";
+            else
+                backgroundColor.push(r);
+
+            // G
+            var g = this.reader.getFloat(children[backgroundIndex], 'g');
+            if (!(g != null && !isNaN(g) && g >= 0 && g <= 1))
+                return "unable to parse G component of background";
+            else
+                backgroundColor.push(g);
+
+            // B
+            var b = this.reader.getFloat(children[backgroundIndex], 'b');
+            if (!(b != null && !isNaN(b) && b >= 0 && b <= 1))
+                return "unable to parse B component of background";
+            else
+                backgroundColor.push(b);
+
+            // A
+            var a = this.reader.getFloat(children[backgroundIndex], 'a');
+            if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
+                return "unable to parse A component of background";
+            else
+                backgroundColor.push(a);
+        }
+        else
+            return "background color undifined";
+        
+        this.ambientIllumination = ambientIllumination;
+        this.backgroundColor = backgroundColor;
 
         this.log("Parsed ambient");
 
