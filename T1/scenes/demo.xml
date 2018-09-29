@@ -34,20 +34,20 @@
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
 
-        <omni id="ss" enabled="tt" >
-            <location x="ff" y="ff" z="ff" w="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+        <omni id="light1" enabled="1" >
+            <location x="1" y="2" z="3" w="0.5" />
+            <ambient r="0.1" g="0.2" b="0.3" a="0.4" />
+            <diffuse r="0.5" g="0.6" b="0.7" a="0.8" />
+            <specular r="0.9" g="0.15" b="0.25" a="0.35" />
         </omni>
 
-        <spot id="ss" enabled="tt" angle="ff" exponent="ff">
+        <spot id="light2" enabled="0" angle="1" exponent="2">
             <!-- atencao, "target" e' diferente de "direction" -->
-            <location x="ff" y="ff" z="ff" />
-            <target x="ff" y="ff" z="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+            <location x="5" y="6" z="7" w="0.3" />
+            <target x="9" y="10" z="11" />
+            <ambient r="0.1" g="0.2" b="0.3" a="0.4" />
+            <diffuse r="0.5" g="0.6" b="0.7" a="0.8" />
+            <specular r="0.9" g="0.15" b="0.25" a="0.2" />
         </spot>
     </lights>
 

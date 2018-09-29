@@ -129,10 +129,6 @@ class MySceneGraph {
                 return error;
         }
 
-        console.log(this.ambientIllumination);
-        console.log(this.backgroundColor);
-
-
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1)
             return "tag <lights> missing";
@@ -144,6 +140,8 @@ class MySceneGraph {
             if ((error = this.parseLights(nodes[index])) != null)
                 return error;
         }
+
+        console.log(this.lights);
 
         // <textures>
         if ((index = nodeNames.indexOf("textures")) == -1)
@@ -308,7 +306,7 @@ class MySceneGraph {
                     from.z = z;
 
                 } else {
-                    return "'from' coordinate undifined for view " + viewId;
+                    return "'from' coordinate undefined for view " + viewId;
                 }
 
                 if(toIndex != -1) {
@@ -329,7 +327,7 @@ class MySceneGraph {
                     to.z = z;
 
                 } else {
-                    return "'to' coordinate undifined for view " + viewId;
+                    return "'to' coordinate undefined for view " + viewId;
                 }
             }
             this.views[viewId] = {
@@ -405,7 +403,7 @@ class MySceneGraph {
                 ambientIllumination.push(a);
         }
         else
-            return "ambient ilumination component undifined";
+            return "ambient ilumination component undefined";
 
         var backgroundColor = [];
         if (backgroundIndex != -1) {
@@ -438,7 +436,7 @@ class MySceneGraph {
                 backgroundColor.push(a);
         }
         else
-            return "background color undifined";
+            return "background color undefined";
         
         this.ambientIllumination = ambientIllumination;
         this.backgroundColor = backgroundColor;
@@ -476,23 +474,25 @@ class MySceneGraph {
                 return "no ID defined for light";
 
             // Get current light state.
-            var enabledLight = this.reader.getString(children[i], 'enabled');
-            if (enabledLight == null)
-                return "no light state";
+            var enabledLight = this.reader.getFloat(children[i], 'enabled');
+            if (enabledLight == null || (enabledLight != 0 && enabledLight != 1))
+                return "error parsing state for " + lightId;
+            
+            enabledLight = enabledLight == 1 ? true : false;
             
             var angleLight = null;
             var exponentLight = null;
 
             if (children[i].nodeName == "spot") {
                 // Get current light angle.
-                angleLight = this.reader.getString(children[i], 'angle');
-                if (angleLight == null)
-                    return "no angle defined for light";
+                angleLight = this.reader.getFloat(children[i], 'angle');
+                if (angleLight == null || isNaN(angleLight))
+                    return "error parsing angle for " + lightId;
 
                 // Get current light exponent.
-                exponentLight = this.reader.getString(children[i], 'exponent');
-                if (exponentLight == null)
-                    return "no exponent defined for light";
+                exponentLight = this.reader.getFloat(children[i], 'exponent');
+                if (exponentLight == null || isNaN(exponentLight))
+                    return "error parsing exponent for " + lightId;
             }
 
             // Checks for repeated IDs.
@@ -541,7 +541,7 @@ class MySceneGraph {
                 // w
                 var w = this.reader.getFloat(grandChildren[locationIndex], 'w');
                 if (!(w != null && !isNaN(w) && w >= 0 && w <= 1))
-                    return "unable to parse x-coordinate of the light location for ID = " + lightId;
+                    return "unable to parse w-coordinate of the light location for ID = " + lightId;
                 else
                     locationLight.push(w);
             }
@@ -656,21 +656,21 @@ class MySceneGraph {
                 // x
                 var x = this.reader.getFloat(grandChildren[targetIndex], 'x');
                 if (!(x != null && !isNaN(x)))
-                    return "unable to parse x-coordinate of the light location for ID = " + lightId;
+                    return "unable to parse x-coordinate of the light target location for ID = " + lightId;
                 else
                     targetLight.push(x);
 
                 // y
                 var y = this.reader.getFloat(grandChildren[targetIndex], 'y');
                 if (!(y != null && !isNaN(y)))
-                    return "unable to parse y-coordinate of the light location for ID = " + lightId;
+                    return "unable to parse y-coordinate of the light target location for ID = " + lightId;
                 else
                     targetLight.push(y);
 
                 // z
                 var z = this.reader.getFloat(grandChildren[targetIndex], 'z');
                 if (!(z != null && !isNaN(z)))
-                    return "unable to parse z-coordinate of the light location for ID = " + lightId;
+                    return "unable to parse z-coordinate of the light target location for ID = " + lightId;
                 else
                     targetLight.push(z);
             }
