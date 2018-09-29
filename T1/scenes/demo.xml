@@ -10,7 +10,7 @@
     <!-- como o comprimento dos tres eixos (cilindros) -->
 
 
-    <scene root="root_object" axis_length="1" />
+    <scene root="yas" axis_length="1" />
 
     <views default="view1" >
         <!-- tem de existir, pelo menos, uma vista de -->
@@ -55,7 +55,8 @@
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
 
-        <texture id="ss" file="ss" />
+        <texture id="texture1" file="./scenes/images/bank.jpg" />
+        <texture id="texture2" file="./scenes/images/leaves.jpg" />
 
     </textures>
 

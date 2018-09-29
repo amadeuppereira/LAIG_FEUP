@@ -141,8 +141,6 @@ class MySceneGraph {
                 return error;
         }
 
-        console.log(this.lights);
-
         // <textures>
         if ((index = nodeNames.indexOf("textures")) == -1)
             return "tag <textures> missing";
@@ -474,24 +472,24 @@ class MySceneGraph {
                 return "no ID defined for light";
 
             // Get current light state.
-            var enabledLight = this.reader.getFloat(children[i], 'enabled');
-            if (enabledLight == null || (enabledLight != 0 && enabledLight != 1))
+            var enabled = this.reader.getFloat(children[i], 'enabled');
+            if (enabled == null || (enabled != 0 && enabled != 1))
                 return "error parsing state for " + lightId;
             
-            enabledLight = enabledLight == 1 ? true : false;
+            enabled = enabled == 1 ? true : false;
             
-            var angleLight = null;
-            var exponentLight = null;
+            var lightAngle = null;
+            var lightExponent = null;
 
             if (children[i].nodeName == "spot") {
                 // Get current light angle.
-                angleLight = this.reader.getFloat(children[i], 'angle');
-                if (angleLight == null || isNaN(angleLight))
+                lightAngle = this.reader.getFloat(children[i], 'angle');
+                if (lightAngle == null || isNaN(lightAngle))
                     return "error parsing angle for " + lightId;
 
                 // Get current light exponent.
-                exponentLight = this.reader.getFloat(children[i], 'exponent');
-                if (exponentLight == null || isNaN(exponentLight))
+                lightExponent = this.reader.getFloat(children[i], 'exponent');
+                if (lightExponent == null || isNaN(lightExponent))
                     return "error parsing exponent for " + lightId;
             }
 
@@ -651,43 +649,43 @@ class MySceneGraph {
                 return "specular component undefined for ID = " + lightId;
 
             // Retrieve the target component if spot light
-            var targetLight = [];
+            var target = [];
             if (targetIndex != -1) {
                 // x
                 var x = this.reader.getFloat(grandChildren[targetIndex], 'x');
                 if (!(x != null && !isNaN(x)))
                     return "unable to parse x-coordinate of the light target location for ID = " + lightId;
                 else
-                    targetLight.push(x);
+                    target.push(x);
 
                 // y
                 var y = this.reader.getFloat(grandChildren[targetIndex], 'y');
                 if (!(y != null && !isNaN(y)))
                     return "unable to parse y-coordinate of the light target location for ID = " + lightId;
                 else
-                    targetLight.push(y);
+                    target.push(y);
 
                 // z
                 var z = this.reader.getFloat(grandChildren[targetIndex], 'z');
                 if (!(z != null && !isNaN(z)))
                     return "unable to parse z-coordinate of the light target location for ID = " + lightId;
                 else
-                    targetLight.push(z);
+                    target.push(z);
             }
             else if (children[i].nodeName == "spot")
                 return "light target undefined for ID = " + lightId;
             else
-                targetLight = null;
+                target = null;
 
             this.lights[lightId] = {
-                enabled: enabledLight,
-                angle: angleLight,
-                exponent: exponentLight,
+                enabled: enabled,
+                angle: lightAngle,
+                exponent: lightExponent,
                 location: locationLight,
                 ambient: ambientIllumination,
                 diffuse: diffuseIllumination,
                 specular: specularIllumination,
-                target: targetLight
+                target: target
             }
             numLights++;
         }
@@ -706,7 +704,37 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-        // TODO: Parse Textures node
+        var children = texturesNode.children;
+
+        this.textures = [];
+        var numTextures = 0;
+
+        for(let i = 0; i < children.length; i++) {
+            if(children[i].nodeName != "texture") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            //get the id of the current texture
+            var textureId = this.reader.getString(children[i], 'id');
+            if (textureId == null)
+                return "no ID defined for texture";
+                
+            // Checks for repeated IDs.
+            if (this.textures[textureId] != null)
+                return "ID must be unique for each texture (conflict: ID = " + textureId + ")";
+
+            //get the id of the current texture
+            var file = this.reader.getString(children[i], 'file');
+            if (file == null)
+                return "no file defined for " + textureId;
+
+            this.textures[textureId] = file;
+            numTextures++;
+        }
+
+        if (numTextures == 0)
+            return "at least one texture must be defined";
 
         this.log("Parsed textures");
 
