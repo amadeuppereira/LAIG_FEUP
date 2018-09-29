@@ -118,18 +118,32 @@
         <!-- Deve existir um ou mais blocos "primitive" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
 
-        <primitive id="ss">
+        <primitive id="primitive1">
             <!-- apenas pode existir UMA das seguintes tags: -->
             <!-- rectangle, triangle, cylinder, sphere, torus -->
             <!-- os parametros devem ser interpretados, genericamente, -->
             <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
-
-            <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
-            <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" />
-            <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
-            <sphere radius="ff" slices="ii" stacks="ii" />
-            <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+            
+            <rectangle x1="1" y1="2" x2="3" y2="4" />
+            
         </primitive >
+
+        <primitive id="primitive2">
+            <triangle x1="1" y1="2" z1="3" x2="4" y2="5" z2="6" x3="7" y3="8" z3="9" />
+        </primitive >
+
+        <primitive id="primitive3">
+            <cylinder base="1" top="2" height="3" slices="4" stacks="5" />
+        </primitive >
+
+        <primitive id="primitive4">
+            <sphere radius="1" slices="2" stacks="3" />
+        </primitive >
+
+        <primitive id="primitive5">
+            <torus inner="1" outer="2" slices="3" loops="4" />
+        </primitive >
+
     </primitives >
 
     <components>
