@@ -177,6 +177,8 @@ class MySceneGraph {
                 return error;
         }
 
+        //console.log(this.transformations);
+
         // <primitives>
         if ((index = nodeNames.indexOf("primitives")) == -1)
             return "tag <primitives> missing";
@@ -188,8 +190,6 @@ class MySceneGraph {
             if ((error = this.parsePrimitives(nodes[index])) != null)
                 return error;
         }
-
-        console.log(this.primitives);
 
         // <components>
         if ((index = nodeNames.indexOf("components")) == -1)
@@ -1025,7 +1025,7 @@ class MySceneGraph {
             }
 
             if(innerTCounter == 0) {
-                return "at least on action must be defined for tansformation with ID = " + transformationId;
+                return "at least one action must be defined for tansformation with ID = " + transformationId;
             }
             
             this.transformations[transformationId] = innerTransformations;
@@ -1268,29 +1268,132 @@ in the primitive with ID = " + primitiveId;
                 return "There must be a transformation, materials, texture and a children tags in component with ID = " +componentId;
             }
 
+            //Transformation
             var temp = grandChildren[0];
+            this.componentTransformations = [];
             if(temp.nodeName != "transformation")
                 return "missing transformation tag in component with ID = " + componentId;
+            if(temp.children.length != 0){
+                if(temp.children[0].nodeName == "transformationref"){
+                    //falta verificar se a transformação referida existe de facto
+                    this.componentTransformations = this.transformations[this.reader.getString(temp.children[0],'id')];
+                }
+                else{
+                    var innerTransformations = [];
+                    var innerTCounter = 0;
+                    for(let j = 0; j < temp.children.length; j++) {
+                        if(temp.children[j].nodeName == "translate") {
+                            // x
+                            var x = this.reader.getFloat(temp.children[j], 'x');
+                            if (!(x != null && !isNaN(x)))
+                                return "unable to parse translation x for the transformations";
 
+                            // y
+                            var y = this.reader.getFloat(temp.children[j], 'y');
+                            if (!(y != null && !isNaN(y)))
+                                return "unable to parse translation y for the transformations";
+
+                            // z
+                            var z = this.reader.getFloat(temp.children[j], 'z');
+                            if (!(z != null && !isNaN(z)))
+                                return "unable to parse translation z for the transformations";
+                            
+                            innerTransformations.push({type: 1, x: x, y: y, z: z});
+
+
+                        } else if(temp.children[j].nodeName == "rotate") {
+                            // axis
+                            var axis = this.reader.getString(temp.children[j], 'axis');
+                            if (!(axis != null) || (axis != "x" && axis != "y" && axis != "z"))
+                                return "unable to parse rotation axis for the transformations";
+
+                            // angle
+                            var angle = this.reader.getFloat(temp.children[j], 'angle');
+                            if (!(angle != null && !isNaN(angle)))
+                                return "unable to parse rotation angle for the transformations";
+                            
+                            innerTransformations.push({type: 2, axis: axis, angle: angle*DEGREE_TO_RAD});
+
+                        } else if(temp.children[j].nodeName == "scale") {
+                            // x
+                            var x = this.reader.getFloat(temp.children[j], 'x');
+                            if (!(x != null && !isNaN(x)))
+                                return "unable to parse scale x value for the transformations";
+
+                            // y
+                            var y = this.reader.getFloat(temp.children[j], 'y');
+                            if (!(y != null && !isNaN(y)))
+                                return "unable to parse scale y value for the transformations";
+
+                            // z
+                            var z = this.reader.getFloat(temp.children[j], 'z');
+                            if (!(z != null && !isNaN(z)))
+                                return "unable to parse scale y value for the transformations";
+                            
+                            innerTransformations.push({type: 3, x: x, y: y, z: z});
+
+                        } else {
+                            this.onXMLMinorError("unknown tag <" + temp.children[j].nodeName + ">");
+                            continue;
+                        }
+                        innerTCounter++;
+                    }
+
+                    if(innerTCounter == 0) {
+                        return "at least one action must be defined for tansformation";
+                    }
+                    this.componentTransformations = innerTransformations;
+                }
+            }
+            else{
+                this.componentTransformations = null;
+            }
+
+            //Materials
             var temp = grandChildren[1];
+            this.componentMaterials = [];
             if(temp.nodeName != "materials")
                 return "missing materials tag in component with ID = " + componentId;
+            if(temp.children.length == 1){
+                if(this.reader.getString(temp.children[0],'id') == "inherit"){
+                    //same material as father
+                }
+                this.componentMaterials = this.materials[this.reader.getString(temp.children[0],'id')]; //falta o "no material with such ID"
+            }
+            else if(temp.children.length > 1){
+                //se varios materiais declarados, o default é o
+                //primeiro material; de cada vez que se pressione a tecla m/M,
+                //o material muda para o proximo material da lista; do
+                //ultimo material da lista volta ao primeiro
+                this.componentMaterials = this.materials[this.reader.getString(temp.children[0],'id')];
+            }
+            else{
+                return "There must be a material in component with ID = " +componentId;
+            }
 
+            //Texture
             var temp = grandChildren[2];
             if(temp.nodeName != "texture")
                 return "missing texture tag in component with ID = " + componentId;
             
+            //Children
             var temp = grandChildren[3];
             if(temp.nodeName != "children")
                 return "missing children tag in component with ID = " + componentId;
 
 
-            //missing
 
-            
 
+
+
+            this.components[componentId] = {
+                tranformations: this.componentTransformations,
+                materials: this.componentMaterials
+                //missing
+            }    
         }
 
+        console.log(this.components);
         this.log("Parsed components");
 
         return null;

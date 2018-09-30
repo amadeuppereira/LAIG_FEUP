@@ -147,7 +147,7 @@
     </primitives >
 
     <components>
-        <component id="ss">
+        <component id="component1">
             <!-- Uma "component" e' um objeto composto e pode ser -->
             <!-- usada em nos intermédios -->
             <!-- bloco "transformation" e' obrigatorio -->
@@ -156,16 +156,16 @@
                 <!-- deve conter uma referencia a uma das "transformation" -->
                 <!-- declaradas anteriormente -->
 
-                <transformationref id="ss" />
+                <!--<transformationref id="transformation2" />-->
 
                 <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
 
-                <translate x="ff" y="ff" z="ff" />
-                <rotate axis="cc" angle="ff" />
-                <scale x="ff" y="ff" z="ff" />
+                <translate x="1" y="2" z="3" />
+                <rotate axis="x" angle="180" />
+                <scale x="4" y="5" z="6" />
             </transformation>
 
             <!-- declaracao obrigatoria de pelo menos um material; -->
@@ -176,7 +176,7 @@
             <!-- ultimo material da lista volta ao primeiro -->
 
             <materials>
-                <material id="ss" />
+                <material id="material2" />
             </materials>
 
             <!-- declaracao obrigatoria de texture -->
