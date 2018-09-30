@@ -1244,7 +1244,52 @@ in the primitive with ID = " + primitiveId;
      * @param {components block element} componentsNode
      */
     parseComponents(componentsNode) {
-        // TODO: Parse Components node
+        var children = componentsNode.children;
+
+        this.components = [];
+
+        for(let i = 0; i < children.length; i++) {
+            if(children[i].nodeName != "component") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            //get the id of the current component
+            var componentId = this.reader.getString(children[i], 'id');
+            if (componentId == null)
+                return "no ID defined for component";
+                
+            // Checks for repeated IDs.
+            if (this.components[componentId] != null)
+                return "ID must be unique for each component (conflict: ID = " + componentId + ")";
+
+            var grandChildren = children[i].children;
+            if(grandChildren.length != 4) {
+                return "There must be a transformation, materials, texture and a children tags in component with ID = " +componentId;
+            }
+
+            var temp = grandChildren[0];
+            if(temp.nodeName != "transformation")
+                return "missing transformation tag in component with ID = " + componentId;
+
+            var temp = grandChildren[1];
+            if(temp.nodeName != "materials")
+                return "missing materials tag in component with ID = " + componentId;
+
+            var temp = grandChildren[2];
+            if(temp.nodeName != "texture")
+                return "missing texture tag in component with ID = " + componentId;
+            
+            var temp = grandChildren[3];
+            if(temp.nodeName != "children")
+                return "missing children tag in component with ID = " + componentId;
+
+
+            //missing
+
+            
+
+        }
 
         this.log("Parsed components");
 
