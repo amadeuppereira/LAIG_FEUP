@@ -1494,6 +1494,8 @@ in the primitive with ID = " + primitiveId;
             }    
         }
 
+        //VER AQUI
+        
         console.log(this.components["component1"].children);
         console.log(this.components.length);
         //second round
