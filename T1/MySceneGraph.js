@@ -1276,8 +1276,10 @@ in the primitive with ID = " + primitiveId;
                 return "no ID defined for component";
                 
             // Checks for repeated IDs.
-            if (this.components[componentId] != null)
-                return "ID must be unique for each component (conflict: ID = " + componentId + ")";
+            for(let i = 0; i < this.components.length; i++){
+                if(this.components[i].id == componentId)
+                    return "ID must be unique for each component (conflict: ID = " + componentId + ")";
+            }
 
             var grandChildren = children[i].children;
             if(grandChildren.length != 4) {
@@ -1484,24 +1486,21 @@ in the primitive with ID = " + primitiveId;
                 componentref: component
             }
             
-            
-
-            this.components[componentId] = {
+            this.components.push({
+                id: componentId,
                 tranformations: componentTransformations,
                 materials: componentMaterials,
                 texture: componentTexture,
                 children: componentChildren
-            }    
+            });   
         }
-
-        //VER AQUI
         
-        console.log(this.components["component1"].children);
-        console.log(this.components.length);
         //second round
         for(let i = 0; i < this.components.length; i++){
-            console.log(this.components["component1"].children);
-            //console.log(children);
+            //console.log(this.components[i].children);
+            
+            //Alterar aqui
+
         }
 
         //console.log(this.components);
