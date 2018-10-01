@@ -1484,6 +1484,7 @@ in the primitive with ID = " + primitiveId;
                 componentref: component
             }
             
+            
 
             this.components[componentId] = {
                 tranformations: componentTransformations,
@@ -1492,6 +1493,16 @@ in the primitive with ID = " + primitiveId;
                 children: componentChildren
             }    
         }
+
+        console.log(this.components["component1"].children);
+        console.log(this.components.length);
+        //second round
+        for(let i = 0; i < this.components.length; i++){
+            console.log(this.components["component1"].children);
+            //console.log(children);
+        }
+
+        //console.log(this.components);
 
         this.log("Parsed components");
 
