@@ -89,9 +89,9 @@
             <!-- instrucoes a usar sem limite nem ordem -->
             <!-- deve existir pelo menos uma transformacao -->
 
-            <translate x="1" y="2" z="3" />
+            <!-- <translate x="1" y="2" z="3" /> -->
             <rotate axis="x" angle="180" />
-            <scale x="4" y="5" z="6" />
+            <!-- <scale x="4" y="5" z="6" /> -->
         </transformation>
 
         <transformation id="transformation2">
@@ -156,16 +156,16 @@
                 <!-- deve conter uma referencia a uma das "transformation" -->
                 <!-- declaradas anteriormente -->
 
-                <!--<transformationref id="transformation2" />-->
+                <transformationref id="transformation2" />
 
                 <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
 
-                <translate x="1" y="2" z="3" />
+                <!--<translate x="1" y="2" z="3" />
                 <rotate axis="x" angle="180" />
-                <scale x="4" y="5" z="6" />
+                <scale x="4" y="5" z="6" />-->
             </transformation>
 
             <!-- declaracao obrigatoria de pelo menos um material; -->
@@ -177,6 +177,7 @@
 
             <materials>
                 <material id="material2" />
+                <material id="inherit" />
             </materials>
 
             <!-- declaracao obrigatoria de texture -->
@@ -195,7 +196,7 @@
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
 
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="none" length_s="2.0" length_t="0.6" />
 
             <!-- bloco "children" obrigatorio num "component" -->
             <children>

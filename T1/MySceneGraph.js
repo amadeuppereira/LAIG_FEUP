@@ -1028,9 +1028,25 @@ class MySceneGraph {
                 return "at least one action must be defined for tansformation with ID = " + transformationId;
             }
             
-            this.transformations[transformationId] = innerTransformations;
-            numTransformations++;
+            this.scene.loadIdentity();
+            for(let i = 0; i < innerTransformations.length; i++){
+                let trans = innerTransformations[i];
+                switch(trans.type){
+                    case 1:
+                        this.scene.translate(trans.x,trans.y,trans.z);
+                        break;
+                    case 2:
+                        this.scene.rotate(trans.angle, trans.axis == "x" ? 1 : 0, trans.axis == "y" ? 1 : 0, trans.axis == "z" ? 1 : 0);
+                        break;
+                    case 3:
+                        this.scene.scale(trans.x, trans.y, trans.z);
+                        break;
+                    default: break;
+                }
+            }
 
+            this.transformations[transformationId] = this.scene.getMatrix();
+            numTransformations++;
         }
 
         if (numTransformations == 0)
@@ -1270,70 +1286,73 @@ in the primitive with ID = " + primitiveId;
 
             //Transformation
             var temp = grandChildren[0];
-            this.componentTransformations = [];
+            var componentTransformations = [];
             if(temp.nodeName != "transformation")
                 return "missing transformation tag in component with ID = " + componentId;
-            if(temp.children.length != 0){
-                if(temp.children[0].nodeName == "transformationref"){
-                    //falta verificar se a transformação referida existe de facto
-                    this.componentTransformations = this.transformations[this.reader.getString(temp.children[0],'id')];
+            
+            var componentTransformationsChildren = temp.children;
+            if(componentTransformationsChildren.length != 0){
+                if(componentTransformationsChildren[0].nodeName == "transformationref"){
+                     componentTransformations = this.transformations[this.reader.getString(componentTransformationsChildren[0],'id')];
+                    if(componentTransformations == null)
+                        return "no transformation with ID = " + this.reader.getString(componentTransformationsChildren[0],'id');
                 }
                 else{
                     var innerTransformations = [];
                     var innerTCounter = 0;
-                    for(let j = 0; j < temp.children.length; j++) {
-                        if(temp.children[j].nodeName == "translate") {
+                    for(let j = 0; j < componentTransformationsChildren.length; j++) {
+                        if(componentTransformationsChildren[j].nodeName == "translate") {
                             // x
-                            var x = this.reader.getFloat(temp.children[j], 'x');
+                            var x = this.reader.getFloat(componentTransformationsChildren[j], 'x');
                             if (!(x != null && !isNaN(x)))
                                 return "unable to parse translation x for the transformations";
 
                             // y
-                            var y = this.reader.getFloat(temp.children[j], 'y');
+                            var y = this.reader.getFloat(componentTransformationsChildren[j], 'y');
                             if (!(y != null && !isNaN(y)))
                                 return "unable to parse translation y for the transformations";
 
                             // z
-                            var z = this.reader.getFloat(temp.children[j], 'z');
+                            var z = this.reader.getFloat(componentTransformationsChildren[j], 'z');
                             if (!(z != null && !isNaN(z)))
                                 return "unable to parse translation z for the transformations";
                             
                             innerTransformations.push({type: 1, x: x, y: y, z: z});
 
 
-                        } else if(temp.children[j].nodeName == "rotate") {
+                        } else if(componentTransformationsChildren[j].nodeName == "rotate") {
                             // axis
-                            var axis = this.reader.getString(temp.children[j], 'axis');
+                            var axis = this.reader.getString(componentTransformationsChildren[j], 'axis');
                             if (!(axis != null) || (axis != "x" && axis != "y" && axis != "z"))
                                 return "unable to parse rotation axis for the transformations";
 
                             // angle
-                            var angle = this.reader.getFloat(temp.children[j], 'angle');
+                            var angle = this.reader.getFloat(componentTransformationsChildren[j], 'angle');
                             if (!(angle != null && !isNaN(angle)))
                                 return "unable to parse rotation angle for the transformations";
                             
                             innerTransformations.push({type: 2, axis: axis, angle: angle*DEGREE_TO_RAD});
 
-                        } else if(temp.children[j].nodeName == "scale") {
+                        } else if(componentTransformationsChildren[j].nodeName == "scale") {
                             // x
-                            var x = this.reader.getFloat(temp.children[j], 'x');
+                            var x = this.reader.getFloat(componentTransformationsChildren[j], 'x');
                             if (!(x != null && !isNaN(x)))
                                 return "unable to parse scale x value for the transformations";
 
                             // y
-                            var y = this.reader.getFloat(temp.children[j], 'y');
+                            var y = this.reader.getFloat(componentTransformationsChildren[j], 'y');
                             if (!(y != null && !isNaN(y)))
                                 return "unable to parse scale y value for the transformations";
 
                             // z
-                            var z = this.reader.getFloat(temp.children[j], 'z');
+                            var z = this.reader.getFloat(componentTransformationsChildren[j], 'z');
                             if (!(z != null && !isNaN(z)))
                                 return "unable to parse scale y value for the transformations";
                             
                             innerTransformations.push({type: 3, x: x, y: y, z: z});
 
                         } else {
-                            this.onXMLMinorError("unknown tag <" + temp.children[j].nodeName + ">");
+                            this.onXMLMinorError("unknown tag <" + componentTransformationsChildren[j].nodeName + ">");
                             continue;
                         }
                         innerTCounter++;
@@ -1342,39 +1361,92 @@ in the primitive with ID = " + primitiveId;
                     if(innerTCounter == 0) {
                         return "at least one action must be defined for tansformation";
                     }
-                    this.componentTransformations = innerTransformations;
+
+                    this.scene.loadIdentity();
+                    for(let i = 0; i < innerTransformations.length; i++){
+                        let trans = innerTransformations[i];
+                        switch(trans.type){
+                            case 1:
+                                this.scene.translate(trans.x,trans.y,trans.z);
+                                break;
+                            case 2:
+                                this.scene.rotate(trans.angle, trans.axis == "x" ? 1 : 0, trans.axis == "y" ? 1 : 0, trans.axis == "z" ? 1 : 0);
+                                break;
+                            case 3:
+                                this.scene.scale(trans.x, trans.y, trans.z);
+                                break;
+                            default: break;
+                        }
+                    }
+
+                    componentTransformations = this.scene.getMatrix();
                 }
             }
             else{
-                this.componentTransformations = null;
+                componentTransformations = null;
             }
 
             //Materials
             var temp = grandChildren[1];
-            this.componentMaterials = [];
+            var componentMaterials = [];
             if(temp.nodeName != "materials")
                 return "missing materials tag in component with ID = " + componentId;
-            if(temp.children.length == 1){
-                if(this.reader.getString(temp.children[0],'id') == "inherit"){
-                    //same material as father
+
+            var componentMaterialsCounter = 0;
+            var componentMaterialChildren = temp.children;
+            for (let i = 0; i < componentMaterialChildren.length; i++) {
+                var nodeName = componentMaterialChildren[i].nodeName;
+                if(nodeName != "material") {
+                    this.onXMLMinorError("unknown tag <" + nodeName + ">");
+                    continue;
                 }
-                this.componentMaterials = this.materials[this.reader.getString(temp.children[0],'id')]; //falta o "no material with such ID"
+
+                if(this.reader.getString(componentMaterialChildren[i],'id') == "inherit"){
+                    componentMaterials.push("inherit");
+                }
+                else{
+                    var material = this.materials[this.reader.getString(componentMaterialChildren[i],'id')];
+                    if(material == null)
+                        return "no material with ID = " + this.reader.getString(componentMaterialChildren[i],'id');
+                    componentMaterials.push(material);
+                }
+
+                componentMaterialsCounter++;
             }
-            else if(temp.children.length > 1){
-                //se varios materiais declarados, o default é o
-                //primeiro material; de cada vez que se pressione a tecla m/M,
-                //o material muda para o proximo material da lista; do
-                //ultimo material da lista volta ao primeiro
-                this.componentMaterials = this.materials[this.reader.getString(temp.children[0],'id')];
-            }
-            else{
+            if(componentMaterialsCounter == 0){
                 return "There must be a material in component with ID = " +componentId;
             }
 
             //Texture
             var temp = grandChildren[2];
+            var componentTexture = [];
             if(temp.nodeName != "texture")
                 return "missing texture tag in component with ID = " + componentId;
+            
+            var textureID = this.reader.getString(temp, 'id');
+            var textureLengthS = this.reader.getString(temp, 'length_s');
+            var textureLengthT = this.reader.getString(temp, 'length_t');
+            var texture = null;
+            var file = null;
+
+            if(textureID == "inherit"){
+                texture = "inherit";
+            } else if (textureID == "none"){
+                texture = "none";
+            } else{
+                file = this.textures[textureID];
+                if(file == null)
+                    return "no texture with ID = " + textureID;
+                texture = textureID;
+            }
+
+            componentTexture = {
+                id: texture,
+                file: file,
+                lengths: textureLengthS,
+                lengtht: textureLengthT
+            }
+            
             
             //Children
             var temp = grandChildren[3];
@@ -1387,8 +1459,9 @@ in the primitive with ID = " + primitiveId;
 
 
             this.components[componentId] = {
-                tranformations: this.componentTransformations,
-                materials: this.componentMaterials
+                tranformations: componentTransformations,
+                materials: componentMaterials,
+                texture: componentTexture
                 //missing
             }    
         }
