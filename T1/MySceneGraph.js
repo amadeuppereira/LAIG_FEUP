@@ -1450,23 +1450,49 @@ in the primitive with ID = " + primitiveId;
             
             //Children
             var temp = grandChildren[3];
+            var componentChildren = [];
+            var primitive = [];
+            var component = [];
             if(temp.nodeName != "children")
                 return "missing children tag in component with ID = " + componentId;
 
-
-
-
-
+            var componentChildrenCounter = 0;
+            var componentChildrenChildren = temp.children;
+            for (let i = 0; i < componentChildrenChildren.length; i++) {
+                var nodeName = componentChildrenChildren[i].nodeName;
+                if(nodeName != "primitiveref" && nodeName != "componentref") {
+                    this.onXMLMinorError("unknown tag <" + nodeName + ">");
+                    continue;
+                }
+                if(nodeName == "componentref"){
+                    component.push(this.reader.getString(componentChildrenChildren[i],'id'));
+                }
+                else{
+                    var primitive2 = this.primitives[this.reader.getString(componentChildrenChildren[i],'id')];
+                    if(primitive2 == null){
+                        return "no primitive with ID = " + this.reader.getString(componentChildrenChildren[i],'id');
+                    }
+                    primitive.push(primitive2);
+                }
+                componentChildrenCounter++;
+            }
+            if(componentChildrenCounter == 0){
+                return "There must be a componentref or/and a primitiveref in the component with ID = " +componentId;
+            }
+            componentChildren = {
+                primitiveref: primitive,
+                componentref: component
+            }
+            
 
             this.components[componentId] = {
                 tranformations: componentTransformations,
                 materials: componentMaterials,
-                texture: componentTexture
-                //missing
+                texture: componentTexture,
+                children: componentChildren
             }    
         }
 
-        console.log(this.components);
         this.log("Parsed components");
 
         return null;

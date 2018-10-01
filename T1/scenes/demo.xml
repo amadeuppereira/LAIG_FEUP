@@ -204,8 +204,9 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
 
-                <componentref id="ss" />
-                <primitiveref id="ss" />
+                <componentref id="component2" />
+                <primitiveref id="primitive2" />
+                <primitiveref id="primitive3" />
             </children>
         </component>
     </components>
