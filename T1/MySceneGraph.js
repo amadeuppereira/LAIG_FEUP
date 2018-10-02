@@ -1520,7 +1520,51 @@ in the primitive with ID = " + primitiveId;
         return null;
     }
 
-    /*
+    /**
+     * Checks for loops in the graph
+     */
+    checkLoops() {
+        var found = false;
+        var i = 0;
+        for(; i < this.components.length; i++) {
+            if (this.components[i].id == this.idRoot) {
+                found = true;
+                break;
+            }
+        }
+        if(!found) return "The component with the id specified for root does not exist";
+
+        const visited = {};
+        const stack = {};
+
+        if(this._checkLoopsUtils(this.components[i], visited, stack))
+            return "There is a cycle";        
+        
+        return null;
+    }
+
+    _checkLoopsUtils(c, visited, stack) {
+        let id = c.id;
+        if(!visited[id]) {
+            visited[id] = true;
+            stack[id] = true;
+        }
+
+        const children = c.children.componentref;
+        for(let i = 0; i < children.length; i++) {
+            const current = children[i];
+            if(!visited[current.id] && this._checkLoopsUtils(current, visited, stack)) {
+                return true;
+            } else if(stack[current.id]) {
+                return true;
+            }
+        }
+
+        stack[id] = false;
+        return false;
+    }
+
+    /**
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
      */

@@ -10,7 +10,7 @@
     <!-- como o comprimento dos tres eixos (cilindros) -->
 
 
-    <scene root="root_node" axis_length="1" />
+    <scene root="component1" axis_length="1" />
 
     <views default="view1" >
         <!-- tem de existir, pelo menos, uma vista de -->
@@ -203,8 +203,8 @@
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
-
                 <componentref id="component2" />
+                <componentref id="component4" />
                 <primitiveref id="primitive2" />
                 <primitiveref id="primitive3" />
             </children>
@@ -224,7 +224,46 @@
             <texture id="none" length_s="2.0" length_t="0.6" />
 
             <children>
-                <componentref id="component1" />
+                <componentref id="component3" />
+                <componentref id="component4" />
+            </children>
+        </component>
+
+        <component id="component3">
+            <transformation>
+                <translate x="1" y="2" z="3" />
+                <rotate axis="x" angle="180" />
+                <scale x="4" y="5" z="6" />
+            </transformation>
+
+            <materials>
+                <material id="material1"/>
+            </materials>
+
+            <texture id="none" length_s="2.0" length_t="0.6" />
+
+            <children>
+                <componentref id="component4" />
+            </children>
+        </component>
+
+        <component id="component4">
+            <transformation>
+                <translate x="1" y="2" z="3" />
+                <rotate axis="x" angle="180" />
+                <scale x="4" y="5" z="6" />
+            </transformation>
+
+            <materials>
+                <material id="material1"/>
+            </materials>
+
+            <texture id="none" length_s="2.0" length_t="0.6" />
+
+            <children>
+                <primitiveref id="primitive4" />
+                <primitiveref id="primitive1" />
+                <primitiveref id="primitive2" />
             </children>
         </component>
     </components>
