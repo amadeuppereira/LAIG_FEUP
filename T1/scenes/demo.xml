@@ -196,7 +196,7 @@
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
 
-            <texture id="none" length_s="2.0" length_t="0.6" />
+            <texture id="texture1" length_s="2.0" length_t="0.6" />
 
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
@@ -207,6 +207,24 @@
                 <componentref id="component2" />
                 <primitiveref id="primitive2" />
                 <primitiveref id="primitive3" />
+            </children>
+        </component>
+
+        <component id="component2">
+            <transformation>
+                <translate x="1" y="2" z="3" />
+                <rotate axis="x" angle="180" />
+                <scale x="4" y="5" z="6" />
+            </transformation>
+
+            <materials>
+                <material id="material1"/>
+            </materials>
+
+            <texture id="none" length_s="2.0" length_t="0.6" />
+
+            <children>
+                <componentref id="component1" />
             </children>
         </component>
     </components>

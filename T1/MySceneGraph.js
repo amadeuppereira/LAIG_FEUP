@@ -177,8 +177,6 @@ class MySceneGraph {
                 return error;
         }
 
-        //console.log(this.transformations);
-
         // <primitives>
         if ((index = nodeNames.indexOf("primitives")) == -1)
             return "tag <primitives> missing";
@@ -201,6 +199,11 @@ class MySceneGraph {
             //Parse components block
             if ((error = this.parseComponents(nodes[index])) != null)
                 return error;
+        }
+
+        // check for loops
+        if((error = this.checkLoops()) != null) {
+            return error;
         }
     }
 
@@ -1497,13 +1500,20 @@ in the primitive with ID = " + primitiveId;
         
         //second round
         for(let i = 0; i < this.components.length; i++){
-            //console.log(this.components[i].children);
-            
-            //Alterar aqui
+            var childrens = this.components[i].children.componentref.slice();
+            this.components[i].children.componentref = [];
+            for(let j = 0; j < childrens.length; j++) {
+                var c = this.components.find(function(element) {
+                    return element.id == childrens[j];
+                });
+                if(c == undefined)
+                    return "no primitive with ID = " + childrens[j];
+                else if (c.id == this.components[i].id)
+                    return "an object can not reference itself as a children (ID = " + c.id + ")";
 
+                this.components[i].children.componentref.push(c);
+            }
         }
-
-        //console.log(this.components);
 
         this.log("Parsed components");
 
