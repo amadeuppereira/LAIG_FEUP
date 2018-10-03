@@ -50,11 +50,11 @@
 
     <textures>
 
-        <texture id="floor" file="./scenes/images/floor.png" />
-        <texture id="portal" file="./scenes/images/portal.png" />
-        <texture id="rock" file="./scenes/images/rock.png" />
-        <texture id="insideWall" file="./scenes/images/insideWallHouse.png" />
-        <texture id="outsideWall" file="./scenes/images/outsideWallHouse.png" />
+        <texture id="groundTexture" file="./scenes/images/ground.png" />
+        <texture id="portalTexture" file="./scenes/images/portal.png" />
+        <texture id="rockTexture" file="./scenes/images/rock.png" />
+        <texture id="wallTexture" file="./scenes/images/wallHouse.png" />
+        <texture id="floorTexture" file="./scenes/images/floor.png" />
 
     </textures>
 
@@ -73,24 +73,34 @@
 
         <transformation id="transformationHouse">
             <translate x="35" y="0" z="20" />
-            <scale x="4" y="5" z="6" />
         </transformation>
 
-        <transformation id="transformation2">
-            <translate x="1" y="2" z="3" />
-            <rotate axis="x" angle="180" />
-            <translate x="7" y="8" z="9" />
-            <scale x="4" y="5" z="6" />
+        <transformation id="transformationGround">
+            <rotate axis="x" angle="90" />
+            <translate x="50" y="50" z="0" />
+            <scale x="100" y="100" z="1" />
         </transformation>
 
-        <transformation id="transformation3">
-            <translate x="1" y="2" z="3" />
-            <rotate axis="x" angle="180" />
-            <translate x="7" y="8" z="9" />
-            <scale x="4" y="5" z="6" />
-            <rotate axis="y" angle="180" />
-            <translate x="7" y="8" z="9" />
-            <scale x="4" y="5" z="6" />
+        <transformation id="transformationWall">
+            <translate x="15" y="10" z="0" />
+            <scale x="30" y="20" z="2" />
+        </transformation>
+
+        <transformation id="transformationPortal">
+            <translate x="4" y="8" z="0" />
+            <scale x="8" y="16" z="1" />
+        </transformation>
+
+        <transformation id="transformationFloor">
+            <translate x="0" y="0" z="30" />
+            <rotate axis="x" angle="-90" />
+            <translate x="15" y="15" z="0" />
+            <scale x="30" y="30" z="1" />
+        </transformation>
+
+        <transformation id="transformationRock">
+            <translate x="3" y="3" z="3" />
+            <scale x="6" y="6" z="6" />
         </transformation>
 
     </transformations>
@@ -113,78 +123,273 @@
 
     <components>
         <component id="myScene">
-
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
-
             <materials>
                 <material id="default" />
             </materials>
-
             <texture id="none" length_s="0" length_t="0" />
-
             <children>
-                <componentref id="component2" />
-                <componentref id="component4" />
+                <componentref id="ground" />
+                <componentref id="portal1" />
+                <componentref id="house" />
+                <componentref id="rock1" />
+                <componentref id="rock2" />
+                <componentref id="rock3" />
+                <componentref id="rock4" />
             </children>
         </component>
 
-        <component id="component2">
+        <component id="ground">
             <transformation>
-                <translate x="1" y="2" z="3" />
-                <rotate axis="x" angle="180" />
-                <scale x="4" y="5" z="6" />
+                <transformationref id="transformationGround"/>
             </transformation>
-
             <materials>
-                <material id="material1"/>
+                <material id="default"/>
             </materials>
-
-            <texture id="none" length_s="2.0" length_t="0.6" />
-
+            <texture id="groundTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="component3" />
-                <componentref id="component4" />
+                <primitiveref id="rectangle"/>
             </children>
         </component>
 
-        <component id="component3">
+        <component id="rock">
             <transformation>
-                <translate x="1" y="2" z="3" />
-                <rotate axis="x" angle="180" />
-                <scale x="4" y="5" z="6" />
+                <transformationref id="transformationRock"/>
             </transformation>
-
             <materials>
-                <material id="material1"/>
+                <material id="default"/>
             </materials>
-
-            <texture id="none" length_s="2.0" length_t="0.6" />
-
+            <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="component4" />
+                <primitiveref id="sphere"/>
             </children>
         </component>
 
-        <component id="component4">
+        <component id="rock1">
             <transformation>
-                <translate x="1" y="2" z="3" />
-                <rotate axis="x" angle="180" />
-                <scale x="4" y="5" z="6" />
+                <translate x="25" y="0" z="90" />
             </transformation>
-
             <materials>
-                <material id="material1"/>
+                <material id="default"/>
             </materials>
-
-            <texture id="none" length_s="2.0" length_t="0.6" />
-
+            <texture id="none" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="primitive4" />
-                <primitiveref id="primitive1" />
-                <primitiveref id="primitive2" />
+                <componentref id="rock"/>
             </children>
         </component>
+
+        <component id="rock2">
+            <transformation>
+                <translate x="25" y="0" z="10" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="rock"/>
+            </children>
+        </component>
+
+        <component id="rock3">
+            <transformation>
+                <translate x="90" y="0" z="40" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="rock"/>
+            </children>
+        </component>
+
+        <component id="rock4">
+            <transformation>
+                <translate x="90" y="0" z="90" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="rock"/>
+            </children>
+        </component>
+
+        <component id="portal">
+            <transformation>
+                <transformationref id="transformationPortal"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="portalTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+       <component id="portal1">
+            <transformation>
+                <translate x="15" y="0" z="80" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal1_1"/>
+                <componentref id="portal1_2"/>
+            </children>
+        </component>
+
+        <!-- front portal -->
+        <component id="portal1_1">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal"/>
+            </children>
+        </component>
+
+        <!-- back portal -->
+        <component id="portal1_2">
+            <transformation>
+                <translate x="8" y="0" z="0" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal"/>
+            </children>
+        </component>
+
+        <component id="portal2">
+            <transformation>
+                <translate x="11" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal"/>
+            </children>
+        </component>
+
+        <component id="wall">
+            <transformation>
+                <transformationref id="transformationWall"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="wallTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <!-- back wall -->
+        <component id="wall1">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="wall"/>
+            </children>
+        </component>
+
+        <!-- left wall -->
+        <component id="wall2">
+            <transformation>
+                <translate x="0" y="0" z="30" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="wall"/>
+            </children>
+        </component>
+
+        <!-- front wall -->
+        <component id="wall3">
+            <transformation>
+                <translate x="30" y="0" z="30" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="wall"/>
+            </children>
+        </component>
+
+        <!-- right wall -->
+        <component id="wall4">
+            <transformation>
+                <translate x="30" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="wall"/>
+                <componentref id="portal2"/>
+            </children>
+        </component>
+
+        <component id="floor">
+            <transformation>
+                <transformationref id="transformationFloor"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="floorTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="house">
+            <transformation>
+                <transformationref id="transformationHouse"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="wall1"/>
+                <componentref id="wall2"/>
+                <componentref id="wall3"/>
+                <componentref id="wall4"/>
+                <componentref id="floor"/>
+            </children>
+        </component>
+
     </components>
 </yas>

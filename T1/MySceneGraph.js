@@ -205,6 +205,8 @@ class MySceneGraph {
         if((error = this.checkLoops()) != null) {
             return error;
         }
+
+        console.log(this.components);
     }
 
     /**
