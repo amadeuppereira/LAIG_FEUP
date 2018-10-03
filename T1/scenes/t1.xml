@@ -1,0 +1,190 @@
+<yas>
+
+    <scene root="myScene" axis_length="1" />
+
+    <views default="view1" >
+
+        <perspective id="view1" near="0.1" far="1000" angle="45">
+            <from x="10" y="11" z="12" />
+            <to x="20" y="21" z="22" />
+        </perspective>
+
+    </views>
+
+    <ambient>
+        <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+
+        <omni id="lightHouse" enabled="1" >
+            <location x="50" y="15" z="35" w="0.5" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+
+        <omni id="lightSun" enabled="1" >
+            <location x="50" y="50" z="50" w="0.5" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+
+        <omni id="lightShip1" enabled="1" >
+            <location x="0" y="0" z="0" w="0.5" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+
+        <omni id="lightShip2" enabled="1" >
+            <location x="1000" y="0" z="100" w="0.5" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+        
+    </lights>
+
+    <textures>
+
+        <texture id="floor" file="./scenes/images/floor.png" />
+        <texture id="portal" file="./scenes/images/portal.png" />
+        <texture id="rock" file="./scenes/images/rock.png" />
+        <texture id="insideWall" file="./scenes/images/insideWallHouse.png" />
+        <texture id="outsideWall" file="./scenes/images/outsideWallHouse.png" />
+
+    </textures>
+
+    <materials>
+
+        <material id="default" shininess = "100" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.5" g="0.5" b="0.5" a="1" />
+        </material>
+
+    </materials>
+
+    <transformations>
+
+        <transformation id="transformationHouse">
+            <translate x="35" y="0" z="20" />
+            <scale x="4" y="5" z="6" />
+        </transformation>
+
+        <transformation id="transformation2">
+            <translate x="1" y="2" z="3" />
+            <rotate axis="x" angle="180" />
+            <translate x="7" y="8" z="9" />
+            <scale x="4" y="5" z="6" />
+        </transformation>
+
+        <transformation id="transformation3">
+            <translate x="1" y="2" z="3" />
+            <rotate axis="x" angle="180" />
+            <translate x="7" y="8" z="9" />
+            <scale x="4" y="5" z="6" />
+            <rotate axis="y" angle="180" />
+            <translate x="7" y="8" z="9" />
+            <scale x="4" y="5" z="6" />
+        </transformation>
+
+    </transformations>
+
+    <primitives>
+
+        <primitive id="rectangle">          
+            <rectangle x1="-0.5" y1="0.5" x2="0.5" y2="-0.5" />      
+        </primitive >
+
+        <primitive id="cylinder">
+            <cylinder base="0.5" top="0.5" height="1" slices="8" stacks="8" />
+        </primitive >
+
+        <primitive id="sphere">
+            <sphere radius="0.5" slices="8" stacks="8" />
+        </primitive >
+
+    </primitives >
+
+    <components>
+        <component id="myScene">
+
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="none" length_s="0" length_t="0" />
+
+            <children>
+                <componentref id="component2" />
+                <componentref id="component4" />
+            </children>
+        </component>
+
+        <component id="component2">
+            <transformation>
+                <translate x="1" y="2" z="3" />
+                <rotate axis="x" angle="180" />
+                <scale x="4" y="5" z="6" />
+            </transformation>
+
+            <materials>
+                <material id="material1"/>
+            </materials>
+
+            <texture id="none" length_s="2.0" length_t="0.6" />
+
+            <children>
+                <componentref id="component3" />
+                <componentref id="component4" />
+            </children>
+        </component>
+
+        <component id="component3">
+            <transformation>
+                <translate x="1" y="2" z="3" />
+                <rotate axis="x" angle="180" />
+                <scale x="4" y="5" z="6" />
+            </transformation>
+
+            <materials>
+                <material id="material1"/>
+            </materials>
+
+            <texture id="none" length_s="2.0" length_t="0.6" />
+
+            <children>
+                <componentref id="component4" />
+            </children>
+        </component>
+
+        <component id="component4">
+            <transformation>
+                <translate x="1" y="2" z="3" />
+                <rotate axis="x" angle="180" />
+                <scale x="4" y="5" z="6" />
+            </transformation>
+
+            <materials>
+                <material id="material1"/>
+            </materials>
+
+            <texture id="none" length_s="2.0" length_t="0.6" />
+
+            <children>
+                <primitiveref id="primitive4" />
+                <primitiveref id="primitive1" />
+                <primitiveref id="primitive2" />
+            </children>
+        </component>
+    </components>
+</yas>
