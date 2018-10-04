@@ -174,7 +174,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <componentref id="rock"/>
             </children>
@@ -187,7 +187,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="rock"/>
             </children>
@@ -200,7 +200,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="rock"/>
             </children>
@@ -213,7 +213,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="rock"/>
             </children>
@@ -226,7 +226,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="portalTexture" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -239,7 +239,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="portalTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="portal1_1"/>
                 <componentref id="portal1_2"/>
@@ -254,7 +254,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <componentref id="portal"/>
             </children>
@@ -269,7 +269,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <componentref id="portal"/>
             </children>
@@ -282,7 +282,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="portalTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="portal"/>
             </children>
@@ -295,7 +295,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="wallTexture" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -309,7 +309,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="wall"/>
             </children>
@@ -324,7 +324,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="wall"/>
             </children>
@@ -339,7 +339,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="wall"/>
             </children>
@@ -354,7 +354,7 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="wall"/>
                 <componentref id="portal2"/>
