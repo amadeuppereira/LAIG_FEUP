@@ -1,6 +1,6 @@
 <yas>
 
-    <scene root="myScene" axis_length="5" />
+    <scene root="cube" axis_length="5" />
 
     <views default="view1" >
 
@@ -390,6 +390,139 @@
                 <componentref id="floor"/>
             </children>
         </component>
+
+        <component id="cube">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+
+                <!-- <componentref id="cube_left"/>
+                <componentref id="cube_right"/>
+                <componentref id="cube_top"/>
+                <componentref id="cube_bottom"/>
+                <componentref id="cube_front"/>
+                <componentref id="cube_back"/> -->
+            </children>
+        </component>  
+
+        <component id="cube_left">
+            <transformation>
+                <translate x="-0.5" y="0" z="0"/>
+                <rotate axis="y" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="cube_right">
+            <transformation>
+                <translate x="0.5" y="0" z="0"/>
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="cube_top">
+            <transformation>
+                <translate x="0" y="0.5" z="0"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="cube_bottom">
+            <transformation>
+                <translate x="0" y="-0.5" z="0"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="cube_front">
+            <transformation>
+                <translate x="0" y="0" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="cube_back">
+            <transformation>
+                <translate x="0" y="0" z="-0.5"/>
+                <rotate axis="y" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <!-- <component id="robot">
+            <transformation>
+                <translate x="50" y="0" z="50" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="robot_body"/>
+                <componentref id="robot_head"/>
+                <componentref id="robot_left_arm"/>
+                <componentref id="robot_right_arm"/>
+                <componentref id="robot_wheel"/>
+            </children>
+        </component> -->
+
+        <!-- <component id="">
+            <transformation>
+      
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+ 
+            </children>
+        </component>         -->
 
     </components>
 </yas>

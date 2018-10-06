@@ -19,6 +19,7 @@ class MySceneGraph {
      * @constructor
      */
     constructor(filename, scene) {
+        this.testQuad = new MyQuad(scene);
   
         this.loadedOk = null;
 
@@ -1542,7 +1543,7 @@ in the primitive with ID = " + primitiveId;
                     return element.id == childrens[j];
                 });
                 if(c == undefined)
-                    return "no primitive with ID = " + childrens[j];
+                    return "no component with ID = " + childrens[j];
                 else if (c.id == this.components[i].id)
                     return "an object can not reference itself as a children (ID = " + c.id + ")";
 
@@ -1629,8 +1630,7 @@ in the primitive with ID = " + primitiveId;
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // entry point for graph rendering
-        //TODO: Render loop starting at root of graph
+        //this.testQuad.display();
 
         var rootID = null;
         var rootMaterial = null;
@@ -1643,7 +1643,9 @@ in the primitive with ID = " + primitiveId;
             }
         }
 
+        this.scene.pushMatrix();
         this.displaySceneRecursive(rootID, rootMaterial, rootTexture);
+        this.scene.popMatrix();
     }
     
     displaySceneRecursive(idComponent, idMaterialFather, idTextureFather) {
@@ -1652,7 +1654,7 @@ in the primitive with ID = " + primitiveId;
     
         var idMaterial = idMaterialFather;
         var idTexture = idTextureFather;
-    
+
         this.scene.multMatrix(currComponent.transformations);
     
         // console.log(currComponent);
@@ -1669,7 +1671,7 @@ in the primitive with ID = " + primitiveId;
         //     } else idTexture = currComponent.textureID;
         // }
          idTexture = 0;
-    
+        
          var currMaterial = this.materials[idMaterial];
          var currTexture = this.textures[idTexture]
     
