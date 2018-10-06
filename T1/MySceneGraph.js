@@ -19,8 +19,7 @@ class MySceneGraph {
      * @constructor
      */
     constructor(filename, scene) {
-        this.testQuad = new MyQuad(scene);
-  
+
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
@@ -1630,8 +1629,6 @@ in the primitive with ID = " + primitiveId;
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //this.testQuad.display();
-
         var rootID = null;
         var rootMaterial = null;
         var rootTexture = null;

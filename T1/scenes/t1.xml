@@ -108,7 +108,7 @@
     <primitives>
 
         <primitive id="rectangle">          
-            <rectangle x1="-0.5" y1="0.5" x2="0.5" y2="-0.5" />      
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />      
         </primitive >
 
         <primitive id="cylinder">
@@ -400,14 +400,12 @@
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="rectangle"/>
-
-                <!-- <componentref id="cube_left"/>
+                <componentref id="cube_left"/>
                 <componentref id="cube_right"/>
                 <componentref id="cube_top"/>
                 <componentref id="cube_bottom"/>
                 <componentref id="cube_front"/>
-                <componentref id="cube_back"/> -->
+                <componentref id="cube_back"/>
             </children>
         </component>  
 
