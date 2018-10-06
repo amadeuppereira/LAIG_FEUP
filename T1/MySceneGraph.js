@@ -1137,7 +1137,7 @@ in the primitive with ID = " + primitiveId;
                         return "unable to parse y2 value for primitive with ID = " + primitiveId;
 
                     var rectangle = new MyQuad(this.scene, x1, y1, x2, y2);
-                    primitives.push({type: "rectangle", primitive: rectangle});
+                    primitives.push({id: primitiveId, type: "rectangle", primitive: rectangle});
                     break;
 
                 case "triangle":
@@ -1187,7 +1187,7 @@ in the primitive with ID = " + primitiveId;
                         return "unable to parse z3 value for primitive with ID = " + primitiveId;
 
                     //MISSING THE PRIMITIVE CLASS
-                    primitives.push({type: "triangle", x1: x1, y1: y1, z1: z1, x2: x2, y2: y2, z2: z2, x3: x3, y3: y3, z3: z3});
+                    primitives.push({id: primitiveId, type: "triangle", x1: x1, y1: y1, z1: z1, x2: x2, y2: y2, z2: z2, x3: x3, y3: y3, z3: z3});
                     break;
 
                 case "cylinder":
@@ -1217,7 +1217,7 @@ in the primitive with ID = " + primitiveId;
                         return "unable to parse stacks value for primitive with ID = " + primitiveId;
 
                     var cylinder = new MyCylinder(this.scene, base, top, height, slices, stacks);
-                    primitives.push({type: "cylinder", primitive: cylinder});
+                    primitives.push({id: primitiveId, type: "cylinder", primitive: cylinder});
                     break;
 
                 case "sphere":
@@ -1237,7 +1237,7 @@ in the primitive with ID = " + primitiveId;
                         return "unable to parse stacks value for primitive with ID = " + primitiveId;
 
                     var sphere = new MySphere(this.scene, radius, slices, stacks);
-                    primitives.push({type: "sphere", primitive: sphere});
+                    primitives.push({id: primitiveId, type: "sphere", primitive: sphere});
                     break;
                 
                 case "torus":
@@ -1262,7 +1262,7 @@ in the primitive with ID = " + primitiveId;
                         return "unable to parse loops value for primitive with ID = " + primitiveId;
 
                     //MISSING THE PRIMITIVE CLASS
-                    primitives.push({type: "torus", inner: inner, outer: outer, slices: slices, loops: loops});
+                    primitives.push({id: primitiveId, type: "torus", inner: inner, outer: outer, slices: slices, loops: loops});
                     break;
                 
                 default:
@@ -1481,7 +1481,6 @@ in the primitive with ID = " + primitiveId;
                 lengtht: textureLengthT
             }
             
-            
             //Children
             var temp = grandChildren[3];
             var componentChildren = [];
@@ -1505,7 +1504,7 @@ in the primitive with ID = " + primitiveId;
                     var primitiveID = this.reader.getString(componentChildrenChildren[i],'id');
                     var primitive2 = null;
                     for(let i = 0; i < this.primitives.length; i++){
-                        if(this.primitives[i].type == primitiveID){
+                        if(this.primitives[i].id == primitiveID){
                             primitive2 = this.primitives[i];
                         }
                     }
@@ -1549,7 +1548,7 @@ in the primitive with ID = " + primitiveId;
                 this.components[i].children.componentref.push(c);
             }
         }
-
+        
         this.log("Parsed components");
 
         return null;
@@ -1652,7 +1651,8 @@ in the primitive with ID = " + primitiveId;
         var idMaterial = idMaterialFather;
         var idTexture = idTextureFather;
 
-        this.scene.multMatrix(currComponent.transformations);
+        if(currComponent.transformations != null)
+            this.scene.multMatrix(currComponent.transformations);
     
         // console.log(currComponent);
         // console.log(currComponent.materials);

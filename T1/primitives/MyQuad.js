@@ -8,10 +8,10 @@ class MyQuad extends CGFobject
 	{
 		super(scene);
 
-		this.minX = minX || -0.5;
-		this.maxX = maxX || 0.5;
-		this.minY = minY || -0.5;
-		this.maxY = maxY || 0.5;
+		this.minX = minX;
+		this.maxX = maxX;
+		this.minY = minY;
+		this.maxY = maxY;
 
 		this.initBuffers();
 	};

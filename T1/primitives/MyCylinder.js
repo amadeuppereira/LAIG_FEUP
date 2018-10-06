@@ -1,100 +1,105 @@
 /**
  * MyCylinder
+ * @param gl {WebGLRenderingContext}
  * @constructor
  */
-class MyCylinder extends CGFobject {
-  constructor(scene, base, top, height, slices, stacks) {
-    super(scene);
 
-    this.base = base;
-    this.top = top;
-    this.height = height;
-    this.slices = slices;
-    this.stacks = stacks;
+class MyCylinder extends CGFobject
+{
+	constructor(scene, base,top,heigth,slices, stacks) 
+	{
+		super(scene);
 
-    this.topCircle = new MyCircle(scene, this.top, this.slices);
-    this.baseCircle = new MyCircle(scene, this.base, this.slices);
+		this.slices = slices;
+		this.stacks = stacks;
+		this.base = base;
+		this.radius = 1;
+		this.top = top; 
+		this.heigth = heigth;
+		this.ang = (Math.PI * 2) / slices;
 
-    this.initBuffers();
-  };
+		if(this.base > this.top){
+			this.b1 = this.top;
+			this.b2 = this.base;
+		}else{
+			this.b2 = this.base; 
+			this.b1 = this.top;
+		}
 
-  initBuffers() {
+		this.stack_divider = this.heigth / stacks;
 
-  this.vertices = [];
-  this.normals = [];
-  this.indices = [];
-  this.texCoords = [];
+		this.baseCover = new MyCircle(this.scene, this.base, this.slices);
+		this.topCover = new MyCircle(this.scene, this.top, this.slices);
 
-  this.getVertices();
+		this.spacer = 1.0 / slices;
 
-  this.primitiveType = this.scene.gl.TRIANGLES;
-  this.initGLBuffers();
-  };
+		this.initBuffers();
+	};
 
-  getVertices() {
-    this.originalTexCoords = [];
-    var deltaRadius = (this.top - this.base) / this.stacks;
+	getRadius(z){
+		return (((z / this.heigth) * this.b1) + ((this.heigth - z)/this.heigth) * this.b2);
+	}
 
-    var deltaTheta = (2 * Math.PI) / this.slices;
-    var deltaHeight = this.height / this.stacks;
+	initBuffers() 
+	{
+		this.vertices = [];
 
-    var deltaX = 1.0 / this.slices;
-    var deltaY = 1.0 / this.stacks;
+		this.indices = [];
 
-    var xCoord = 0;
-    var yCoord = 0;
+		this.normals = [];
 
-    for (let i = 0; i <= this.stacks; i++) {
-        for (let j = 0; j < this.slices; j++) {
-            this.vertices.push(
-                Math.cos(deltaTheta * j) * (i * deltaRadius + this.base),
-                Math.sin(deltaTheta * j) * (i * deltaRadius + this.base),
-                i * deltaHeight);
-            this.normals.push(
-                Math.cos(deltaTheta * j),
-                Math.sin(deltaTheta * j),
-                0);
+		this.texCoords = [];
 
-            this.vertices.push(
-                Math.cos(deltaTheta * (j+1)) * (i * deltaRadius + this.base),
-                Math.sin(deltaTheta * (j+1)) * (i * deltaRadius + this.base),
-                i * deltaHeight);
-            this.normals.push(
-                Math.cos(deltaTheta * (j+1)),
-                Math.sin(deltaTheta * (j+1)),
-                0);
+		for(let j = 0; j <= this.stacks; j++){
 
-            this.originalTexCoords.push(xCoord, yCoord);
-            xCoord += deltaX;
-            this.originalTexCoords.push(xCoord, yCoord);
-        }
+			var z_distance = j * this.stack_divider;
 
-        xCoord = 0;
-        yCoord += deltaY;
-    }
+			for(let i = 0; i <= this.slices; i++){
+				
+				var angle1 = this.ang * i; 
+				var x1 = this.getRadius(z_distance) * Math.cos(angle1);
+				var y1 = this.getRadius(z_distance) *  Math.sin(angle1); 
 
-    // Indices
-    for(let i = 0; i < this.stacks; i++) {
-        for(let j = 0; j < this.slices; j++) {
-            this.indices.push(i*this.slices*2 + j*2, i*this.slices*2 + j*2+1, (i+1)*this.slices*2 + j*2);
-            this.indices.push(i*this.slices*2 + j*2+1, (i+1)*this.slices*2 + j*2+1, (i+1)*this.slices*2 + j*2);
-        }
-    }
+				this.vertices.push(x1, y1, z_distance);
+				this.texCoords.push(i * this.spacer, z_distance);
+				this.normals.push(x1, y1, 0);
 
-    this.texCoords = this.originalTexCoords.slice();
-  };
+			}
 
-  display() {
-    super.display();
+		}
+		
+		//to make it to 1
+		var offset = this.slices + 1;
+		
+		//now we only add 1 vertice in each iteration
+		for(let i = 0; i < (this.stacks * offset); i++){
+            /* 
+                We didn't need to test this before
+                because the starting point on a full rotation
+                of the prism, aka the vertice on with y = 0, does not 
+                have its value duplicated, so we need to subtract
+            */
+	   	    if( (i +1) % offset == 0){
+                this.indices.push(i, i + 1 - offset, i + offset);
+                this.indices.push(i +1 - offset, i +1, i + offset);
+		    }
+		    else{
+            this.indices.push(i, i+1, i + offset);
+            this.indices.push(i+1, i +1 + offset, i + offset);
+		    }
+		}
+		
+		this.primitiveType=this.scene.gl.TRIANGLES;
+		this.initGLBuffers();
+	};
 
-    this.scene.pushMatrix();
-    this.scene.translate(0, 0, this.height);
-    this.topCircle.display();
-    this.scene.popMatrix();
+	display(){
+		this.scene.pushMatrix();
+			this.baseCover.display();
+			super.display();
+			this.scene.translate(0, 0, this.heigth);
+			this.topCover.display();
+		this.scene.popMatrix();
 
-    this.scene.pushMatrix();
-    this.scene.rotate(Math.PI, 0, 1, 0);
-    this.baseCircle.display();
-    this.scene.popMatrix();
-  };
+	}
 };
