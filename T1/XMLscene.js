@@ -81,11 +81,11 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.camera.near = this.graph.near;
-        this.camera.far = this.graph.far;
+        this.camera.near = this.graph.views[this.graph.defaultView].near;
+        this.camera.far = this.graph.views[this.graph.defaultView].far;
 
         //TODO: Change reference length according to parsed graph
-        this.axis = new CGFaxis(this, this.graph.referenceLength);
+        this.axis = new CGFaxis(this, this.graph.axisLength);
 
         // TODO: Change ambient and background details according to parsed graph
         this.setGlobalAmbientLight(this.graph.ambientIllumination[0], this.graph.ambientIllumination[1], 
@@ -118,12 +118,11 @@ class XMLscene extends CGFscene {
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
 
-        this.pushMatrix();
-
         // Draw axis
         this.axis.display();
 
         if (this.sceneInited) {
+            this.pushMatrix();
             var i = 0;
             for (var key in this.lightValues) {
                 if (this.lightValues.hasOwnProperty(key)) {
@@ -142,9 +141,9 @@ class XMLscene extends CGFscene {
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
+            this.popMatrix();
         }
 
-        this.popMatrix();
         // ---- END Background, camera and axis setup
     }
 }

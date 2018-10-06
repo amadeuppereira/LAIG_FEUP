@@ -1084,7 +1084,7 @@ class MySceneGraph {
     parsePrimitives(primitivesNode) {
         var children = primitivesNode.children;
 
-        this.primitives = [];
+        var primitives = [];
         var numPrimitives = 0;
 
         for(let i = 0; i < children.length; i++) {
@@ -1099,8 +1099,10 @@ class MySceneGraph {
                 return "no ID defined for primitive";
                 
             // Checks for repeated IDs.
-            if (this.primitives[primitiveId] != null)
+            for(let i = 0; i < primitives.length; i++){
+                if(primitives[i].type == primitiveId)
                 return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
+            }
 
             var grandChildren = children[i].children;
             if(grandChildren.length != 1) {
@@ -1134,7 +1136,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(y2 != null && !isNaN(y2)))
                         return "unable to parse y2 value for primitive with ID = " + primitiveId;
 
-                    this.primitives[primitiveId] = {type: "rectangle", x1: x1, y1: y1, x2: x2, y2: y2};
+                    var rectangle = new MyQuad(this.scene, x1, y1, x2, y2);
+                    primitives.push({type: "rectangle", primitive: rectangle});
                     break;
 
                 case "triangle":
@@ -1183,7 +1186,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(z3 != null && !isNaN(z3)))
                         return "unable to parse z3 value for primitive with ID = " + primitiveId;
 
-                    this.primitives[primitiveId] = {type: "triangle", x1: x1, y1: y1, z1: z1, x2: x2, y2: y2, z2: z2, x3: x3, y3: y3, z3: z3};
+                    //MISSING THE PRIMITIVE CLASS
+                    primitives.push({type: "triangle", x1: x1, y1: y1, z1: z1, x2: x2, y2: y2, z2: z2, x3: x3, y3: y3, z3: z3});
                     break;
 
                 case "cylinder":
@@ -1212,7 +1216,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(stacks != null && !isNaN(stacks)))
                         return "unable to parse stacks value for primitive with ID = " + primitiveId;
 
-                    this.primitives[primitiveId] = {type: "cylinder", base: base, top: top, height: height, slices: slices, stacks: stacks};
+                    //MISSING THE PRIMITIVE CLASS
+                    primitives.push({type: "cylinder", base: base, top: top, height: height, slices: slices, stacks: stacks});
                     break;
 
                 case "sphere":
@@ -1231,7 +1236,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(stacks != null && !isNaN(stacks)))
                         return "unable to parse stacks value for primitive with ID = " + primitiveId;
 
-                    this.primitives[primitiveId] = {type: "sphere", radius: radius, slices: slices, stacks: stacks};
+                    //MISSING THE PRIMITIVE CLASS
+                    primitives.push({type: "sphere", radius: radius, slices: slices, stacks: stacks});
                     break;
                 
                 case "torus":
@@ -1255,21 +1261,21 @@ in the primitive with ID = " + primitiveId;
                     if (!(loops != null && !isNaN(loops)))
                         return "unable to parse loops value for primitive with ID = " + primitiveId;
 
-                    this.primitives[primitiveId] = {type: "torus", inner: inner, outer: outer, slices: slices, loops: loops};
+                    //MISSING THE PRIMITIVE CLASS
+                    primitives.push({type: "torus", inner: inner, outer: outer, slices: slices, loops: loops});
                     break;
                 
                 default:
                     this.onXMLMinorError("unknown tag <" + temp.nodeName + ">");
                     continue;
             }
-
             numPrimitives++;
-
         }
 
         if (numPrimitives == 0)
             return "at least one primitive must be defined";
 
+        this.primitives = primitives;
         this.log("Parsed primitives");
 
         return null;
@@ -1496,7 +1502,13 @@ in the primitive with ID = " + primitiveId;
                     component.push(this.reader.getString(componentChildrenChildren[i],'id'));
                 }
                 else{
-                    var primitive2 = this.primitives[this.reader.getString(componentChildrenChildren[i],'id')];
+                    var primitiveID = this.reader.getString(componentChildrenChildren[i],'id');
+                    var primitive2 = null;
+                    for(let i = 0; i < this.primitives.length; i++){
+                        if(this.primitives[i].type == primitiveID){
+                            primitive2 = this.primitives[i];
+                        }
+                    }
                     if(primitive2 == null){
                         return "no primitive with ID = " + this.reader.getString(componentChildrenChildren[i],'id');
                     }
@@ -1538,6 +1550,7 @@ in the primitive with ID = " + primitiveId;
             }
         }
 
+        console.log(this.components);
         this.log("Parsed components");
 
         return null;
@@ -1663,28 +1676,33 @@ in the primitive with ID = " + primitiveId;
     
 
         // FALTA VER AQUI ESTE CICLO
+        var materialDefault = new CGFappearance(this.scene);
 
-        
-        // for (let i = 0; i < currComponent.children.length; i++) {
-        //     if (currMaterial != null) {
-        //         currMaterial.apply();
-        //     }
-    
-        //     // if (currTexture != null) {
-        //     //     currComponent.leaves[i].primitive.updateTexCoords(currTexture[1], currTexture[2]);
-        //     //     currTexture[0].bind();
-        //     // }
+        console.log(currComponent.children.primitiveref);
 
-        //     //this.primitives[0].display();
-        //     currComponent.children.primitive.display();
-        // }
-    
-        // for (let i = 0; i < currComponent.children.length; i++) {
-        //     this.scene.pushMatrix();
-        //     this.displaySceneRecursive(currComponent.children[i], idMaterial, idTexture);
-        //     this.scene.popMatrix();
-        // }
-    
-    
+        if(currComponent.children.primitiveref.length == 0){
+            for (let i = 0; i < currComponent.children.componentref.length; i++) {
+                this.scene.pushMatrix();
+
+                // if (currMaterial != null) {
+                //     currMaterial.apply();
+                // }
+                materialDefault.apply();
+
+                console.log(currComponent.children.componentref[i].id);
+                var id = null;
+                for(let n = 0; n < this.components.length; n++){
+                    if(this.components[n].id == currComponent.children.componentref[i].id){
+                        id = n;
+                    }
+                }
+                this.displaySceneRecursive(id, idMaterial, idTexture);
+                this.scene.popMatrix();
+            }
+        }
+        else{
+            if(currComponent.children.primitiveref[0].type == "rectangle")
+                currComponent.children.primitiveref[0].primitive.display();
+        }
     }
 }
