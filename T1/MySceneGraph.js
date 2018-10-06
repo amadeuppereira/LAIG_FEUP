@@ -205,8 +205,6 @@ class MySceneGraph {
         if((error = this.checkLoops()) != null) {
             return error;
         }
-
-        console.log(this.components);
     }
 
     /**
@@ -459,7 +457,7 @@ class MySceneGraph {
 
         var children = lightsNode.children;
 
-        this.lights = [];
+        var lights = [];
         var numLights = 0;
 
         var grandChildren = [];
@@ -499,8 +497,10 @@ class MySceneGraph {
             }
 
             // Checks for repeated IDs.
-            if (this.lights[lightId] != null)
+            for(let i = 0; i < lights.length; i++){
+                if(lights[i].id == lightId)
                 return "ID must be unique for each light (conflict: ID = " + lightId + ")";
+            }
 
             grandChildren = children[i].children;
             // Specifications for the current light.
@@ -682,7 +682,8 @@ class MySceneGraph {
             else
                 target = null;
 
-            this.lights[lightId] = {
+            lights.push ({
+                id: lightId,
                 enabled: enabled,
                 angle: lightAngle,
                 exponent: lightExponent,
@@ -691,7 +692,7 @@ class MySceneGraph {
                 diffuse: diffuseIllumination,
                 specular: specularIllumination,
                 target: target
-            }
+            })
             numLights++;
         }
 
@@ -700,7 +701,10 @@ class MySceneGraph {
         else if (numLights > 8)
             this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
 
+        this.lights = lights;
+
         this.log("Parsed lights");
+
         return null;
     }
 
@@ -711,7 +715,7 @@ class MySceneGraph {
     parseTextures(texturesNode) {
         var children = texturesNode.children;
 
-        this.textures = [];
+        var textures = [];
         var numTextures = 0;
 
         for(let i = 0; i < children.length; i++) {
@@ -726,20 +730,26 @@ class MySceneGraph {
                 return "no ID defined for texture";
                 
             // Checks for repeated IDs.
-            if (this.textures[textureId] != null)
+            for(let i = 0; i < textures.length; i++){
+                if(textures[i].id == textureId)
                 return "ID must be unique for each texture (conflict: ID = " + textureId + ")";
-
+            }
             //get the file of the current texture
             var file = this.reader.getString(children[i], 'file');
             if (file == null)
                 return "no file defined for " + textureId;
 
-            this.textures[textureId] = file;
+            textures.push({
+                id: textureId,
+                file: file
+            })
             numTextures++;
         }
 
         if (numTextures == 0)
             return "at least one texture must be defined";
+
+        this. textures = textures;
 
         this.log("Parsed textures");
 
@@ -753,7 +763,7 @@ class MySceneGraph {
     parseMaterials(materialsNode) {
         var children = materialsNode.children;
 
-        this.materials = [];
+        var materials = [];
         var numMaterials = 0;
 
         for(let i = 0; i < children.length; i++) {
@@ -765,11 +775,13 @@ class MySceneGraph {
             //get the id of the current material
             var materialId = this.reader.getString(children[i], 'id');
             if (materialId == null)
-                return "no ID defined for texture";
+                return "no ID defined for material";
                 
             // Checks for repeated IDs.
-            if (this.materials[materialId] != null)
+            for(let i = 0; i < materials.length; i++){
+                if(materials[i].id == materialId)
                 return "ID must be unique for each material (conflict: ID = " + materialId + ")";
+            }
 
             //get the shininess of the current material
             var shininess = this.reader.getFloat(children[i], 'shininess');
@@ -923,19 +935,22 @@ class MySceneGraph {
             else
                 return "specular component undefined for ID = " + materialId;
 
-            this.materials[materialId] = {
+            materials.push ({
+                id: materialId,
                 shininess: shininess,
                 emission: emission,
                 ambient: ambientIllumination,
                 diffuse: diffuseIllumination,
                 specular: specularIllumination
-            }
+            })
             numMaterials++;
 
         }
 
         if (numMaterials == 0)
             return "at least one material must be defined";
+
+        this.materials = materials;
 
         this.log("Parsed materials");
 
@@ -1412,16 +1427,19 @@ in the primitive with ID = " + primitiveId;
                     componentMaterials.push("inherit");
                 }
                 else{
-                    var material = this.materials[this.reader.getString(componentMaterialChildren[i],'id')];
+                    var material = null;
+                    for(let i = 0; i < this.materials.length; i++){
+                        if(this.materials[i].id == this.reader.getString(componentMaterialChildren[i],'id'))
+                            material = this.materials[i];
+                    }
                     if(material == null)
                         return "no material with ID = " + this.reader.getString(componentMaterialChildren[i],'id');
                     componentMaterials.push(material);
                 }
-
                 componentMaterialsCounter++;
             }
             if(componentMaterialsCounter == 0){
-                return "There must be a material in component with ID = " +componentId;
+                return "There must be a material in component with ID = " + componentId;
             }
 
             //Texture
@@ -1441,15 +1459,18 @@ in the primitive with ID = " + primitiveId;
             } else if (textureID == "none"){
                 texture = "none";
             } else{
-                file = this.textures[textureID];
-                if(file == null)
+                var texture = null;
+                for(let i = 0; i < this.textures.length; i++){
+                    if(this.textures[i].id == textureID)
+                        texture = this.textures[i];
+                }
+                if(texture == null)
                     return "no texture with ID = " + textureID;
-                texture = textureID;
             }
 
             componentTexture = {
-                id: texture,
-                file: file,
+                id: texture.id,
+                file: texture.file,
                 lengths: textureLengthS,
                 lengtht: textureLengthT
             }
@@ -1493,7 +1514,7 @@ in the primitive with ID = " + primitiveId;
             
             this.components.push({
                 id: componentId,
-                tranformations: componentTransformations,
+                transformations: componentTransformations,
                 materials: componentMaterials,
                 texture: componentTexture,
                 children: componentChildren
@@ -1598,5 +1619,72 @@ in the primitive with ID = " + primitiveId;
     displayScene() {
         // entry point for graph rendering
         //TODO: Render loop starting at root of graph
+
+        var rootID = null;
+        var rootMaterial = null;
+        var rootTexture = null;
+        for(let i = 0; i < this.components.length; i++){
+            if(this.components[i].id == this.idRoot){
+                rootID = i;
+                rootMaterial = this.components[i].materials[0].id;
+                rootTexture = this.components[i].texture.id;
+            }
+        }
+
+        this.displaySceneRecursive(rootID, rootMaterial, rootTexture);
+    }
+    
+    displaySceneRecursive(idComponent, idMaterialFather, idTextureFather) {
+    
+        var currComponent = this.components[idComponent];
+    
+        var idMaterial = idMaterialFather;
+        var idTexture = idTextureFather;
+    
+        this.scene.multMatrix(currComponent.transformations);
+    
+        // console.log(currComponent);
+        // console.log(currComponent.materials);
+        // console.log(this.materials);
+        // if (this.materials[currComponent.materialID] != null) {
+        //     idMaterial = currComponent.materialID;
+        // }
+        idMaterial = 0;
+    
+        // if (this.textures[currComponent.textureID] != null) {
+        //     if (currComponent.textureID == 'none') {
+        //         idTexture = null;
+        //     } else idTexture = currComponent.textureID;
+        // }
+         idTexture = 0;
+    
+         var currMaterial = this.materials[idMaterial];
+         var currTexture = this.textures[idTexture]
+    
+
+        // FALTA VER AQUI ESTE CICLO
+
+        
+        // for (let i = 0; i < currComponent.children.length; i++) {
+        //     if (currMaterial != null) {
+        //         currMaterial.apply();
+        //     }
+    
+        //     // if (currTexture != null) {
+        //     //     currComponent.leaves[i].primitive.updateTexCoords(currTexture[1], currTexture[2]);
+        //     //     currTexture[0].bind();
+        //     // }
+
+        //     //this.primitives[0].display();
+        //     currComponent.children.primitive.display();
+        // }
+    
+        // for (let i = 0; i < currComponent.children.length; i++) {
+        //     this.scene.pushMatrix();
+        //     this.displaySceneRecursive(currComponent.children[i], idMaterial, idTexture);
+        //     this.scene.popMatrix();
+        // }
+    
+    
     }
 }
