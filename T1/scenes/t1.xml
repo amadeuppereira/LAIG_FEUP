@@ -1,6 +1,6 @@
 <yas>
 
-    <scene root="cube" axis_length="5" />
+    <scene root="myScene" axis_length="5" />
 
     <views default="view1" >
 
@@ -115,6 +115,10 @@
             <cylinder base="0.5" top="0.5" height="1" slices="8" stacks="8" />
         </primitive >
 
+        <primitive id="robot_arm">
+            <cylinder base="0.7" top="0.2" height="4" slices="8" stacks="8" />
+        </primitive>
+
         <primitive id="sphere">
             <sphere radius="0.5" slices="8" stacks="8" />
         </primitive >
@@ -124,7 +128,6 @@
     <components>
         <component id="myScene">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="default" />
@@ -138,6 +141,7 @@
                 <componentref id="rock2" />
                 <componentref id="rock3" />
                 <componentref id="rock4" />
+                <componentref id="robot" />
             </children>
         </component>
 
@@ -249,7 +253,6 @@
         <!-- front portal -->
         <component id="portal1_1">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -304,7 +307,6 @@
         <!-- back wall -->
         <component id="wall1">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -393,7 +395,6 @@
 
         <component id="cube">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -492,9 +493,9 @@
             </children>
         </component>
 
-        <!-- <component id="robot">
+        <component id="robot">
             <transformation>
-                <translate x="50" y="0" z="50" />
+                <translate x="1" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -507,20 +508,158 @@
                 <componentref id="robot_right_arm"/>
                 <componentref id="robot_wheel"/>
             </children>
-        </component> -->
+        </component>
 
-        <!-- <component id="">
+        <component id="robot_body">
             <transformation>
-      
+                <translate x="0" y="8.5" z="0"/>
             </transformation>
             <materials>
                 <material id="default"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
- 
+                <componentref id="robot_body_1"/>
+                <componentref id="robot_body_top_button"/>
+                <componentref id="robot_body_bottom_button"/>
             </children>
-        </component>         -->
+        </component>
+
+        <component id="robot_body_1">
+            <transformation>
+                <scale x="5" y="7" z="5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>  
+
+        <component id="robot_body_top_button">
+            <transformation>
+                <translate x="0" y="1.2" z="2.5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
+
+        <component id="robot_body_bottom_button">
+            <transformation>
+                <translate x="0" y="-0.8" z="2.5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
+
+        <component id="robot_head">
+            <transformation>
+                <translate x="0" y="14.5" z="0"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="robot_head_1"/>
+                <componentref id="robot_head_left_eye"/>
+                <componentref id="robot_head_right_eye"/>
+            </children>
+        </component>
+
+        <component id="robot_head_1">
+            <transformation>
+                <scale x="5" y="5" z="5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
+
+        <component id="robot_head_left_eye">
+            <transformation>
+                <translate x="-1" y="1.3" z="1.3"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
+
+        <component id="robot_head_right_eye">
+            <transformation>
+                <translate x="1" y="1.3" z="1.3"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
+
+        <component id="robot_left_arm">
+            <transformation>
+                <translate x="2.5" y="10.5" z="0"/>
+                <rotate axis="y" angle="30"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="robot_arm"/>
+            </children>
+        </component> 
+
+        <component id="robot_right_arm">
+            <transformation>
+                <translate x="-2.5" y="10.5" z="0"/>
+                <rotate axis="y" angle="-30"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="robot_arm"/>
+            </children>
+        </component>  
+
+        <component id="robot_wheel">
+            <transformation>
+                <translate x="0" y="2.5" z="0"/>
+                <scale x="5" y="5" z="5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>           
 
     </components>
+
 </yas>
