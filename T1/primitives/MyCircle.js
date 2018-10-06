@@ -4,10 +4,11 @@
  */
 class MyCircle extends CGFobject
 {
-	constructor(scene, slices)
+	constructor(scene, radius, slices)
 	{
 		super(scene);
 
+		this.radius = radius;
 		this.slices = slices;
 
 		this.initBuffers();
@@ -17,7 +18,6 @@ class MyCircle extends CGFobject
 	{
 		this.vertices = [];
 		this.indices = [];
-  	this.normals = [];
     this.texCoords = [];
 
     this.getVertices();
@@ -28,29 +28,31 @@ class MyCircle extends CGFobject
 	};
 
   getVertices() {
+		this.originalTexCoords = [];
 
-    var angle = 2*Math.PI / this.slices;
+    // Assign vertices
+    var deltaTheta = Math.PI * 2 / this.slices;
+    for (let i = 0; i < this.slices; i++) {
+        this.vertices.push(
+            this.radius * Math.cos(deltaTheta * i),
+            this.radius * Math.sin(deltaTheta * i), 0);
 
+        this.originalTexCoords.push(
+            (Math.cos(deltaTheta * i) / 2) + 0.5,
+            0.5 - (Math.sin(deltaTheta * i) / 2));
+    }
+
+    // Center vertex
+    var center_idx = this.vertices.length / 3;
     this.vertices.push(0, 0, 0);
-    this.normals.push(0, 0, 1);
-    this.texCoords.push(0.5, 0.5);
+    this.originalTexCoords.push(0.5, 0.5);
 
-    for(let i = 0; i < this.slices; i++) {
-			let x = Math.cos(i * angle);
-			let y = Math.sin(i * angle);
-      this.vertices.push(x, y, 0);
-      this.normals.push(0, 0, 1);
-      this.texCoords.push((x/2)+0.5, 1-((y/2)+ 0.5));
+    // Assign indices
+    for (let i = 0; i < this.slices; i++) {
+        this.indices.push(center_idx, i, (i+1) % this.slices);
     }
-
-    for(let i = 0; i < this.slices; i++) {
-      if(i != this.slices - 1) {
-        this.indices.push(0, i + 1, i + 2);
-      }
-			else {
-				this.indices.push(0, i + 1, 1);
-			}
-    }
+    
+    this.texCoords = this.originalTexCoords.slice();
 
   };
 };

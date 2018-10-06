@@ -83,6 +83,8 @@ class XMLscene extends CGFscene {
     onGraphLoaded() {
         this.camera.near = this.graph.views[this.graph.defaultView].near;
         this.camera.far = this.graph.views[this.graph.defaultView].far;
+        this.camera.position = vec3.fromValues(this.graph.views[this.graph.defaultView].from.x, this.graph.views[this.graph.defaultView].from.y, this.graph.views[this.graph.defaultView].from.z);
+        this.camera.target = vec3.fromValues(this.graph.views[this.graph.defaultView].to.x, this.graph.views[this.graph.defaultView].to.y, this.graph.views[this.graph.defaultView].to.z);
 
         //TODO: Change reference length according to parsed graph
         this.axis = new CGFaxis(this, this.graph.axisLength);

@@ -1216,8 +1216,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(stacks != null && !isNaN(stacks)))
                         return "unable to parse stacks value for primitive with ID = " + primitiveId;
 
-                    //MISSING THE PRIMITIVE CLASS
-                    primitives.push({type: "cylinder", base: base, top: top, height: height, slices: slices, stacks: stacks});
+                    var cylinder = new MyCylinder(this.scene, base, top, height, slices, stacks);
+                    primitives.push({type: "cylinder", primitive: cylinder});
                     break;
 
                 case "sphere":
@@ -1236,8 +1236,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(stacks != null && !isNaN(stacks)))
                         return "unable to parse stacks value for primitive with ID = " + primitiveId;
 
-                    //MISSING THE PRIMITIVE CLASS
-                    primitives.push({type: "sphere", radius: radius, slices: slices, stacks: stacks});
+                    var sphere = new MySphere(this.scene, radius, slices, stacks);
+                    primitives.push({type: "sphere", primitive: sphere});
                     break;
                 
                 case "torus":
@@ -1550,7 +1550,6 @@ in the primitive with ID = " + primitiveId;
             }
         }
 
-        console.log(this.components);
         this.log("Parsed components");
 
         return null;
@@ -1675,33 +1674,32 @@ in the primitive with ID = " + primitiveId;
          var currTexture = this.textures[idTexture]
     
 
-        // FALTA VER AQUI ESTE CICLO
+        // APAGAR ISTO DEPOIS
         var materialDefault = new CGFappearance(this.scene);
-
-        console.log(currComponent.children.primitiveref);
 
         if(currComponent.children.primitiveref.length == 0){
             for (let i = 0; i < currComponent.children.componentref.length; i++) {
                 this.scene.pushMatrix();
 
-                // if (currMaterial != null) {
-                //     currMaterial.apply();
-                // }
                 materialDefault.apply();
 
-                console.log(currComponent.children.componentref[i].id);
                 var id = null;
+
+                //LOOP ESTUPIDO PARA ENCONTRAR O ID, É MELHOR FAZER UMA FUNÇÃO PARA ISTO
                 for(let n = 0; n < this.components.length; n++){
                     if(this.components[n].id == currComponent.children.componentref[i].id){
                         id = n;
                     }
                 }
+
                 this.displaySceneRecursive(id, idMaterial, idTexture);
                 this.scene.popMatrix();
             }
         }
         else{
-            if(currComponent.children.primitiveref[0].type == "rectangle")
+            if(currComponent.children.primitiveref[0].type == "rectangle" ||
+            currComponent.children.primitiveref[0].type == "sphere" ||
+            currComponent.children.primitiveref[0].type == "cylinder")
                 currComponent.children.primitiveref[0].primitive.display();
         }
     }
