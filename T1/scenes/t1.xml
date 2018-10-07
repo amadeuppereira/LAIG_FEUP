@@ -1,11 +1,11 @@
 <yas>
 
-    <scene root="myScene" axis_length="5" />
+    <scene root="portal_gun" axis_length="5" />
 
     <views default="view1" >
 
         <perspective id="view1" near="0.1" far="500" angle="0.4">
-            <from x="150" y="150" z="150" />
+            <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
 
@@ -151,6 +151,20 @@
             <emission r="0" g="0" b="0" a="0"/>
             <ambient r="0.55" g="0" b="0" a="1"/>
             <diffuse r="0.55" g="0" b="0" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="portal_gun_red" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.5" g="0" b="0" a="1"/>
+            <diffuse r="0.5" g="0" b="0" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="portal_gun_green" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0.5" b="0" a="1"/>
+            <diffuse r="0" g="0.5" b="0" a="1"/>
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 
@@ -795,7 +809,210 @@
             <children>
                 <primitiveref id="sphere"/>
             </children>
-        </component>         
+        </component> 
+
+        <component id="portal_gun">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal_gun_body"/>
+                <componentref id="portal_gun_lights"/>
+                <componentref id="portal_gun_glass"/>
+            </children>
+        </component> 
+
+        <component id="portal_gun_body">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal_gun_body_1"/>
+                <componentref id="portal_gun_display"/>
+                <componentref id="portal_gun_button"/>
+                <componentref id="portal_gun_handle"/>
+            </children>
+        </component> 
+
+        <component id="portal_gun_body_1">
+            <transformation>
+                <scale x="5" y="0.7" z="2" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="portal_gun_display">
+            <transformation>
+                <translate x="-1.5" y="0.351" z="0" />
+                <scale x="0.7" y="1" z="1.1"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="portal_gun_red"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>  
+
+        <component id="portal_gun_button">
+            <transformation>
+                <translate x="-2.5" y="0.35" z="0"/>
+                <rotate axis="z" angle="20"/>
+                <scale x="1" y="0.2" z="1"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>    
+
+        <component id="portal_gun_handle">
+            <transformation>
+                <translate x="-2.1" y="0" z="0"/>
+                <rotate axis="z" angle="20"/>
+                <scale x="3" y="1" z="1"/>
+                <rotate axis="y" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component> 
+
+        <component id="portal_gun_glass">
+            <transformation>
+                <translate x="0" y="0.35" z="0"/>
+            </transformation>
+            <materials>
+                <material id="portal_gun_green"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal_gun_glass_1"/>
+                <componentref id="portal_gun_glass_2"/>
+                <componentref id="portal_gun_glass_3"/>
+            </children>
+        </component>  
+
+        <component id="portal_gun_glass_1">
+            <transformation>
+                <scale x="1.1" y="0.1" z="1.1"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component> 
+
+        <component id="portal_gun_glass_2">
+            <transformation>
+                <translate x="0" y="0.1" z="0"/>               
+                <scale x="1" y="2" z="1"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component> 
+
+        <component id="portal_gun_glass_3">
+            <transformation>
+                <translate x="0" y="2.1" z="0"/>               
+                <scale x="1" y="1" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component> 
+
+        <component id="portal_gun_lights">
+            <transformation>
+                <translate x="2.5" y="0" z="0"/>
+            </transformation>
+            <materials>
+                <material id="portal_gun_green"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="portal_gun_lights_1"/>
+                <componentref id="portal_gun_lights_2"/>
+                <componentref id="portal_gun_lights_3"/>
+            </children>
+        </component>  
+
+        <component id="portal_gun_lights_1">
+            <transformation>
+                <translate x="0" y="0" z="0.5"/>
+                <scale x="0.3" y="0.3" z="0.3"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>   
+
+         <component id="portal_gun_lights_2">
+            <transformation>
+                <scale x="0.3" y="0.3" z="0.3"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>   
+
+         <component id="portal_gun_lights_3">
+            <transformation>
+                <translate x="0" y="0" z="-0.5"/>
+                <scale x="0.3" y="0.3" z="0.3"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>               
 
     </components>
 
