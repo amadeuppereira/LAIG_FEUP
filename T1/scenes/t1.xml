@@ -20,38 +20,62 @@
 
         <omni id="lightHouse" enabled="1" >
             <location x="50" y="15" z="35" w="0.5" />
-            <ambient r="1" g="1" b="1" a="1"/>
-            <diffuse r="1" g="1" b="1" a="1"/>
-            <specular r="1" g="1" b="1" a="1"/>
+            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
+            <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
+            <specular r="0.7" g="0.7" b="0.7" a="1"/>
         </omni>
 
         <omni id="lightCorner1" enabled="1" >
             <location x="0" y="30" z="0" w="0.5" />
-            <ambient r="1" g="1" b="1" a="1.0" />
-            <diffuse r="1" g="1" b="1" a="1.0" />
-            <specular r="1" g="1" b="1" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
+            <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
+            <specular r="0.7" g="0.7" b="0.7" a="1"/>
         </omni>
 
         <omni id="lightCorner2" enabled="1" >
             <location x="0" y="30" z="100" w="0.5" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
+            <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
+            <specular r="0.7" g="0.7" b="0.7" a="1"/>
         </omni>
 
         <omni id="lightCorner3" enabled="1" >
             <location x="100" y="30" z="100" w="0.5" />
-            <ambient r="1" g="1" b="1" a="1.0" />
-            <diffuse r="1" g="1" b="1" a="1.0" />
-            <specular r="1" g="1" b="1" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
+            <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
+            <specular r="0.7" g="0.7" b="0.7" a="1"/>
         </omni>
 
         <omni id="lightCorner4" enabled="1" >
             <location x="100" y="30" z="0" w="0.5" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
+            <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
+            <specular r="0.7" g="0.7" b="0.7" a="1"/>
         </omni>
+
+        <spot id="spotLight1" enabled="1" angle="15" exponent="50">
+            <location x="0" y="30" z="100" w="0" />
+            <target x="50" y="0" z="50" />
+            <ambient r="0" g="0" b="0" a="0"/>
+            <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
+            <specular r="0.5" g="0.5" b="0.5" a="0"/>
+        </spot>
+
+        <spot id="spotLight2" enabled="1" angle="15" exponent="50">
+            <location x="100" y="30" z="0" w="0" />
+            <target x="50" y="0" z="50" />
+            <ambient r="0" g="0" b="0" a="0"/>
+            <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
+            <specular r="0.5" g="0.5" b="0.5" a="0"/>
+        </spot>
+
+        <spot id="spotLight3" enabled="0" angle="15" exponent="50">
+            <location x="0" y="30" z="0" w="0" />
+            <target x="50" y="0" z="50" />
+            <ambient r="0" g="0" b="0" a="0"/>
+            <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
+            <specular r="0.5" g="0.5" b="0.5" a="0"/>
+        </spot>
         
     </lights>
 
@@ -72,6 +96,62 @@
             <ambient r="0.2" g="0.2" b="0.2" a="1" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1" />
             <specular r="0.5" g="0.5" b="0.5" a="1" />
+        </material>
+
+        <material id="floorMaterial" shininess="0.01">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.98" g="0.98" b="0.87" a="1"/>
+            <diffuse r="0.98" g="0.98" b="0.87" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="rockMaterial" shininess="0.001">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.28" g="0.19" b="0.09" a="1"/>
+            <diffuse r="0.28" g="0.19" b="0.09" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="groundMaterial" shininess="0.001">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.1" g="0.19" b="0.09" a="1"/>
+            <diffuse r="0.1" g="0.19" b="0.09" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="portalMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0.9" b="0.3" a="1"/>
+            <diffuse r="0" g="0.9" b="0.3" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="wallMaterial" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.7" g="0.4" b="0.2" a="1"/>
+            <diffuse r="0.7" g="0.4" b="0.2" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="robotWheelsMaterial" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0" b="0" a="1"/>
+            <diffuse r="0" g="0" b="0" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="robotMaterial" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.24" g="0.24" b="0.24" a="1"/>
+            <diffuse r="0.24" g="0.24" b="0.24" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="robotBodyMaterial" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.55" g="0" b="0" a="1"/>
+            <diffuse r="0.55" g="0" b="0" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
         </material>
 
     </materials>
@@ -100,10 +180,10 @@
         </transformation>
 
         <transformation id="transformationFloor">
-            <translate x="0" y="0" z="30" />
+            <translate x="0" y="0" z="40" />
             <rotate axis="x" angle="-90" />
-            <translate x="15" y="15" z="0" />
-            <scale x="30" y="30" z="1" />
+            <translate x="20" y="20" z="0" />
+            <scale x="40" y="40" z="1" />
         </transformation>
 
         <transformation id="transformationRock">
@@ -158,7 +238,7 @@
                 <transformationref id="transformationGround"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="groundMaterial"/>
             </materials>
             <texture id="groundTexture" length_s="1" length_t="1" />
             <children>
@@ -171,7 +251,7 @@
                 <transformationref id="transformationRock"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
@@ -184,7 +264,7 @@
                 <translate x="10" y="0" z="90" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="rockMaterial"/>
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -197,7 +277,7 @@
                 <translate x="10" y="0" z="10" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="rockMaterial"/>
             </materials>
             <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
@@ -210,7 +290,7 @@
                 <translate x="90" y="0" z="10" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="rockMaterial"/>
             </materials>
             <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
@@ -223,7 +303,7 @@
                 <translate x="90" y="0" z="90" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="rockMaterial"/>
             </materials>
             <texture id="rockTexture" length_s="1" length_t="1" />
             <children>
@@ -236,7 +316,7 @@
                 <transformationref id="transformationPortal"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -250,7 +330,7 @@
                 <rotate axis="y" angle="-90" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="portalMaterial"/>
             </materials>
             <texture id="portalTexture" length_s="1" length_t="1" />
             <children>
@@ -264,7 +344,7 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -279,7 +359,7 @@
                 <rotate axis="y" angle="180" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -289,10 +369,10 @@
 
         <component id="portal2">
             <transformation>
-                <translate x="11" y="0" z="0" />
+                <translate x="15" y="0" z="0.5" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="portalMaterial"/>
             </materials>
             <texture id="portalTexture" length_s="1" length_t="1" />
             <children>
@@ -305,7 +385,7 @@
                 <transformationref id="transformationWall"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -318,7 +398,7 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="wallMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -333,7 +413,7 @@
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="wallMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -348,7 +428,7 @@
                 <rotate axis="y" angle="180" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="wallMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -363,7 +443,7 @@
                 <rotate axis="y" angle="-90" />
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="wallMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -377,7 +457,7 @@
                 <transformationref id="transformationFloor"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="floorMaterial"/>
             </materials>
             <texture id="floorTexture" length_s="1" length_t="1" />
             <children>
@@ -390,7 +470,7 @@
                 <transformationref id="transformationHouse"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -406,7 +486,7 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -425,7 +505,7 @@
                 <rotate axis="y" angle="-90"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -439,7 +519,7 @@
                 <rotate axis="y" angle="90"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -453,7 +533,7 @@
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -467,7 +547,7 @@
                 <rotate axis="x" angle="90"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -480,7 +560,7 @@
                 <translate x="0" y="0" z="0.5"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -494,7 +574,7 @@
                 <rotate axis="y" angle="180"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -508,7 +588,7 @@
                 <scale x="0.8" y="0.8" z="0.8"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="robotMaterial"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -528,7 +608,7 @@
                 <translate x="0" y="8.5" z="0"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="robotBodyMaterial"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -543,7 +623,7 @@
                 <scale x="5" y="7" z="5"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -556,7 +636,7 @@
                 <translate x="0" y="1.2" z="2.5"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -569,7 +649,7 @@
                 <translate x="0" y="-0.8" z="2.5"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -582,7 +662,7 @@
                 <translate x="0" y="14.5" z="0"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -597,7 +677,7 @@
                 <scale x="5" y="5" z="5"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -610,7 +690,7 @@
                 <translate x="-1" y="1.3" z="1.3"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -623,7 +703,7 @@
                 <translate x="1" y="1.3" z="1.3"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -637,7 +717,7 @@
                 <rotate axis="y" angle="30"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -651,7 +731,7 @@
                 <rotate axis="y" angle="-30"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -666,7 +746,7 @@
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -681,7 +761,7 @@
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="inherit"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -695,7 +775,7 @@
                 <scale x="2.5" y="2.5" z="2.5"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="robotWheelsMaterial"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -709,7 +789,7 @@
                 <scale x="2.5" y="2.5" z="2.5"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="robotWheelsMaterial"/>
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>

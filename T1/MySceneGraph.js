@@ -1433,7 +1433,10 @@ in the primitive with ID = " + primitiveId;
                 }
 
                 if(this.reader.getString(componentMaterialChildren[i],'id') == "inherit"){
-                    componentMaterials.push("inherit");
+                    componentMaterials.push({
+                        id: "inherit",
+                        material: null
+                    });
                 }
                 else{
                     var material = null;
@@ -1657,37 +1660,42 @@ in the primitive with ID = " + primitiveId;
         if(currComponent.transformations != null)
             this.scene.multMatrix(currComponent.transformations);
     
-        // console.log(currComponent);
-        // console.log(currComponent.materials);
-        // console.log(this.materials);
-        // if (this.materials[currComponent.materialID] != null) {
-        //     idMaterial = currComponent.materialID;
-        // }
-        idMaterial = 0;
+        
+        //change currComponent.materials[index] when m/M clicked
+        //console.log(currComponent.materials[0].id);
+        if(currComponent.materials[0].id != "inherit"){
+            var materialIndex = -1;
+            for(let i = 0; i < this.materials.length; i++){
+                if(this.materials[i].id == currComponent.materials[0].id){
+                    materialIndex = i;
+                }
+            }
+            if (materialIndex != -1) {
+                idMaterial = materialIndex;
+            }
+        }
+        //console.log(idMaterial);
     
         // if (this.textures[currComponent.textureID] != null) {
         //     if (currComponent.textureID == 'none') {
         //         idTexture = null;
         //     } else idTexture = currComponent.textureID;
         // }
-         idTexture = 0;
+        idTexture = 0;
         
-         var currMaterial = this.materials[idMaterial];
-         var currTexture = this.textures[idTexture]
-    
+        var currMaterial = this.materials[idMaterial].material;
+        var currTexture = this.textures[idTexture];
 
-        // APAGAR ISTO DEPOIS
-        var materialDefault = new CGFappearance(this.scene);
+        if (currMaterial != null) {
+            currMaterial.apply();
+        }
 
         if(currComponent.children.primitiveref.length == 0){
             for (let i = 0; i < currComponent.children.componentref.length; i++) {
                 this.scene.pushMatrix();
 
-                materialDefault.apply();
-
-                var id = null;
-
                 //LOOP ESTUPIDO PARA ENCONTRAR O ID, É MELHOR FAZER UMA FUNÇÃO PARA ISTO
+                var id = null;
                 for(let n = 0; n < this.components.length; n++){
                     if(this.components[n].id == currComponent.children.componentref[i].id){
                         id = n;
@@ -1699,6 +1707,7 @@ in the primitive with ID = " + primitiveId;
             }
         }
         else{
+
             if(currComponent.children.primitiveref[0].type == "rectangle" ||
             currComponent.children.primitiveref[0].type == "sphere" ||
             currComponent.children.primitiveref[0].type == "cylinder")
