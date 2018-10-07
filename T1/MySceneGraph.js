@@ -935,16 +935,19 @@ class MySceneGraph {
             else
                 return "specular component undefined for ID = " + materialId;
 
-            materials.push ({
-                id: materialId,
-                shininess: shininess,
-                emission: emission,
-                ambient: ambientIllumination,
-                diffuse: diffuseIllumination,
-                specular: specularIllumination
-            })
-            numMaterials++;
+            var newMaterial = new CGFappearance(this.scene);
+            newMaterial.setShininess(shininess);
+            newMaterial.setAmbient(ambientIllumination[0], ambientIllumination[1], ambientIllumination[2], ambientIllumination[3]);
+            newMaterial.setDiffuse(diffuseIllumination[0], diffuseIllumination[1], diffuseIllumination[2], diffuseIllumination[3]);
+            newMaterial.setSpecular(specularIllumination[0], specularIllumination[1], specularIllumination[2], specularIllumination[3]);
+            newMaterial.setEmission(emission[0], emission[1], emission[2], emission[3]);
 
+            materials.push({
+                id: materialId,
+                material: newMaterial
+            });
+            
+            numMaterials++;
         }
 
         if (numMaterials == 0)
@@ -1434,9 +1437,9 @@ in the primitive with ID = " + primitiveId;
                 }
                 else{
                     var material = null;
-                    for(let i = 0; i < this.materials.length; i++){
-                        if(this.materials[i].id == this.reader.getString(componentMaterialChildren[i],'id'))
-                            material = this.materials[i];
+                    for(let n = 0; n < this.materials.length; n++){
+                        if(this.materials[n].id == this.reader.getString(componentMaterialChildren[i],'id'))
+                            material = this.materials[n];
                     }
                     if(material == null)
                         return "no material with ID = " + this.reader.getString(componentMaterialChildren[i],'id');

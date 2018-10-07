@@ -12,35 +12,42 @@
     </views>
 
     <ambient>
-        <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
-        <background r="0.0" g="0.0" b="0.0" a="0.5" />
+        <ambient r="0" g="0" b="0" a="1" />
+        <background r="0.8" g="0.4" b="0.2" a="0.8" />
     </ambient>
 
     <lights>
 
         <omni id="lightHouse" enabled="1" >
             <location x="50" y="15" z="35" w="0.5" />
+            <ambient r="1" g="1" b="1" a="1"/>
+            <diffuse r="1" g="1" b="1" a="1"/>
+            <specular r="1" g="1" b="1" a="1"/>
+        </omni>
+
+        <omni id="lightCorner1" enabled="1" >
+            <location x="0" y="30" z="0" w="0.5" />
+            <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </omni>
+
+        <omni id="lightCorner2" enabled="1" >
+            <location x="0" y="30" z="100" w="0.5" />
             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </omni>
 
-        <omni id="lightSun" enabled="1" >
-            <location x="50" y="50" z="50" w="0.5" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        <omni id="lightCorner3" enabled="1" >
+            <location x="100" y="30" z="100" w="0.5" />
+            <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
         </omni>
 
-        <omni id="lightShip1" enabled="1" >
-            <location x="0" y="0" z="0" w="0.5" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-        </omni>
-
-        <omni id="lightShip2" enabled="1" >
-            <location x="1000" y="0" z="100" w="0.5" />
+        <omni id="lightCorner4" enabled="1" >
+            <location x="100" y="30" z="0" w="0.5" />
             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
@@ -60,7 +67,7 @@
 
     <materials>
 
-        <material id="default" shininess = "100" >
+        <material id="default" shininess = "10" >
             <emission r="0.0" g="0.0" b="0.0" a="1" />
             <ambient r="0.2" g="0.2" b="0.2" a="1" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1" />
@@ -76,19 +83,20 @@
         </transformation>
 
         <transformation id="transformationGround">
-            <rotate axis="x" angle="90" />
+            <translate x="0" y="0" z="100" />
+            <rotate axis="x" angle="-90" />
             <translate x="50" y="50" z="0" />
             <scale x="100" y="100" z="1" />
         </transformation>
 
         <transformation id="transformationWall">
-            <translate x="15" y="10" z="0" />
-            <scale x="30" y="20" z="2" />
+            <translate x="20" y="9" z="0" />
+            <scale x="40" y="18" z="0.5" />
         </transformation>
 
         <transformation id="transformationPortal">
-            <translate x="4" y="8" z="0" />
-            <scale x="8" y="16" z="1" />
+            <translate x="4" y="7" z="0" />
+            <scale x="8" y="14" z="1" />
         </transformation>
 
         <transformation id="transformationFloor">
@@ -99,7 +107,7 @@
         </transformation>
 
         <transformation id="transformationRock">
-            <translate x="3" y="3" z="3" />
+            <translate x="0" y="3" z="0" />
             <scale x="6" y="6" z="6" />
         </transformation>
 
@@ -173,7 +181,7 @@
 
         <component id="rock1">
             <transformation>
-                <translate x="25" y="0" z="90" />
+                <translate x="10" y="0" z="90" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -186,7 +194,7 @@
 
         <component id="rock2">
             <transformation>
-                <translate x="25" y="0" z="10" />
+                <translate x="10" y="0" z="10" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -199,7 +207,7 @@
 
         <component id="rock3">
             <transformation>
-                <translate x="90" y="0" z="40" />
+                <translate x="90" y="0" z="10" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -238,7 +246,8 @@
 
        <component id="portal1">
             <transformation>
-                <translate x="15" y="0" z="80" />
+                <translate x="20" y="0" z="80" />
+                <rotate axis="y" angle="-90" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -300,7 +309,7 @@
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="rectangle"/>
+                <componentref id="cube"/>
             </children>
         </component>
 
@@ -320,8 +329,8 @@
         <!-- left wall -->
         <component id="wall2">
             <transformation>
-                <translate x="0" y="0" z="30" />
-                <rotate axis="y" angle="-90" />
+                <translate x="0" y="0" z="40" />
+                <rotate axis="y" angle="90" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -335,7 +344,7 @@
         <!-- front wall -->
         <component id="wall3">
             <transformation>
-                <translate x="30" y="0" z="30" />
+                <translate x="40" y="0" z="40" />
                 <rotate axis="y" angle="180" />
             </transformation>
             <materials>
@@ -350,8 +359,8 @@
         <!-- right wall -->
         <component id="wall4">
             <transformation>
-                <translate x="30" y="0" z="0" />
-                <rotate axis="y" angle="90" />
+                <translate x="40" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
             </transformation>
             <materials>
                 <material id="default"/>
@@ -495,7 +504,8 @@
 
         <component id="robot">
             <transformation>
-                <translate x="1" y="0" z="1" />
+                <translate x="10" y="0" z="40" />
+                <scale x="0.8" y="0.8" z="0.8"/>
             </transformation>
             <materials>
                 <material id="default"/>
@@ -506,7 +516,10 @@
                 <componentref id="robot_head"/>
                 <componentref id="robot_left_arm"/>
                 <componentref id="robot_right_arm"/>
-                <componentref id="robot_wheel"/>
+                <componentref id="robot_wheel_left"/>
+                <componentref id="robot_wheel_right"/>
+                <componentref id="robot_leg_left"/>
+                <componentref id="robot_leg_right"/>
             </children>
         </component>
 
@@ -646,10 +659,40 @@
             </children>
         </component>  
 
-        <component id="robot_wheel">
+        <component id="robot_leg_left">
             <transformation>
-                <translate x="0" y="2.5" z="0"/>
-                <scale x="5" y="5" z="5"/>
+                <translate x="-1.25" y="2.5" z="0"/>
+                <scale x="1" y="2.5" z="1"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+
+        <component id="robot_leg_right">
+            <transformation>
+                <translate x="1.25" y="2.5" z="0"/>
+                <scale x="1" y="2.5" z="1"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+
+        <component id="robot_wheel_left">
+            <transformation>
+                <translate x="-1.25" y="1.25" z="0"/>
+                <scale x="2.5" y="2.5" z="2.5"/>
             </transformation>
             <materials>
                 <material id="default"/>
@@ -658,7 +701,21 @@
             <children>
                 <primitiveref id="sphere"/>
             </children>
-        </component>           
+        </component>  
+
+        <component id="robot_wheel_right">
+            <transformation>
+                <translate x="1.25" y="1.25" z="0"/>
+                <scale x="2.5" y="2.5" z="2.5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>         
 
     </components>
 
