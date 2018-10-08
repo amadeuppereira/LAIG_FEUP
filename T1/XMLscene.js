@@ -76,15 +76,36 @@ class XMLscene extends CGFscene {
         }
     }
 
+    initViews(){
+        this.views = [];
+        for(var key in this.graph.views){
+            var near = this.graph.views[key].near;
+            var far = this.graph.views[key].far;
+            var angle = this.graph.views[key].angle;
+            var left = this.graph.views[key].left;
+            var right = this.graph.views[key].right;
+            var top = this.graph.views[key].top;
+            var bottom = this.graph.views[key].top;
+            var from = this.graph.views[key].from;
+            var to = this.graph.views[key].to;
+
+            if(this.graph.views[key].type == "perspective"){
+                this.views[key] = new CGFcamera(angle, near, far, vec3.fromValues(from.x, from.y, from.z), vec3.fromValues(to.x, to.y, to.z));
+            }
+            else{
+                //this.views[key] = new CGFcameraOrtho(left,right,bottom,top,near,far);
+            }
+        }
+    }
+
 
     /* Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.camera.near = this.graph.views[this.graph.defaultView].near;
-        this.camera.far = this.graph.views[this.graph.defaultView].far;
-        this.camera.position = vec3.fromValues(this.graph.views[this.graph.defaultView].from.x, this.graph.views[this.graph.defaultView].from.y, this.graph.views[this.graph.defaultView].from.z);
-        this.camera.target = vec3.fromValues(this.graph.views[this.graph.defaultView].to.x, this.graph.views[this.graph.defaultView].to.y, this.graph.views[this.graph.defaultView].to.z);
+        this.initViews();
+        this.camera = this.views[this.graph.defaultView];
+        this.interface.setActiveCamera(this.camera);
 
         //TODO: Change reference length according to parsed graph
         this.axis = new CGFaxis(this, this.graph.axisLength);

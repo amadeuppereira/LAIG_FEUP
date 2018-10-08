@@ -9,6 +9,8 @@
             <to x="0" y="0" z="0" />
         </perspective>
 
+        <ortho id="view2" near="4" far="5" left="6" right="7" top="8" bottom="9" />
+
     </views>
 
     <ambient>
@@ -114,8 +116,8 @@
 
         <material id="groundMaterial" shininess="0.001">
             <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.1" g="0.19" b="0.09" a="1"/>
-            <diffuse r="0.1" g="0.19" b="0.09" a="1"/>
+            <ambient r="0.53" g="0.26" b="0.12" a="1"/>
+            <diffuse r="0.53" g="0.26" b="0.12" a="1"/>
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 

@@ -341,6 +341,7 @@ class MySceneGraph {
                 }
             }
             this.views[viewId] = {
+                type: nodeName,
                 near: near,
                 far: far,
                 angle: angle,
