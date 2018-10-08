@@ -207,6 +207,11 @@ class MySceneGraph {
         if((error = this.checkLoops()) != null) {
             return error;
         }
+
+        for(let i = 0; i < this.components.length; i++){
+            if(this.components[i].id == this.idRoot)
+                this.rootComponent = this.components[i];
+        }
     }
 
     /**
@@ -741,10 +746,13 @@ class MySceneGraph {
             if (file == null)
                 return "no file defined for " + textureId;
 
+            var newTexture = new CGFtexture(this.scene, file);
+
             textures.push({
                 id: textureId,
-                file: file
+                texture: newTexture
             })
+
             numTextures++;
         }
 
@@ -1465,7 +1473,7 @@ in the primitive with ID = " + primitiveId;
             var textureID = this.reader.getString(temp, 'id');
             var textureLengthS = this.reader.getString(temp, 'length_s');
             var textureLengthT = this.reader.getString(temp, 'length_t');
-            var texture = {id: null, file: null};
+            var texture = {id: null, texture: null};
 
             if(textureID == "inherit"){
                 texture.id = "inherit";
@@ -1482,7 +1490,7 @@ in the primitive with ID = " + primitiveId;
 
             componentTexture = {
                 id: texture.id,
-                file: texture.file,
+                texture: texture.texture,
                 lengths: textureLengthS,
                 lengtht: textureLengthT
             }
@@ -1643,86 +1651,52 @@ in the primitive with ID = " + primitiveId;
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        var rootID = null;
-        var rootMaterial = null;
-        var rootTexture = null;
-        for(let i = 0; i < this.components.length; i++){
-            if(this.components[i].id == this.idRoot){
-                rootID = i;
-                if(this.components[i].materials[0].id == "inherit")
-                    rootMaterial = -1;
-                else{
-                    rootMaterial = this.components[i].materials[0].id;
-                }
-                rootTexture = this.components[i].texture.id;
-            }
+        var rootMaterial;
+        if(this.components[i].materials[0].id == "inherit")
+            rootMaterial = this.materialDefault;
+        else{
+            rootMaterial = this.components[i].materials[0].material;
         }
+        var rootTexture = this.components[i].texture.texture;
 
         this.scene.pushMatrix();
-        this.displaySceneRecursive(rootID, rootMaterial, rootTexture);
+        this.displaySceneRecursive(this.rootComponent, rootMaterial, rootTexture);
         this.scene.popMatrix();
     }
     
-    displaySceneRecursive(idComponent, idMaterialFather, idTextureFather) {
+    displaySceneRecursive(component, materialFather, textureFather) {
     
-        var currComponent = this.components[idComponent];
+        var currComponent = component
     
-        var idMaterial = idMaterialFather;
-        var idTexture = idTextureFather;
+        var currMaterial = materialFather;
+        var currTexture;
 
         if(currComponent.transformations != null)
             this.scene.multMatrix(currComponent.transformations);
     
         if(currComponent.materials[0].id != "inherit"){
-            var materialIndex = -1;
-            for(let i = 0; i < this.materials.length; i++){
-                if(this.materials[i].id == currComponent.materials[0].id){
-                    materialIndex = i;
-                }
-            }
-            if (materialIndex != -1) {
-                idMaterial = materialIndex;
-            }
+            currMaterial = currComponent.materials[0].material;
         }
 
-        var currMaterial = null;
-        if(idMaterial == -1)
-            currMaterial = this.materialDefault;
+        if(currComponent.texture.id == "none")
+            currTexture = null;
+        else if(currComponent.texture.id == "inherit")
+            currTexture = textureFather;
         else
-            currMaterial = this.materials[idMaterial].material;
-        
-        if (currMaterial != null) {
-            currMaterial.apply();
+            currTexture = currComponent.texture.texture;
+
+        currMaterial.setTexture(currTexture)
+
+        currMaterial.apply();
+
+        for (let i = 0; i < currComponent.children.componentref.length; i++) {
+                    this.scene.pushMatrix();
+                    var children = currComponent.children.componentref[i];
+                    this.displaySceneRecursive(children, currMaterial, currTexture);
+                    this.scene.popMatrix();
         }
 
-
-        idTexture = 0;
-
-        var currTexture = this.textures[idTexture];
-
-
-        if(currComponent.children.primitiveref.length == 0){
-            for (let i = 0; i < currComponent.children.componentref.length; i++) {
-                this.scene.pushMatrix();
-
-                //LOOP ESTUPIDO PARA ENCONTRAR O ID, É MELHOR FAZER UMA FUNÇÃO PARA ISTO
-                var id = null;
-                for(let n = 0; n < this.components.length; n++){
-                    if(this.components[n].id == currComponent.children.componentref[i].id){
-                        id = n;
-                    }
-                }
-                
-                this.displaySceneRecursive(id, idMaterial, idTexture);
-                this.scene.popMatrix();
-            }
-        }
-        else{
-
-            if(currComponent.children.primitiveref[0].type == "rectangle" ||
-            currComponent.children.primitiveref[0].type == "sphere" ||
-            currComponent.children.primitiveref[0].type == "cylinder")
-                currComponent.children.primitiveref[0].primitive.display();
-        }
+        for (let i = 0; i < currComponent.children.primitiveref.length; i++)
+            currComponent.children.primitiveref[i].primitive.display();
     }
 }
