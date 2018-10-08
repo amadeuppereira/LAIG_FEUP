@@ -1291,7 +1291,7 @@ in the primitive with ID = " + primitiveId;
     parseComponents(componentsNode) {
         var children = componentsNode.children;
 
-        this.components = [];
+        var components = [];
 
         for(let i = 0; i < children.length; i++) {
             if(children[i].nodeName != "component") {
@@ -1305,8 +1305,8 @@ in the primitive with ID = " + primitiveId;
                 return "no ID defined for component";
                 
             // Checks for repeated IDs.
-            for(let i = 0; i < this.components.length; i++){
-                if(this.components[i].id == componentId)
+            for(let i = 0; i < components.length; i++){
+                if(components[i].id == componentId)
                     return "ID must be unique for each component (conflict: ID = " + componentId + ")";
             }
 
@@ -1463,15 +1463,13 @@ in the primitive with ID = " + primitiveId;
             var textureID = this.reader.getString(temp, 'id');
             var textureLengthS = this.reader.getString(temp, 'length_s');
             var textureLengthT = this.reader.getString(temp, 'length_t');
-            var texture = null;
-            var file = null;
+            var texture = {id: null, file: null};
 
             if(textureID == "inherit"){
-                texture = "inherit";
+                texture.id = "inherit";
             } else if (textureID == "none"){
-                texture = "none";
+                texture.id = "none";
             } else{
-                var texture = null;
                 for(let i = 0; i < this.textures.length; i++){
                     if(this.textures[i].id == textureID)
                         texture = this.textures[i];
@@ -1529,7 +1527,7 @@ in the primitive with ID = " + primitiveId;
                 componentref: component
             }
             
-            this.components.push({
+            components.push({
                 id: componentId,
                 transformations: componentTransformations,
                 materials: componentMaterials,
@@ -1537,23 +1535,32 @@ in the primitive with ID = " + primitiveId;
                 children: componentChildren
             });   
         }
+
+        var componentsTemp = [];
+        components.forEach(function(element) {
+            componentsTemp.push(new MyComponent(element.id, element.transformations, element.materials, element.texture, element.children));
+        })
+
         
         //second round
-        for(let i = 0; i < this.components.length; i++){
-            var childrens = this.components[i].children.componentref.slice();
-            this.components[i].children.componentref = [];
+        for(let i = 0; i < componentsTemp.length; i++){
+            var childrens = componentsTemp[i].children.componentref.slice();
+            componentsTemp[i].children.componentref = [];
             for(let j = 0; j < childrens.length; j++) {
-                var c = this.components.find(function(element) {
+                var c = componentsTemp.find(function(element) {
                     return element.id == childrens[j];
                 });
                 if(c == undefined)
                     return "no component with ID = " + childrens[j];
-                else if (c.id == this.components[i].id)
+                else if (c.id == componentsTemp[i].id)
                     return "an object can not reference itself as a children (ID = " + c.id + ")";
 
-                this.components[i].children.componentref.push(c);
+                //componentsTemp[i].children.componentref.push(c);
+                componentsTemp[i].addChildren_Component(c);
             }
         }
+
+        this.components = componentsTemp;
         
         this.log("Parsed components");
 

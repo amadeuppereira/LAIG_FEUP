@@ -255,7 +255,7 @@
             <materials>
                 <material id="default" />
             </materials>
-            <texture id="none" length_s="0" length_t="0" />
+            <texture id="inherit" length_s="0" length_t="0" />
             <children>
                 <componentref id="ground" />
                 <componentref id="portal1" />
