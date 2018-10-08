@@ -1651,13 +1651,14 @@ in the primitive with ID = " + primitiveId;
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+
         var rootMaterial;
-        if(this.components[i].materials[0].id == "inherit")
+        if(this.rootComponent.materials[0].id == "inherit")
             rootMaterial = this.materialDefault;
         else{
-            rootMaterial = this.components[i].materials[0].material;
+            rootMaterial = this.rootComponent.materials[0].material;
         }
-        var rootTexture = this.components[i].texture.texture;
+        var rootTexture = this.rootComponent.texture.texture;
 
         this.scene.pushMatrix();
         this.displaySceneRecursive(this.rootComponent, rootMaterial, rootTexture);

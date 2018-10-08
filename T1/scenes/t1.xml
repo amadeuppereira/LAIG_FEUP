@@ -215,7 +215,7 @@
         </transformation>
 
         <transformation id="transformationFloor">
-            <translate x="0" y="0" z="40" />
+            <translate x="0" y="0.1" z="40" />
             <rotate axis="x" angle="-90" />
             <translate x="20" y="20" z="0" />
             <scale x="40" y="40" z="1" />
