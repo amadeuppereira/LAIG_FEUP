@@ -9,6 +9,11 @@
             <to x="0" y="0" z="0" />
         </perspective>
 
+        <perspective id="view3" near="0.1" far="500" angle="0.4">
+            <from x="18" y="18" z="18" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+
         <ortho id="view2" near="4" far="5" left="6" right="7" top="8" bottom="9" />
 
     </views>

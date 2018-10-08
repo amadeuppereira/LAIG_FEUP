@@ -120,6 +120,16 @@ class XMLscene extends CGFscene {
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.lights);
 
+        // Adds Views
+        var viewsKeys = [];
+        for (var key in this.views) {
+            if (this.views.hasOwnProperty(key)) {
+                viewsKeys.push(key);
+            }
+        }
+        this.currentView = this.graph.defaultView;
+        this.interface.gui.add(this, 'currentView', viewsKeys);
+
         this.sceneInited = true;
     }
 
@@ -161,6 +171,9 @@ class XMLscene extends CGFscene {
                     i++;
                 }
             }
+
+            this.camera = this.views[this.currentView];
+            this.interface.setActiveCamera(this.camera);
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
