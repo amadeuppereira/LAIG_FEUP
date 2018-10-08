@@ -253,7 +253,7 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="default" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" length_s="0" length_t="0" />
             <children>
