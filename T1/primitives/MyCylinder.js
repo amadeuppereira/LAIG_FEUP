@@ -43,11 +43,8 @@ class MyCylinder extends CGFobject
 	initBuffers() 
 	{
 		this.vertices = [];
-
 		this.indices = [];
-
 		this.normals = [];
-
 		this.texCoords = [];
 
 		for(let j = 0; j <= this.stacks; j++){
@@ -68,17 +65,9 @@ class MyCylinder extends CGFobject
 
 		}
 		
-		//to make it to 1
 		var offset = this.slices + 1;
 		
-		//now we only add 1 vertice in each iteration
 		for(let i = 0; i < (this.stacks * offset); i++){
-            /* 
-                We didn't need to test this before
-                because the starting point on a full rotation
-                of the prism, aka the vertice on with y = 0, does not 
-                have its value duplicated, so we need to subtract
-            */
 	   	    if( (i +1) % offset == 0){
                 this.indices.push(i, i + 1 - offset, i + offset);
                 this.indices.push(i +1 - offset, i +1, i + offset);
@@ -96,10 +85,14 @@ class MyCylinder extends CGFobject
 
 	display(){
 		this.scene.pushMatrix();
-			this.baseCover.display();
 			super.display();
 			this.scene.translate(0, 0, this.heigth);
 			this.topCover.display();
+		this.scene.popMatrix();
+
+		this.scene.pushMatrix();
+			this.scene.rotate(Math.PI, 1, 0, 0);
+			this.baseCover.display();
 		this.scene.popMatrix();
 
 	}

@@ -19,7 +19,6 @@ class MySceneGraph {
      * @constructor
      */
     constructor(filename, scene) {
-
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
@@ -1200,8 +1199,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(z3 != null && !isNaN(z3)))
                         return "unable to parse z3 value for primitive with ID = " + primitiveId;
 
-                    //MISSING THE PRIMITIVE CLASS
-                    primitives.push({id: primitiveId, type: "triangle", x1: x1, y1: y1, z1: z1, x2: x2, y2: y2, z2: z2, x3: x3, y3: y3, z3: z3});
+                    var triangle = new MyTriangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+                    primitives.push({id: primitiveId, type: "triangle", primitive: triangle});
                     break;
 
                 case "cylinder":
@@ -1275,8 +1274,8 @@ in the primitive with ID = " + primitiveId;
                     if (!(loops != null && !isNaN(loops)))
                         return "unable to parse loops value for primitive with ID = " + primitiveId;
 
-                    //MISSING THE PRIMITIVE CLASS
-                    primitives.push({id: primitiveId, type: "torus", inner: inner, outer: outer, slices: slices, loops: loops});
+                        var torus = new MyTorus(this.scene, inner, outer, slices, loops);
+                        primitives.push({id: primitiveId, type: "torus", primitive: torus});
                     break;
                 
                 default:
@@ -1652,7 +1651,6 @@ in the primitive with ID = " + primitiveId;
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-
         var rootMaterial;
         if(this.rootComponent.materials[0].id == "inherit")
             rootMaterial = this.materialDefault;
