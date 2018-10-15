@@ -13,6 +13,9 @@ class MyQuad extends CGFobject
 		this.minY = minY;
 		this.maxY = maxY;
 
+		this.width = this.maxX - this.minX;
+    	this.height = this.maxY - this.minY;
+
 		this.initBuffers();
 	};
 
@@ -48,4 +51,19 @@ class MyQuad extends CGFobject
 
 		this.initGLBuffers();
 	};
+
+	updateTexCoord(s, t) {
+		const tempx = this.width/s;
+		const tempy = this.height/t;
+
+		this.texCoords = [
+			0, tempy,
+			tempx, tempy,
+			0, 0,
+			tempx, 0
+		]
+
+		this.updateTexCoordsGLBuffers();
+	}
 };
+

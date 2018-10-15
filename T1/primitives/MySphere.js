@@ -21,8 +21,6 @@ class MySphere extends CGFobject {
   }
 
   getVertices() {
-
-    this.originalTexCoords = [];
   
     var deltaTheta = Math.PI / this.stacks;
     var deltaPhi = 2 * Math.PI / this.slices;
@@ -47,7 +45,7 @@ class MySphere extends CGFobject {
                 Math.sin(i * deltaTheta) * Math.sin(j * deltaPhi),
                 Math.cos(i * deltaTheta));
   
-            this.originalTexCoords.push(
+            this.texCoords.push(
                 j * deltaTexS,
                 i * deltaTexT);
         }
@@ -65,7 +63,5 @@ class MySphere extends CGFobject {
                 i * (this.slices + 1) + j + 1);
         }
     }
-  
-    this.texCoords = this.originalTexCoords.slice();
-  }
+ }
 }
