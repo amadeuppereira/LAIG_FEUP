@@ -4,17 +4,20 @@
 
     <views default="view1" >
 
-        <perspective id="view1" near="0.1" far="500" angle="0.4">
+        <perspective id="view1" near="0.1" far="500" angle="23">
             <from x="180" y="180" z="180" />
             <to x="0" y="0" z="0" />
         </perspective>
 
-        <perspective id="view3" near="0.1" far="500" angle="0.4">
-            <from x="18" y="18" z="18" />
-            <to x="0" y="0" z="0" />
+        <perspective id="view2" near="30" far="500" angle="30">
+            <from x="26" y="20" z="70" />
+            <to x="64" y="0" z="20" />
         </perspective>
 
-        <ortho id="view2" near="4" far="5" left="6" right="7" top="8" bottom="9" />
+        <ortho id="view3" near="0.1" far="500" left="-20" right="20" top="20" bottom="-20" >
+            <from x="40" y="5" z="100" />
+            <to x="40" y="0" z="80" />
+        </ortho>
 
     </views>
 

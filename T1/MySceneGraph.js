@@ -266,6 +266,7 @@ class MySceneGraph {
             if (far == null || isNaN(far)) return "error parsing view 'far' value";
 
             var left = null, right = null, top = null, bottom = null, angle = null, from = {x: null, y: null, z: null}, to = {x: null, y: null, z: null};
+            
             if(nodeName == "ortho") {
                 //get the left field value of the current view
                 var left = this.reader.getFloat(children[i], 'left');
@@ -287,58 +288,60 @@ class MySceneGraph {
                 //get the angle field value of the current view
                 var angle = this.reader.getFloat(children[i], 'angle');
                 if (angle == null || isNaN(angle)) return "error parsing view 'angle' value";
-
-                var grandChildren = children[i].children;
-
-                var nodeNames = [];
-                for (var j = 0; j < grandChildren.length; j++) {
-                    nodeNames.push(grandChildren[j].nodeName);
-                }
-                var fromIndex = nodeNames.indexOf("from");
-                var toIndex = nodeNames.indexOf("to");
-
-                if(fromIndex != -1) {
-                    //get the x (from) value of the current view
-                    var x = this.reader.getFloat(grandChildren[fromIndex], 'x');
-                    if (x == null || isNaN(x)) return "error parsing view x (from) value";
-
-                    //get the y (from) value of the current view
-                    var y = this.reader.getFloat(grandChildren[fromIndex], 'y');
-                    if (y == null || isNaN(y)) return "error parsing view y (from) value";
-
-                    //get the z (from) value of the current view
-                    var z = this.reader.getFloat(grandChildren[fromIndex], 'z');
-                    if (z == null || isNaN(z)) return "error parsing view z (from) value";
-
-                    from.x = x;
-                    from.y = y;
-                    from.z = z;
-
-                } else {
-                    return "'from' coordinate undefined for view " + viewId;
-                }
-
-                if(toIndex != -1) {
-                    //get the x (to) value of the current view
-                    var x = this.reader.getFloat(grandChildren[toIndex], 'x');
-                    if (x == null || isNaN(x)) return "error parsing view x (to) value";
-
-                    //get the y (to) value of the current view
-                    var y = this.reader.getFloat(grandChildren[toIndex], 'y');
-                    if (y == null || isNaN(y)) return "error parsing view y (to) value";
-
-                    //get the z (to) value of the current view
-                    var z = this.reader.getFloat(grandChildren[toIndex], 'z');
-                    if (z == null || isNaN(z)) return "error parsing view z (to) value";
-
-                    to.x = x;
-                    to.y = y;
-                    to.z = z;
-
-                } else {
-                    return "'to' coordinate undefined for view " + viewId;
-                }
+                angle = DEGREE_TO_RAD * angle;      
             }
+
+            var grandChildren = children[i].children;
+
+            var nodeNames = [];
+            for (var j = 0; j < grandChildren.length; j++) {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+            var fromIndex = nodeNames.indexOf("from");
+            var toIndex = nodeNames.indexOf("to");
+
+            if(fromIndex != -1) {
+                //get the x (from) value of the current view
+                var x = this.reader.getFloat(grandChildren[fromIndex], 'x');
+                if (x == null || isNaN(x)) return "error parsing view x (from) value";
+
+                //get the y (from) value of the current view
+                var y = this.reader.getFloat(grandChildren[fromIndex], 'y');
+                if (y == null || isNaN(y)) return "error parsing view y (from) value";
+
+                //get the z (from) value of the current view
+                var z = this.reader.getFloat(grandChildren[fromIndex], 'z');
+                if (z == null || isNaN(z)) return "error parsing view z (from) value";
+
+                from.x = x;
+                from.y = y;
+                from.z = z;
+
+            } else {
+                return "'from' coordinate undefined for view " + viewId;
+            }
+
+            if(toIndex != -1) {
+                //get the x (to) value of the current view
+                var x = this.reader.getFloat(grandChildren[toIndex], 'x');
+                if (x == null || isNaN(x)) return "error parsing view x (to) value";
+
+                //get the y (to) value of the current view
+                var y = this.reader.getFloat(grandChildren[toIndex], 'y');
+                if (y == null || isNaN(y)) return "error parsing view y (to) value";
+
+                //get the z (to) value of the current view
+                var z = this.reader.getFloat(grandChildren[toIndex], 'z');
+                if (z == null || isNaN(z)) return "error parsing view z (to) value";
+
+                to.x = x;
+                to.y = y;
+                to.z = z;
+
+            } else {
+                return "'to' coordinate undefined for view " + viewId;
+            }
+            
             this.views[viewId] = {
                 type: nodeName,
                 near: near,
@@ -361,7 +364,6 @@ class MySceneGraph {
         if (defaultView == null) return "no default ID defined for view";
         else if (this.views[defaultView] == null) return "invalid default view";
         this.defaultView = defaultView;
-
 
         this.log("Parsed views");
 

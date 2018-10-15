@@ -85,7 +85,7 @@ class XMLscene extends CGFscene {
             var left = this.graph.views[key].left;
             var right = this.graph.views[key].right;
             var top = this.graph.views[key].top;
-            var bottom = this.graph.views[key].top;
+            var bottom = this.graph.views[key].bottom;
             var from = this.graph.views[key].from;
             var to = this.graph.views[key].to;
 
@@ -93,7 +93,7 @@ class XMLscene extends CGFscene {
                 this.views[key] = new CGFcamera(angle, near, far, vec3.fromValues(from.x, from.y, from.z), vec3.fromValues(to.x, to.y, to.z));
             }
             else{
-                //this.views[key] = new CGFcameraOrtho(left,right,bottom,top,near,far);
+                this.views[key] = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(from.x, from.y, from.z), vec3.fromValues(to.x, to.y, to.z), vec3.fromValues(0,1,0));
             }
         }
     }
@@ -144,6 +144,7 @@ class XMLscene extends CGFscene {
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
+
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
         this.loadIdentity();
@@ -172,8 +173,10 @@ class XMLscene extends CGFscene {
                 }
             }
 
-            this.camera = this.views[this.currentView];
-            this.interface.setActiveCamera(this.camera);
+            if(this.camera != this.views[this.currentView]){
+                this.camera = this.views[this.currentView];
+                this.interface.setActiveCamera(this.camera);
+            }
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
