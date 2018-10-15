@@ -121,7 +121,7 @@ class XMLscene extends CGFscene {
         this.initLights();
         
         // Adds lights group.
-        this.interface.addLightsGroup(this.graph.lights);
+        this.interface.addLightsGroup(this, this.graph.lights);
 
         // Adds Views
         var viewsKeys = [];
@@ -133,12 +133,37 @@ class XMLscene extends CGFscene {
         this.currentView = this.graph.defaultView;
         this.interface.addViews(this, viewsKeys);
 
+        //Add Camera Near
+        this.cameraNear = this.camera.near;
+        this.interface.addNear(this);
+
         this.sceneInited = true;
     }
 
+    updateLights(){
+        var i = 0;
+        for (var key in this.lightValues) {
+            if (this.lightValues.hasOwnProperty(key)) {
+                if (this.lightValues[key]) {
+                    this.lights[i].setVisible(true);
+                    this.lights[i].enable();
+                }
+                else {
+                    this.lights[i].setVisible(false);
+                    this.lights[i].disable();
+                }
+                this.lights[i].update();
+                i++;
+            }
+        }
+    }
     changeCamera(currentCamera){
         this.camera = this.views[currentCamera];
         this.interface.setActiveCamera(this.camera);
+    }
+
+    updateCameraNear(){
+        this.camera.near = this.cameraNear;
     }
 
     checkKeyPressed(){
@@ -175,23 +200,9 @@ class XMLscene extends CGFscene {
         this.axis.display();
 
         if (this.sceneInited) {
-            this.checkKeyPressed();
             this.pushMatrix();
-            var i = 0;
-            for (var key in this.lightValues) {
-                if (this.lightValues.hasOwnProperty(key)) {
-                    if (this.lightValues[key]) {
-                        this.lights[i].setVisible(true);
-                        this.lights[i].enable();
-                    }
-                    else {
-                        this.lights[i].setVisible(false);
-                        this.lights[i].disable();
-                    }
-                    this.lights[i].update();
-                    i++;
-                }
-            }
+            
+            this.checkKeyPressed();
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();

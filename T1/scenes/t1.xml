@@ -1,6 +1,6 @@
 <yas>
 
-    <scene root="teste" axis_length="5" />
+    <scene root="myScene" axis_length="5" />
 
     <views default="view1" >
 

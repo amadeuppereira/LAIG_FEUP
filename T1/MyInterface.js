@@ -30,7 +30,7 @@ class MyInterface extends CGFinterface {
      * Adds a folder containing the IDs of the lights passed as parameter.
      * @param {array} lights
      */
-    addLightsGroup(lights) {
+    addLightsGroup(scene, lights) {
 
         var group = this.gui.addFolder("Lights");
         group.open();
@@ -41,7 +41,10 @@ class MyInterface extends CGFinterface {
         for (var key in lights) {
             if (lights.hasOwnProperty(key)) {
                 this.scene.lightValues[key] = lights[key].enabled;
-                group.add(this.scene.lightValues, key);
+                var controller = group.add(this.scene.lightValues, key);
+                controller.onChange(function(value){
+                    scene.updateLights();
+                });
             }
         }
     }
@@ -50,6 +53,13 @@ class MyInterface extends CGFinterface {
         var controller = this.gui.add(this.scene, 'currentView', viewsKeys);
         controller.onChange(function(value){
             scene.changeCamera(scene.currentView);
+        });
+    }
+
+    addNear(scene){
+        var controller = this.gui.add(scene, 'cameraNear', 0.1, 300);
+        controller.onChange(function(value){
+            scene.updateCameraNear();
         });
     }
 
