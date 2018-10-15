@@ -954,6 +954,7 @@ class MySceneGraph {
             newMaterial.setDiffuse(diffuseIllumination[0], diffuseIllumination[1], diffuseIllumination[2], diffuseIllumination[3]);
             newMaterial.setSpecular(specularIllumination[0], specularIllumination[1], specularIllumination[2], specularIllumination[3]);
             newMaterial.setEmission(emission[0], emission[1], emission[2], emission[3]);
+            newMaterial.setTextureWrap('REPEAT','REPEAT');
 
             materials.push({
                 id: materialId,
@@ -1689,7 +1690,6 @@ in the primitive with ID = " + primitiveId;
 
         if(currTexture != null){
             currMaterial.setTexture(currTexture.texture);
-            //currMaterial.setTextureWrap('REPEAT','REPEAT');
         }
 
         currMaterial.apply();

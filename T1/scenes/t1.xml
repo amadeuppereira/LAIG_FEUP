@@ -1,6 +1,6 @@
 <yas>
 
-    <scene root="myScene" axis_length="5" />
+    <scene root="teste" axis_length="5" />
 
     <views default="view1" >
 
@@ -256,6 +256,14 @@
             <sphere radius="0.5" slices="8" stacks="8" />
         </primitive >
 
+        <primitive id="torus">
+            <torus inner="2" outer="4" slices="30" loops="30" />
+        </primitive>
+
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="2.5" y3="3" z3="0" />
+        </primitive>
+
     </primitives >
 
     <components>
@@ -289,7 +297,7 @@
                 <material id="groundMaterial"/>
                 <material id="rockMaterial"/>
             </materials>
-            <texture id="groundTexture" length_s="2" length_t="2" />
+            <texture id="groundTexture" length_s="0.5" length_t="0.5" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -1190,6 +1198,19 @@
             <texture id="none" length_s="1" length_t="1" />
             <children>
                 <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="teste">
+            <transformation>
+                <!-- <scale x="5" y="5" z="5"/> -->
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="portalTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="torus"/>
             </children>
         </component>
     </components>
