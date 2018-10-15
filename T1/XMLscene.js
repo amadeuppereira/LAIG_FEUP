@@ -128,11 +128,15 @@ class XMLscene extends CGFscene {
             }
         }
         this.currentView = this.graph.defaultView;
-        this.interface.gui.add(this, 'currentView', viewsKeys);
+        this.interface.addViews(this, viewsKeys);
 
         this.sceneInited = true;
     }
 
+    changeCamera(currentCamera){
+        this.camera = this.views[currentCamera];
+        this.interface.setActiveCamera(this.camera);
+    }
 
     /**
      * Displays the scene.
@@ -171,11 +175,6 @@ class XMLscene extends CGFscene {
                     this.lights[i].update();
                     i++;
                 }
-            }
-
-            if(this.camera != this.views[this.currentView]){
-                this.camera = this.views[this.currentView];
-                this.interface.setActiveCamera(this.camera);
             }
 
             // Displays the scene (MySceneGraph function).
