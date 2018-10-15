@@ -1659,7 +1659,7 @@ in the primitive with ID = " + primitiveId;
         else{
             rootMaterial = this.rootComponent.materials[0].material;
         }
-        var rootTexture = this.rootComponent.texture.texture;
+        var rootTexture = this.rootComponent.texture;
 
         this.scene.pushMatrix();
         this.displaySceneRecursive(this.rootComponent, rootMaterial, rootTexture);
@@ -1685,9 +1685,12 @@ in the primitive with ID = " + primitiveId;
         else if(currComponent.texture.id == "inherit")
             currTexture = textureFather;
         else
-            currTexture = currComponent.texture.texture;
+            currTexture = currComponent.texture;
 
-        currMaterial.setTexture(currTexture)
+        if(currTexture != null){
+            currMaterial.setTexture(currTexture.texture);
+            //currMaterial.setTextureWrap('REPEAT','REPEAT');
+        }
 
         currMaterial.apply();
 
@@ -1698,7 +1701,11 @@ in the primitive with ID = " + primitiveId;
                     this.scene.popMatrix();
         }
 
-        for (let i = 0; i < currComponent.children.primitiveref.length; i++)
-            currComponent.children.primitiveref[i].primitive.display();
+        for (let i = 0; i < currComponent.children.primitiveref.length; i++){
+            var temp = currComponent.children.primitiveref[i];
+            if(currTexture != null && (temp.type == "rectangle" || temp.type == "triangle"))
+                temp.primitive.updateTexCoords(currTexture.lengths, currTexture.lengtht);
+            temp.primitive.display();
+        }
     }
 }

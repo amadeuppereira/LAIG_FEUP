@@ -52,7 +52,7 @@ class MyQuad extends CGFobject
 		this.initGLBuffers();
 	};
 
-	updateTexCoord(s, t) {
+	updateTexCoords(s, t) {
 		const tempx = this.width/s;
 		const tempy = this.height/t;
 
