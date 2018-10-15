@@ -9,19 +9,23 @@ class MyTorus extends CGFobject {
 
       this.initBuffers();
 
-      var func = function(u, v) {
-        u *= 2*Math.PI; 
-        v *= 2*Math.PI; 
+      // var func = function(u, v) {
+      //   u *= 2*Math.PI; 
+      //   v *= 2*Math.PI; 
 
-        let x = (outer + inner * Math.cos(u)) * Math.cos(v);
-        let y = inner * Math.sin(u);
-        let z = (outer + inner * Math.cos(u)) * Math.sin(v);
+      //   let x = (outer + inner * Math.cos(v)) * Math.cos(u);
+      //   let z = inner * Math.sin(v);
+      //   let y = (outer + inner * Math.cos(v)) * Math.sin(u);
 
 
-        return [x, y, z];
-      };   
+      //   return [x, y, z];
+      // };   
 
-      this.object = new CGFnurbsObject(this.scene, func, this.slices, this.loops);
+      // this.object = new CGFnurbsObject(this.scene, func, this.slices, this.loops);
+
+      // console.log(this.object.vertices);
+      // console.log(this.vertices);
+
     };
 
     initBuffers() {
@@ -38,15 +42,12 @@ class MyTorus extends CGFobject {
     getVertices() {
       var deltaPhi = 2*Math.PI / this.slices;
       var deltaTheta = 2*Math.PI / this.loops;
-
-      var deltaTexS = 1.0 / this.slices;
-      var deltaTexT = 1.0 / this.loops;
-
+      
       for(let v = 0; v <= this.slices; v++) {
         for(let u = 0; u <= this.loops; u++) {
           let x = (this.outer + this.inner * Math.cos(u*deltaTheta)) * Math.cos(v*deltaPhi);
-          let z = this.inner * Math.sin(u*deltaTheta);
-          let y = (this.outer + this.inner * Math.cos(u*deltaTheta)) * Math.sin(v*deltaPhi);
+          let y = this.inner * Math.sin(u*deltaTheta);
+          let z = (this.outer + this.inner * Math.cos(u*deltaTheta)) * Math.sin(v*deltaPhi);
           this.vertices.push(x, y, z);
 
           let cx = Math.cos(v*deltaPhi) * this.outer;
@@ -61,8 +62,8 @@ class MyTorus extends CGFobject {
           );
 
           this.texCoords.push(
-            u * deltaTexS,
-            v * deltaTexT);
+            deltaPhi*v/(2*Math.PI),
+            deltaTheta*u/(2*Math.PI));
             
         }
       } 
@@ -79,8 +80,13 @@ class MyTorus extends CGFobject {
               (i +1) * (this.loops + 1) + j);
         }
     }
+    }
 
-
+    display() {
+      this.scene.pushMatrix();
+      this.scene.rotate(Math.PI/2, 1, 0, 0);
+      super.display();
+      this.scene.popMatrix();
     }
   
 
