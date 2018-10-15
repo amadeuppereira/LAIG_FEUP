@@ -34,6 +34,9 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
+
+        //to check when M key is pressed or released
+        this.KeyMPressed = false;
     }
 
     /**
@@ -138,6 +141,18 @@ class XMLscene extends CGFscene {
         this.interface.setActiveCamera(this.camera);
     }
 
+    checkKeyPressed(){
+        if(this.gui.isKeyPressed("KeyM") && this.KeyMPressed == false){
+            this.KeyMPressed = true;
+        }
+
+        if(this.gui.isKeyReleased("KeyM") && this.KeyMPressed == true){
+            //Pressed M Key
+            this.graph.materialCounter++;
+            this.KeyMPressed = false;
+        }
+    }
+
     /**
      * Displays the scene.
      */
@@ -160,6 +175,7 @@ class XMLscene extends CGFscene {
         this.axis.display();
 
         if (this.sceneInited) {
+            this.checkKeyPressed();
             this.pushMatrix();
             var i = 0;
             for (var key in this.lightValues) {

@@ -48,6 +48,7 @@ class MySceneGraph {
         this.reader.open('scenes/' + filename, this);
 
         this.materialDefault = new CGFappearance(this.scene);
+        this.materialCounter = 0; 
     }
 
 
@@ -1566,8 +1567,6 @@ in the primitive with ID = " + primitiveId;
                     return "no component with ID = " + childrens[j];
                 else if (c.id == componentsTemp[i].id)
                     return "an object can not reference itself as a children (ID = " + c.id + ")";
-
-                //componentsTemp[i].children.componentref.push(c);
                 componentsTemp[i].addChildren_Component(c);
             }
         }
@@ -1675,9 +1674,10 @@ in the primitive with ID = " + primitiveId;
 
         if(currComponent.transformations != null)
             this.scene.multMatrix(currComponent.transformations);
-    
-        if(currComponent.materials[0].id != "inherit"){
-            currMaterial = currComponent.materials[0].material;
+        
+        var index = this.materialCounter % currComponent.materials.length;
+        if(currComponent.materials[index].id != "inherit"){
+            currMaterial = currComponent.materials[index].material;
         }
 
         if(currComponent.texture.id == "none")
