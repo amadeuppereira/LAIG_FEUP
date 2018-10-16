@@ -709,7 +709,7 @@ class MySceneGraph {
         if (numLights == 0)
             return "at least one light must be defined";
         else if (numLights > 8)
-            this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
+            return "too many lights defined; WebGL imposes a limit of 8 lights";
 
         this.lights = lights;
 
@@ -1688,9 +1688,10 @@ in the primitive with ID = " + primitiveId;
         else
             currTexture = currComponent.texture;
 
-        if(currTexture != null){
+        if(currTexture != null)
             currMaterial.setTexture(currTexture.texture);
-        }
+        else
+            currMaterial.setTexture(null);
 
         currMaterial.apply();
 

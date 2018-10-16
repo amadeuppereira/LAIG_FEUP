@@ -547,7 +547,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <componentref id="cube_left"/>
                 <componentref id="cube_right"/>
@@ -566,7 +566,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -580,7 +580,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -594,7 +594,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -608,7 +608,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -621,7 +621,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -635,7 +635,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -1138,7 +1138,7 @@
             <materials>
                 <material id="couchMaterial"/>
             </materials>
-            <texture id="floorTexture" length_s="0.5" length_t="0.5" />
+            <texture id="portalTexture" length_s="0.3" length_t="1" />
             <children>
                 <componentref id="couch_base"/>
                 <componentref id="couch_top"/>
