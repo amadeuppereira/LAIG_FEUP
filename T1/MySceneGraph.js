@@ -1475,8 +1475,8 @@ in the primitive with ID = " + primitiveId;
                 return "missing texture tag in component with ID = " + componentId;
             
             var textureID = this.reader.getString(temp, 'id');
-            var textureLengthS = this.reader.getString(temp, 'length_s');
-            var textureLengthT = this.reader.getString(temp, 'length_t');
+            var textureLengthS = this.reader.getFloat(temp, 'length_s');
+            var textureLengthT = this.reader.getFloat(temp, 'length_t');
             var texture = {id: null, texture: null};
 
             if(textureID == "inherit"){
@@ -1495,8 +1495,8 @@ in the primitive with ID = " + primitiveId;
             componentTexture = {
                 id: texture.id,
                 texture: texture.texture,
-                lengths: textureLengthS,
-                lengtht: textureLengthT
+                length_s: textureLengthS,
+                length_t: textureLengthT
             }
             
             //Children
@@ -1703,8 +1703,8 @@ in the primitive with ID = " + primitiveId;
 
         for (let i = 0; i < currComponent.children.primitiveref.length; i++){
             var temp = currComponent.children.primitiveref[i];
-            if(currTexture != null && (temp.type == "rectangle" || temp.type == "triangle"))
-                temp.primitive.updateTexCoords(currTexture.lengths, currTexture.lengtht);
+            if(currTexture != null)
+                temp.primitive.updateTexCoords(currTexture.length_s, currTexture.length_t);
             temp.primitive.display();
         }
     }

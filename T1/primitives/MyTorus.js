@@ -88,6 +88,7 @@ class MyTorus extends CGFobject {
       super.display();
       this.scene.popMatrix();
     }
-  
+    
+    updateTexCoords(s, t) {}
 
   }

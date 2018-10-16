@@ -43,10 +43,10 @@ class MyQuad extends CGFobject
 		];
 
 		this.texCoords = [
-			0, 1,
-			1, 1,
+			0, this.width,
+			this.height, this.width,
 			0, 0,
-			1, 0,
+			this.height, 0,
 		];
 
 		this.initGLBuffers();

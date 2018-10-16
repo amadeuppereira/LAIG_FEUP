@@ -55,4 +55,6 @@ class MyCircle extends CGFobject
     this.texCoords = this.originalTexCoords.slice();
 
   };
+
+  updateTexCoords(s, t) {}
 };
