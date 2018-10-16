@@ -96,6 +96,7 @@
         <texture id="rockTexture" file="./scenes/images/rock.png" />
         <texture id="wallTexture" file="./scenes/images/wallHouse.png" />
         <texture id="floorTexture" file="./scenes/images/floor.png" />
+        <texture id="trunkTexture" file="./scenes/images/trunk.png" />
 
     </textures>
 
@@ -1096,7 +1097,7 @@
             <materials>
                 <material id="treeBottomMaterial"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="trunkTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cylinder"/>
             </children>
@@ -1137,7 +1138,7 @@
             <materials>
                 <material id="couchMaterial"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="floorTexture" length_s="0.5" length_t="0.5" />
             <children>
                 <componentref id="couch_base"/>
                 <componentref id="couch_top"/>
@@ -1153,7 +1154,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="0.5" length_t="0.5" />
             <children>
                 <componentref id="cube"/>
             </children>
@@ -1167,7 +1168,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="0.5" length_t="0.5" />
             <children>
                 <componentref id="cube"/>
             </children>
@@ -1181,7 +1182,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="0.5" length_t="0.5" />
             <children>
                 <componentref id="cube"/>
             </children>
@@ -1195,7 +1196,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="0.5" length_t="0.5" />
             <children>
                 <componentref id="cube"/>
             </children>
