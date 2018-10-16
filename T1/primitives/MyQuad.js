@@ -33,8 +33,6 @@ class MyQuad extends CGFobject
 		3, 2, 1
 		];
 
-		this.primitiveType = this.scene.gl.TRIANGLES;
-
 		this.normals = [
 			0, 0, 1,
 			0, 0, 1,
@@ -49,6 +47,7 @@ class MyQuad extends CGFobject
 			this.height, 0,
 		];
 
+		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	};
 

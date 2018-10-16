@@ -6,7 +6,7 @@
 
 class MyCylinder extends CGFobject
 {
-	constructor(scene, base,top,heigth,slices, stacks) 
+	constructor(scene, base, top, heigth, slices, stacks) 
 	{
 		super(scene);
 
@@ -16,7 +16,6 @@ class MyCylinder extends CGFobject
 		this.radius = 1;
 		this.top = top; 
 		this.heigth = heigth;
-		this.ang = (Math.PI * 2) / slices;
 
 		if(this.base > this.top){
 			this.b1 = this.top;
@@ -26,12 +25,8 @@ class MyCylinder extends CGFobject
 			this.b1 = this.top;
 		}
 
-		this.stack_divider = this.heigth / stacks;
-
 		this.baseCover = new MyCircle(this.scene, this.base, this.slices);
 		this.topCover = new MyCircle(this.scene, this.top, this.slices);
-
-		this.spacer = 1.0 / slices;
 
 		this.initBuffers();
 	};
@@ -47,19 +42,27 @@ class MyCylinder extends CGFobject
 		this.normals = [];
 		this.texCoords = [];
 
+		this.getVertices();
+
+		this.primitiveType=this.scene.gl.TRIANGLES;
+		this.initGLBuffers();
+	};
+
+	getVertices() {
+		let ang = (Math.PI * 2) / this.slices;
+		let stackSize = this.heigth / this.stacks;
+
 		for(let j = 0; j <= this.stacks; j++){
 
-			var z_distance = j * this.stack_divider;
+			var z = j * stackSize;
 
 			for(let i = 0; i <= this.slices; i++){
-				
-				var angle1 = this.ang * i; 
-				var x1 = this.getRadius(z_distance) * Math.cos(angle1);
-				var y1 = this.getRadius(z_distance) *  Math.sin(angle1); 
+				var x = this.getRadius(z) * Math.cos(ang * i);
+				var y = this.getRadius(z) *  Math.sin(ang * i); 
 
-				this.vertices.push(x1, y1, z_distance);
-				this.texCoords.push(i * this.spacer, z_distance);
-				this.normals.push(x1, y1, 0);
+				this.vertices.push(x, y, z);
+				this.texCoords.push(i/this.slices, z);
+				this.normals.push(x, y, 0);
 
 			}
 
@@ -68,7 +71,7 @@ class MyCylinder extends CGFobject
 		var offset = this.slices + 1;
 		
 		for(let i = 0; i < (this.stacks * offset); i++){
-	   	    if( (i +1) % offset == 0){
+	   	    if( (i+1) % offset == 0){
                 this.indices.push(i, i + 1 - offset, i + offset);
                 this.indices.push(i +1 - offset, i +1, i + offset);
 		    }
@@ -78,14 +81,12 @@ class MyCylinder extends CGFobject
 			}
 			
 		}
-		
-		this.primitiveType=this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
-	};
+	}
 
 	display(){
+		super.display();
+
 		this.scene.pushMatrix();
-			super.display();
 			this.scene.translate(0, 0, this.heigth);
 			this.topCover.display();
 		this.scene.popMatrix();
