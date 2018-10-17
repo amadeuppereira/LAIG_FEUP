@@ -1475,8 +1475,21 @@ in the primitive with ID = " + primitiveId;
                 return "missing texture tag in component with ID = " + componentId;
             
             var textureID = this.reader.getString(temp, 'id');
-            var textureLengthS = this.reader.getFloat(temp, 'length_s');
-            var textureLengthT = this.reader.getFloat(temp, 'length_t');
+            var textureLengthS = null;
+            var textureLengthT = null;
+
+            if((this.reader.hasAttribute(temp, 'length_s')) && (this.reader.hasAttribute(temp, 'length_s'))){
+                textureLengthS = this.reader.getFloat(temp, 'length_s');
+                textureLengthT = this.reader.getFloat(temp, 'length_t');
+            }
+            // if((this.reader.hasAttribute(temp, 'length_s')) && (this.reader.hasAttribute(temp, 'length_s') == false)
+            // || (this.reader.hasAttribute(temp, 'length_s')) == false && (this.reader.hasAttribute(temp, 'length_s'))){
+            //     return "error on lenght_s and/or lenght_t in texture with ID = " + textureID;
+            // }
+            if(this.reader.hasAttribute(temp, 'length_s') != this.reader.hasAttribute(temp, 'length_t')) {
+                return "error on lenght_s and/or lenght_t in component with ID = " + componentId;
+            }
+
             var texture = {id: null, texture: null};
 
             if(textureID == "inherit"){
@@ -1484,6 +1497,9 @@ in the primitive with ID = " + primitiveId;
             } else if (textureID == "none"){
                 texture.id = "none";
             } else{
+                if(textureLengthS == null || textureLengthT == null)
+                    return "error on lenght_s and/or lenght_t in component with ID = " + componentId;
+
                 for(let i = 0; i < this.textures.length; i++){
                     if(this.textures[i].id == textureID)
                         texture = this.textures[i];
@@ -1666,12 +1682,13 @@ in the primitive with ID = " + primitiveId;
         this.scene.popMatrix();
     }
     
-    displaySceneRecursive(component, materialFather, textureFather) {
+    displaySceneRecursive(component, materialFather, textureFather, fatherLength_s, fatherLength_t) {
     
         var currComponent = component
     
         var currMaterial = materialFather;
         var currTexture;
+        
 
         if(currComponent.transformations != null)
             this.scene.multMatrix(currComponent.transformations);
@@ -1681,12 +1698,14 @@ in the primitive with ID = " + primitiveId;
             currMaterial = currComponent.materials[index].material;
         }
 
+        
         if(currComponent.texture.id == "none")
             currTexture = null;
         else if(currComponent.texture.id == "inherit")
             currTexture = textureFather;
         else
             currTexture = currComponent.texture;
+
 
         if(currTexture != null)
             currMaterial.setTexture(currTexture.texture);
@@ -1695,17 +1714,31 @@ in the primitive with ID = " + primitiveId;
 
         currMaterial.apply();
 
+
+        var length_s = null;
+        var length_t = null;
+
+        if(currComponent.texture.id == "inherit" &&
+        currComponent.texture.length_s == null &&
+        currComponent.texture.length_t == null){
+            length_s = fatherLength_s;
+            length_t = fatherLength_t;
+        }
+        else if(currComponent.texture.id != "none"){
+            length_s = currComponent.texture.length_s;
+            length_t = currComponent.texture.length_t;
+        }
+
         for (let i = 0; i < currComponent.children.componentref.length; i++) {
                     this.scene.pushMatrix();
                     var children = currComponent.children.componentref[i];
-                    this.displaySceneRecursive(children, currMaterial, currTexture);
+                    this.displaySceneRecursive(children, currMaterial, currTexture, length_s, length_t);
                     this.scene.popMatrix();
         }
 
         for (let i = 0; i < currComponent.children.primitiveref.length; i++){
             var temp = currComponent.children.primitiveref[i];
-            if(currTexture != null)
-                temp.primitive.updateTexCoords(currTexture.length_s, currTexture.length_t);
+            temp.primitive.updateTexCoords(length_s, length_t);
             temp.primitive.display();
         }
     }
