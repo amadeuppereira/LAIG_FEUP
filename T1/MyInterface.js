@@ -35,18 +35,17 @@ class MyInterface extends CGFinterface {
         var group = this.gui.addFolder("Lights");
         //group.open();
 
-        // add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
-        // e.g. this.option1=true; this.option2=false;
-
-        for (var key in lights) {
-            if (lights.hasOwnProperty(key)) {
-                this.scene.lightValues[key] = lights[key].enabled;
-                var controller = group.add(this.scene.lightValues, key);
-                controller.onChange(function(value){
-                    scene.updateLights();
-                });
-            }
+        for (var i = 0; i < lights.length; i++) {
+            let key = lights[i].id;
+            this.scene.lightValues[key] = lights[i].enabled;
+            var controller = group.add(this.scene.lightValues, key);
+            console.log(this.scene.lightValues);
+            controller.onChange(function(value){
+                scene.updateLights();
+            });
         }
+
+
     }
 
     addViews(scene, viewsKeys){

@@ -72,6 +72,12 @@ class XMLscene extends CGFscene {
                 else
                     this.lights[i].disable();
 
+                if(light.angle != null) {
+                    this.lights[i].setSpotCutOff(light.angle);
+                    this.lights[i].setSpotDirection(light.target[0], light.target[1], light.target[2]);
+                    this.lights[i].setSpotExponent(light.exponent);
+                }
+
                 this.lights[i].update();
 
                 i++;
@@ -110,10 +116,8 @@ class XMLscene extends CGFscene {
         this.camera = this.views[this.graph.defaultView];
         this.interface.setActiveCamera(this.camera);
 
-        //TODO: Change reference length according to parsed graph
         this.axis = new CGFaxis(this, this.graph.axisLength);
 
-        // TODO: Change ambient and background details according to parsed graph
         this.setGlobalAmbientLight(this.graph.ambientIllumination[0], this.graph.ambientIllumination[1], 
             this.graph.ambientIllumination[2], this.graph.ambientIllumination[3]);
         this.gl.clearColor(this.graph.backgroundColor[0], this.graph.backgroundColor[1], this.graph.backgroundColor[2], this.graph.backgroundColor[3]);
@@ -157,6 +161,7 @@ class XMLscene extends CGFscene {
             }
         }
     }
+
     changeCamera(currentCamera){
         this.camera = this.views[currentCamera];
         this.interface.setActiveCamera(this.camera);
