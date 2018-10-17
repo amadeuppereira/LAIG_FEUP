@@ -434,7 +434,7 @@
 
         <component id="portal2">
             <transformation>
-                <translate x="10" y="0" z="0.001" />
+                <translate x="10" y="0" z="0.251" />
             </transformation>
             <materials>
                 <material id="portalMaterial"/>
