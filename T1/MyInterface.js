@@ -33,13 +33,11 @@ class MyInterface extends CGFinterface {
     addLightsGroup(scene, lights) {
 
         var group = this.gui.addFolder("Lights");
-        //group.open();
 
         for (var i = 0; i < lights.length; i++) {
             let key = lights[i].id;
             this.scene.lightValues[key] = lights[i].enabled;
             var controller = group.add(this.scene.lightValues, key);
-            console.log(this.scene.lightValues);
             controller.onChange(function(value){
                 scene.updateLights();
             });
