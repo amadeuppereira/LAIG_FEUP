@@ -38,15 +38,21 @@ class MyInterface extends CGFinterface {
             let key = lights[i].id;
             this.scene.lightValues[key] = lights[i].enabled;
             var controller = group.add(this.scene.lightValues, key);
-            controller.onChange(function(value){
-                scene.updateLights();
-            });
+            // controller.onChange(function(value){
+            //     scene.updateLights();
+            // });
         }
-
 
     }
 
-    addViews(scene, viewsKeys){
+    addViews(scene){
+        var viewsKeys = [];
+        for (var key in this.scene.views) {
+            if (this.scene.views.hasOwnProperty(key)) {
+                viewsKeys.push(key);
+            }
+        }
+
         var controller = this.gui.add(this.scene, 'currentView', viewsKeys);
         controller.onChange(function(value){
             scene.changeCamera(scene.currentView);

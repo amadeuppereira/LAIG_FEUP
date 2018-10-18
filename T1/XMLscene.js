@@ -128,14 +128,8 @@ class XMLscene extends CGFscene {
         this.interface.addLightsGroup(this, this.graph.lights);
 
         // Adds Views
-        var viewsKeys = [];
-        for (var key in this.views) {
-            if (this.views.hasOwnProperty(key)) {
-                viewsKeys.push(key);
-            }
-        }
         this.currentView = this.graph.defaultView;
-        this.interface.addViews(this, viewsKeys);
+        this.interface.addViews(this);
 
         //Add Camera Near
         this.cameraNear = this.camera.near;
@@ -206,7 +200,7 @@ class XMLscene extends CGFscene {
 
         if (this.sceneInited) {
             this.pushMatrix();
-            
+            this.updateLights();
             this.checkKeyPressed();
 
             // Displays the scene (MySceneGraph function).

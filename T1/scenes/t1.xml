@@ -2,11 +2,13 @@
 
     <scene root="myScene" axis_length="5" />
 
-    <views default="room_view_up" >
+    <views default="scene_view" >
 
         <perspective id="scene_view" near="0.1" far="500" angle="23">
-            <from x="180" y="180" z="180" />
-            <to x="0" y="0" z="0" />
+            <from x="90" y="180" z="180" />
+            <!-- <from x="15" y="15" z="15" /> -->
+            <to x="50" y="0" z="50" />
+            <!-- <to x="0" y="0" z="0" /> -->
         </perspective>
 
         <perspective id="room_view" near="30" far="500" angle="30">
@@ -14,14 +16,14 @@
             <to x="64" y="0" z="20" />
         </perspective>
 
-        <perspective id="room_view_up" near="0.1" far="500" angle="30">
-            <from x="51" y="100" z="41" />
-            <to x="50" y="0" z="40" />
-        </perspective>
+        <ortho id="house_ortho" near="0.1" far="500" left="-20" right="20" top="9" bottom="-9" >
+            <from x="55" y="9" z="60" />
+            <to x="55" y="9" z="40" />
+        </ortho>
 
-        <ortho id="ortho_portal_gun_view" near="0.1" far="500" left="-20" right="20" top="20" bottom="-20" >
-            <from x="40" y="5" z="100" />
-            <to x="40" y="0" z="80" />
+        <ortho id="house_side_ortho" near="0.1" far="500" left="-20" right="20" top="9" bottom="-9" >
+            <from x="35" y="9" z="40" />
+            <to x="75" y="9" z="40" />
         </ortho>
 
     </views>
@@ -34,8 +36,8 @@
     <lights>
 
         <omni id="lightHouse" enabled="1" >
-            <location x="50" y="15" z="35" w="0.5" />
-            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
+            <location x="55" y="15" z="40" w="0.5" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1"/>
             <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
             <specular r="0.7" g="0.7" b="0.7" a="1"/>
         </omni>
@@ -48,21 +50,7 @@
         </omni>
 
         <omni id="lightCorner2" enabled="1" >
-            <location x="0" y="30" z="100" w="0.5" />
-            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
-            <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
-            <specular r="0.7" g="0.7" b="0.7" a="1"/>
-        </omni>
-
-        <omni id="lightCorner3" enabled="1" >
             <location x="100" y="30" z="100" w="0.5" />
-            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
-            <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
-            <specular r="0.7" g="0.7" b="0.7" a="1"/>
-        </omni>
-
-        <omni id="lightCorner4" enabled="1" >
-            <location x="100" y="30" z="0" w="0.5" />
             <ambient r="0.1" g="0.1" b="0.1" a="1"/>
             <diffuse r="0.7" g="0.7" b="0.7" a="1"/>
             <specular r="0.7" g="0.7" b="0.7" a="1"/>
@@ -76,7 +64,7 @@
             <specular r="0.5" g="0.5" b="0.5" a="0"/>
         </spot>
 
-        <spot id="spotLight2" enabled="1" angle="15" exponent="50">
+        <spot id="spotLight2" enabled="0" angle="15" exponent="50">
             <location x="100" y="30" z="0" w="0" />
             <target x="50" y="0" z="50" />
             <ambient r="0" g="0" b="0" a="0"/>
@@ -108,6 +96,11 @@
         <texture id="tableTexture" file="./scenes/images/table.png" />
         <texture id="metalTexture" file="./scenes/images/metal.png" />
         <texture id="chairTexture" file="./scenes/images/chair.png" />
+        <texture id="tvScreenTexture" file="./scenes/images/tv_screen.png" />
+        <texture id="amadeu" file="./scenes/images/amadeu.png" />
+        <texture id="floaterTexture" file="./scenes/images/floater.png" />
+        <texture id="ballTexture" file="./scenes/images/ball.png" />
+        <texture id="triangleTexture" file="./scenes/images/triangle.png" />
 
     </textures>
 
@@ -150,9 +143,9 @@
 
         <material id="wallMaterial" shininess="1">
             <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.7" g="0.4" b="0.2" a="1"/>
-            <diffuse r="0.7" g="0.4" b="0.2" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
+            <ambient r="1" g="1" b="0.9" a="1"/>
+            <diffuse r="1" g="1" b="0.9" a="1"/>
+            <specular r="1" g="1" b="0.9" a="1"/>
         </material>
 
         <material id="robotWheelsMaterial" shininess="1">
@@ -232,6 +225,20 @@
             <specular r="0.8" g="0.8" b="0.8" a="1"/>
         </material>
 
+        <material id="tvMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0" b="0" a="1"/>
+            <diffuse r="0" g="0" b="0" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="tvScreenMaterial" shininess="100">
+            <emission r="1" g="1" b="1" a="0"/>
+            <ambient r="0" g="0" b="0" a="1"/>
+            <diffuse r="0" g="0" b="0" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
     </materials>
 
     <transformations>
@@ -294,7 +301,7 @@
         </primitive >
 
         <primitive id="torus">
-            <torus inner="2" outer="4" slices="30" loops="30" />
+            <torus inner="1.5" outer="3" slices="50" loops="50" />
         </primitive>
 
         <primitive id="triangle">
@@ -434,7 +441,7 @@
 
         <component id="portal2">
             <transformation>
-                <translate x="10" y="0" z="0.251" />
+                <translate x="13" y="0" z="0.251" />
             </transformation>
             <materials>
                 <material id="portalMaterial"/>
@@ -550,6 +557,11 @@
                 <componentref id="chair_2"/>
                 <componentref id="chair_3"/>
                 <componentref id="chair_4"/>
+                <componentref id="tv"/>
+                <componentref id="picture"/>
+                <componentref id="floater"/>
+                <componentref id="ball"/>
+                <componentref id="triangle"/>
             </children>
         </component>
 
@@ -1143,9 +1155,10 @@
 
         <component id="couch">
             <transformation>
-                <translate x="12" y="0" z="4" />
+                <translate x="12" y="0" z="16" />
                 <scale x="3" y="3" z="3" />
                 <translate x="0" y="0.5" z="0" />
+                <rotate axis="y" angle="180"/>
             </transformation>
             <materials>
                 <material id="couchMaterial"/>
@@ -1166,7 +1179,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="inherit" length_s="0.25" length_t="1" />
+            <texture id="inherit" length_s="0.5" length_t="1" />
             <children>
                 <componentref id="cube"/>
             </children>
@@ -1180,7 +1193,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="inherit" length_s="0.25" length_t="1" />
+            <texture id="inherit" length_s="0.5" length_t="1" />
             <children>
                 <componentref id="cube"/>
             </children>
@@ -1490,5 +1503,123 @@
 				<componentref id="cube" />
 			</children> 
 		</component>
+
+        <component id="tv"> 
+			<transformation>
+            	<translate x="12" y="10" z="0.5" />
+                <scale x="2" y="2" z="2" />
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="none" length_s="1.0" length_t="1.0" />
+			<children> 
+				<componentref id="tv_box" />
+                <componentref id="tv_screen" />
+                <componentref id="tv_support" />
+			</children> 
+		</component>
+
+        <component id="tv_box"> 
+			<transformation>
+                <translate x="0" y="0" z="0.4" />
+                <rotate axis="x" angle="10" />
+                <scale x="5" y="3" z="0.1" />
+			</transformation>
+			<materials> 
+				<material id="tvMaterial" />
+			</materials> 
+			<texture id="none" length_s="1.0" length_t="1.0" />
+			<children> 
+				<componentref id="cube" />
+			</children> 
+		</component>
+
+        <component id="tv_screen"> 
+			<transformation>
+                <translate x="0" y="0" z="0.46" />
+                <rotate axis="x" angle="10" />
+                <scale x="4.8" y="2.8" z="1" />
+			</transformation>
+			<materials> 
+				<material id="tvScreenMaterial" />
+			</materials> 
+			<texture id="tvScreenTexture" length_s="1.0" length_t="1.0" />
+			<children> 
+                <primitiveref id="rectangle"/>
+			</children> 
+		</component>
+
+        <component id="tv_support"> 
+			<transformation>
+                <scale x="0.5" y="0.5" z="0.4" />
+			</transformation>
+			<materials> 
+				<material id="tvMaterial" />
+			</materials> 
+			<texture id="none" length_s="1.0" length_t="1.0" />
+			<children> 
+				<primitiveref id="cylinder" />
+			</children> 
+		</component>
+
+        <component id="picture"> 
+			<transformation>
+                <translate x="0.51" y="10" z="30" />
+                <rotate axis="y" angle="90" />
+                <scale x="4" y="4" z="1" />
+			</transformation>
+			<materials> 
+				<material id="tvScreenMaterial" />
+			</materials> 
+			<texture id="amadeu" length_s="1.0" length_t="1.0" />
+			<children> 
+                <primitiveref id="rectangle"/>
+			</children> 
+		</component>
+
+        <component id="floater"> 
+			<transformation>
+                <translate x="30" y="4.5" z="2.8" />
+                <rotate axis="x" angle="-15" />
+                <scale x="1" y="1" z="1" />
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="floaterTexture" length_s="1" length_t="1" />
+			<children> 
+                <primitiveref id="torus"/>
+			</children> 
+		</component>
+
+        <component id="ball"> 
+			<transformation>
+                <translate x="35" y="2" z="8" />
+                <scale x="4" y="4" z="4" />
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="ballTexture" length_s="1.0" length_t="1.0" />
+			<children> 
+                <primitiveref id="sphere"/>
+			</children> 
+		</component>
+
+        <component id="triangle"> 
+			<transformation>
+                <translate x="30" y="11" z="0.52" />
+                <scale x="4" y="4" z="1" />
+			</transformation>
+			<materials> 
+				<material id="tvScreenMaterial" />
+			</materials> 
+			<texture id="triangleTexture" length_s="1" length_t="1.0" />
+			<children> 
+                <primitiveref id="triangle"/>
+			</children> 
+		</component>
+
     </components>
 </yas>
