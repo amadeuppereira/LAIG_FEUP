@@ -130,7 +130,7 @@
         </material>
 
         <material id="portalMaterial" shininess="10">
-            <emission r="0" g="0" b="0" a="0"/>
+            <emission r="0" g="0.9" b="0.3" a="1"/>
             <ambient r="0" g="0.9" b="0.3" a="1"/>
             <diffuse r="0" g="0.9" b="0.3" a="1"/>
             <specular r="0" g="0" b="0" a="1"/>
