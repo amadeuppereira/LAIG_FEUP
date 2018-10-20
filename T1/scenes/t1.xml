@@ -57,16 +57,16 @@
         </omni>
 
         <spot id="carSpotLight1" enabled="1" angle="30" exponent="50">
-            <location x="18.6" y="5.3" z="52" w="0"/>
-            <target x="18.6" y="5.3" z="60" />
+            <location x="18.6" y="18.3" z="32" w="0"/>
+            <target x="18.6" y="18.3" z="50" />
             <ambient r="0" g="0" b="0" a="0"/>
             <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
             <specular r="0.5" g="0.5" b="0.5" a="0"/>
         </spot>
 
         <spot id="carSpotLight2" enabled="1" angle="30" exponent="50">
-            <location x="9" y="5.3" z="52" w="0"/>
-            <target x="9" y="5.3" z="60" />
+            <location x="9" y="18.3" z="32" w="0"/>
+            <target x="9" y="18.3" z="50" />
             <ambient r="0" g="0" b="0" a="0"/>
             <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
             <specular r="0.5" g="0.5" b="0.5" a="0"/>
@@ -1661,6 +1661,7 @@
 
 		<component id="meeseeks">
 			<transformation>
+                <scale x="0.9" y="0.7" z="0.9" />
 			</transformation>
 			<materials>
 				<material id="meeseeks"/>
@@ -1933,9 +1934,8 @@
 
         <component id="ship">
 			<transformation>
-                <translate x="15" y="2" z="40"/>
+                <translate x="15" y="15" z="20"/>
                 <scale x="3" y="3" z="3"/>
-
 			</transformation>
 			<materials>
 				<material id="shipMaterial"/>
