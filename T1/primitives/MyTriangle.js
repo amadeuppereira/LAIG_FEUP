@@ -71,5 +71,4 @@ class MyTriangle extends CGFobject
 
 		// console.log(this.texCoords);
 	}
-
 };

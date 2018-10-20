@@ -1615,7 +1615,7 @@
 			<materials> 
 				<material id="tvScreenMaterial" />
 			</materials> 
-			<texture id="triangleTexture" length_s="1" length_t="1.0" />
+			<texture id="amadeu" length_s="1" length_t="1" />
 			<children> 
                 <primitiveref id="triangle"/>
 			</children> 

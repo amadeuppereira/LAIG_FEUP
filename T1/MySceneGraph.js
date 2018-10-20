@@ -1482,10 +1482,6 @@ in the primitive with ID = " + primitiveId;
                 textureLengthS = this.reader.getFloat(temp, 'length_s');
                 textureLengthT = this.reader.getFloat(temp, 'length_t');
             }
-            // if((this.reader.hasAttribute(temp, 'length_s')) && (this.reader.hasAttribute(temp, 'length_s') == false)
-            // || (this.reader.hasAttribute(temp, 'length_s')) == false && (this.reader.hasAttribute(temp, 'length_s'))){
-            //     return "error on lenght_s and/or lenght_t in texture with ID = " + textureID;
-            // }
             if(this.reader.hasAttribute(temp, 'length_s') != this.reader.hasAttribute(temp, 'length_t')) {
                 return "error on lenght_s and/or lenght_t in component with ID = " + componentId;
             }
@@ -1566,13 +1562,13 @@ in the primitive with ID = " + primitiveId;
             });   
         }
 
+        //Creates Components objects
         var componentsTemp = [];
         components.forEach(function(element) {
             componentsTemp.push(new MyComponent(element.id, element.transformations, element.materials, element.texture, element.children));
         })
-
         
-        //second round
+        //Adding childrens to the components
         for(let i = 0; i < componentsTemp.length; i++){
             var childrens = componentsTemp[i].children.componentref.slice();
             componentsTemp[i].children.componentref = [];

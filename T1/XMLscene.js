@@ -45,6 +45,7 @@ class XMLscene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -85,6 +86,9 @@ class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Creates all the scene cameras and stores them in an array.
+     */
     initViews(){
         this.views = [];
         for(var key in this.graph.views){
@@ -108,7 +112,8 @@ class XMLscene extends CGFscene {
     }
 
 
-    /* Handler called when the graph is finally loaded. 
+    /* 
+     * Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
@@ -138,6 +143,9 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
     }
 
+    /**
+     * Updates scene lights.
+     */
     updateLights(){
         var i = 0;
         for (var key in this.lightValues) {
@@ -156,15 +164,24 @@ class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Changes current camera when changed on gui.
+     */
     changeCamera(currentCamera){
         this.camera = this.views[currentCamera];
         this.interface.setActiveCamera(this.camera);
     }
 
+    /**
+     * Updates camera near attribute when changes on gui.
+     */
     updateCameraNear(){
         this.camera.near = this.cameraNear;
     }
 
+    /**
+     * Checks keyboard keys pressed.
+     */
     checkKeyPressed(){
         if(this.gui.isKeyPressed("KeyM") && this.KeyMPressed == false){
             this.KeyMPressed = true;

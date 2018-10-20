@@ -45,6 +45,10 @@ class MyInterface extends CGFinterface {
 
     }
 
+    /**
+     * Adds a dropdown for all the cameras stores in the scene passed as parameter.
+     * @param {CGFscene} scene
+     */
     addViews(scene){
         var viewsKeys = [];
         for (var key in this.scene.views) {
@@ -59,6 +63,10 @@ class MyInterface extends CGFinterface {
         });
     }
 
+    /**
+     * Adds a slide to change the camera near attribute of the scene passed as parameter.
+     * @param {CGFscene} scene
+     */
     addNear(scene){
         var controller = this.gui.add(scene, 'cameraNear', 0.1, 300);
         controller.onChange(function(value){
@@ -66,24 +74,39 @@ class MyInterface extends CGFinterface {
         });
     }
 
+    /**
+     * Initializes keyboard keys reader.
+     */
     initKeys() {
 		this.scene.gui=this;
 		this.processKeyboard=function(){};
 		this.activeKeys={};
 	}
-	
+    
+    /**
+     * Processes key pressed.
+     */
 	processKeyDown(event) {
 		this.activeKeys[event.code]=true;
 	};
 
+    /**
+     * Processes key released.
+     */
 	processKeyUp(event) {
 		this.activeKeys[event.code]=false;
 	};
 
+    /**
+     * Checks if a key is pressed.
+     */
 	isKeyPressed(keyCode) {
 		return this.activeKeys[keyCode] || false;
     }
     
+    /**
+     * Checks if a key is released.
+     */
     isKeyReleased(keyCode){
         if(this.activeKeys[keyCode])
             return false;
