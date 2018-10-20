@@ -1350,17 +1350,17 @@ in the primitive with ID = " + primitiveId;
                             // x
                             var x = this.reader.getFloat(componentTransformationsChildren[j], 'x');
                             if (!(x != null && !isNaN(x)))
-                                return "unable to parse translation x for the transformations";
+                                return "unable to parse translation x for the transformations in component with ID = " + componentId;
 
                             // y
                             var y = this.reader.getFloat(componentTransformationsChildren[j], 'y');
                             if (!(y != null && !isNaN(y)))
-                                return "unable to parse translation y for the transformations";
+                                return "unable to parse translation y for the transformations in component with ID = " + componentId;
 
                             // z
                             var z = this.reader.getFloat(componentTransformationsChildren[j], 'z');
                             if (!(z != null && !isNaN(z)))
-                                return "unable to parse translation z for the transformations";
+                                return "unable to parse translation z for the transformations in component with ID = " + componentId;
                             
                             innerTransformations.push({type: 1, x: x, y: y, z: z});
 
@@ -1369,12 +1369,12 @@ in the primitive with ID = " + primitiveId;
                             // axis
                             var axis = this.reader.getString(componentTransformationsChildren[j], 'axis');
                             if (!(axis != null) || (axis != "x" && axis != "y" && axis != "z"))
-                                return "unable to parse rotation axis for the transformations";
+                                return "unable to parse rotation axis for the transformations in component with ID = " + componentId;
 
                             // angle
                             var angle = this.reader.getFloat(componentTransformationsChildren[j], 'angle');
                             if (!(angle != null && !isNaN(angle)))
-                                return "unable to parse rotation angle for the transformations";
+                                return "unable to parse rotation angle for the transformations in component with ID = " + componentId;
                             
                             innerTransformations.push({type: 2, axis: axis, angle: angle*DEGREE_TO_RAD});
 
@@ -1382,17 +1382,17 @@ in the primitive with ID = " + primitiveId;
                             // x
                             var x = this.reader.getFloat(componentTransformationsChildren[j], 'x');
                             if (!(x != null && !isNaN(x)))
-                                return "unable to parse scale x value for the transformations";
+                                return "unable to parse scale x value for the transformations in component with ID = " + componentId;
 
                             // y
                             var y = this.reader.getFloat(componentTransformationsChildren[j], 'y');
                             if (!(y != null && !isNaN(y)))
-                                return "unable to parse scale y value for the transformations";
+                                return "unable to parse scale y value for the transformations in component with ID = " + componentId;
 
                             // z
                             var z = this.reader.getFloat(componentTransformationsChildren[j], 'z');
                             if (!(z != null && !isNaN(z)))
-                                return "unable to parse scale y value for the transformations";
+                                return "unable to parse scale y value for the transformations in component with ID = " + componentId;
                             
                             innerTransformations.push({type: 3, x: x, y: y, z: z});
 
@@ -1404,7 +1404,7 @@ in the primitive with ID = " + primitiveId;
                     }
 
                     if(innerTCounter == 0) {
-                        return "at least one action must be defined for tansformation";
+                        return "at least one action must be defined for tansformation in component with ID = " + componentId;
                     }
 
                     this.scene.loadIdentity();
