@@ -1117,8 +1117,9 @@ class MySceneGraph {
                 
             // Checks for repeated IDs.
             for(let i = 0; i < primitives.length; i++){
-                if(primitives[i].type == primitiveId)
-                return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
+                if(primitives[i].id == primitiveId) {
+                    return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
+                }
             }
 
             var grandChildren = children[i].children;

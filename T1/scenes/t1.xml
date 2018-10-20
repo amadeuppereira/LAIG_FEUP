@@ -1,6 +1,6 @@
 <yas>
 
-    <scene root="myScene" axis_length="100" />
+    <scene root="myScene" axis_length="5" />
 
     <views default="scene_view" >
 
@@ -56,25 +56,17 @@
             <specular r="0.7" g="0.7" b="0.7" a="1"/>
         </omni>
 
-        <spot id="spotLight1" enabled="1" angle="15" exponent="50">
-            <location x="0" y="30" z="100" w="0" />
-            <target x="50" y="0" z="50" />
+        <spot id="carSpotLight1" enabled="1" angle="30" exponent="50">
+            <location x="18.6" y="5.3" z="52" w="0"/>
+            <target x="18.6" y="5.3" z="60" />
             <ambient r="0" g="0" b="0" a="0"/>
             <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
             <specular r="0.5" g="0.5" b="0.5" a="0"/>
         </spot>
 
-        <spot id="spotLight2" enabled="0" angle="15" exponent="50">
-            <location x="100" y="30" z="0" w="0" />
-            <target x="50" y="0" z="50" />
-            <ambient r="0" g="0" b="0" a="0"/>
-            <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
-            <specular r="0.5" g="0.5" b="0.5" a="0"/>
-        </spot>
-
-        <spot id="spotLight3" enabled="0" angle="15" exponent="50">
-            <location x="0" y="30" z="0" w="0" />
-            <target x="50" y="0" z="50" />
+        <spot id="carSpotLight2" enabled="1" angle="30" exponent="50">
+            <location x="9" y="5.3" z="52" w="0"/>
+            <target x="9" y="5.3" z="60" />
             <ambient r="0" g="0" b="0" a="0"/>
             <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
             <specular r="0.5" g="0.5" b="0.5" a="0"/>
@@ -102,6 +94,8 @@
         <texture id="ballTexture" file="./scenes/images/ball.png" />
         <texture id="triangleTexture" file="./scenes/images/triangle.png" />
         <texture id="meeseeks_face" file="./scenes/images/meeseeks.png" />
+        <texture id="shipTexture" file="./scenes/images/ship.png" />
+        <texture id="thrusterTexture" file="./scenes/images/thruster.png" />
 
     </textures>
 
@@ -247,6 +241,28 @@
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 
+        <material id="shipMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0" b="0" a="1"/>
+            <diffuse r="0.57" g="0.57" b="0.57" a="1"/>
+            <specular r="0.57" g="0.57" b="0.57" a="1"/>
+        </material>
+
+        <material id="shipMaterial1" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0" b="0" a="1"/>
+            <diffuse r="0" g="0.19" b="0" a="1"/>
+            <specular r="0" g="0.19" b="0" a="1"/>
+        </material>
+
+        <material id="shipLightsMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0" b="0" a="1"/>
+            <diffuse r="1" g="1" b="0" a="1"/>
+            <specular r="1" g="1" b="0" a="1"/>
+        </material>
+        
+
     </materials>
 
     <transformations>
@@ -290,11 +306,19 @@
 
         <primitive id="rectangle">          
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />      
-        </primitive >
+        </primitive>
 
         <primitive id="cylinder">
             <cylinder base="0.5" top="0.5" height="1" slices="20" stacks="20" />
-        </primitive >
+        </primitive>
+
+        <primitive id="ship_body">
+            <cylinder base="5" top="3" height="2" slices="30" stacks="30" />
+        </primitive>
+
+        <primitive id="ship_torus">
+            <torus inner="0.2" outer="3" slices="50" loops="50" />          
+        </primitive>
 
         <primitive id="robot_arm">
             <cylinder base="0.7" top="0.2" height="4" slices="8" stacks="8" />
@@ -302,11 +326,11 @@
 
         <primitive id="sphere">
             <sphere radius="0.5" slices="50" stacks="20" />
-        </primitive >
+        </primitive>
 
         <primitive id="sphere_tree">
             <sphere radius="0.5" slices="8" stacks="8" />
-        </primitive >
+        </primitive>
 
         <primitive id="torus">
             <torus inner="1.5" outer="3" slices="50" loops="50" />
@@ -343,6 +367,7 @@
                 <componentref id="meeseeks_3"/>
                 <componentref id="meeseeks_4"/>
                 <componentref id="meeseeks_5"/>
+                <componentref id="ship"/>
             </children>
         </component>
 
@@ -1906,6 +1931,228 @@
 			</children>
 		</component>
 
+        <component id="ship">
+			<transformation>
+                <translate x="15" y="2" z="40"/>
+                <scale x="3" y="3" z="3"/>
+
+			</transformation>
+			<materials>
+				<material id="shipMaterial"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_body"/>
+                <componentref id="ship_dome"/>
+                <componentref id="ship_thruster_left"/>
+                <componentref id="ship_thruster_right"/>
+                <componentref id="ship_light_left"/>
+                <componentref id="ship_light_right"/>
+			</children>
+		</component>
+
+        <component id="ship_body">
+			<transformation>
+                <rotate axis="x" angle="-90"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="shipTexture" length_s="1" length_t="1"/>
+			<children>
+				<primitiveref id="ship_body"/>
+			</children>
+		</component>
+
+        <component id="ship_dome">
+			<transformation>
+                <translate x="0" y="2" z="0"/>
+			</transformation>
+			<materials>
+				<material id="default"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_dome_1"/>
+                <componentref id="ship_dome_2"/>
+			</children>
+		</component>
+
+        <component id="ship_dome_1">
+			<transformation>
+                <scale x="6" y="6" z="6"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<primitiveref id="sphere"/>
+			</children>
+		</component>
+
+        <component id="ship_dome_2">
+			<transformation>
+                <scale x="1" y="2" z="1"/>
+                <rotate axis="x" angle="-90"/>
+			</transformation>
+			<materials>
+				<material id="shipMaterial1"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<primitiveref id="ship_torus"/>
+			</children>
+		</component>
+
+        <component id="ship_thruster_left">
+			<transformation>
+                <translate x="-3" y="1.5" z="0"/>
+                <rotate axis="y" angle="180"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_thruster"/>
+			</children>
+		</component>
+
+        <component id="ship_thruster_right">
+			<transformation>
+                <translate x="3" y="1.5" z="0"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_thruster"/>
+			</children>
+		</component>
+
+        <component id="ship_thruster">
+			<transformation>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_thruster_1"/>
+                <componentref id="ship_thruster_2"/>
+			</children>
+		</component>
+
+        <component id="ship_thruster_1">
+			<transformation>
+                <translate x="2" y="1" z="-1.5"/>                
+                <scale x="2" y="2" z="3"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="thrusterTexture" length_s="1" length_t="1"/>
+			<children>
+				<primitiveref id="cylinder"/>
+			</children>
+		</component>
+
+        <component id="ship_thruster_2">
+			<transformation>
+                <rotate axis="z" angle="-50"/>
+                <rotate axis="x" angle="-90"/>
+                <scale x="0.2" y="0.2" z="2"/>
+			</transformation>
+			<materials>
+				<material id="shipMaterial1"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<primitiveref id="cylinder"/>
+			</children>
+		</component>
+
+         <component id="ship_light_left">
+			<transformation>
+                <translate x="1.2" y="1.1" z="4"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_light"/>
+			</children>
+		</component>
+
+        <component id="ship_light_right">
+			<transformation>
+                <translate x="-2" y="1.1" z="4"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_light"/>
+			</children>
+		</component>
+
+        <component id="ship_light">
+			<transformation>
+                <scale x="0.4" y="0.4" z="0.4"/>
+			</transformation>
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+				<componentref id="ship_light_1"/>
+                <componentref id="ship_light_2"/>
+                <componentref id="ship_light_3"/>
+			</children>
+		</component>
+
+        <component id="ship_light_1">
+			<transformation>
+			</transformation>
+			<materials>
+				<material id="shipLightsMaterial"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+                <primitiveref id="sphere"/>
+			</children>
+		</component>
+        
+        <component id="ship_light_2">
+			<transformation>
+                <scale x="0.2" y="0.2" z="0.2"/>
+			</transformation>
+			<materials>
+				<material id="shipLightsMaterial"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+                <primitiveref id="torus"/>
+			</children>
+		</component>
+
+        <component id="ship_light_3">
+			<transformation>
+                <translate x="0" y="0" z="-1"/>
+                <scale x="2" y="2" z="2"/>
+			</transformation>
+			<materials>
+				<material id="shipMaterial1"/>
+			</materials>
+			<texture id="none" length_s="1" length_t="1"/>
+			<children>
+                <componentref id="cube"/>
+			</children>
+		</component>
 
     </components>
 </yas>
