@@ -1334,7 +1334,7 @@ in the primitive with ID = " + primitiveId;
             var temp = grandChildren[0];
             var componentTransformations = [];
             if(temp.nodeName != "transformation")
-                return "missing transformation tag in component with ID = " + componentId;
+                return "missing / out of order transformation tag in component with ID = " + componentId;
             
             var componentTransformationsChildren = temp.children;
             if(componentTransformationsChildren.length != 0){
@@ -1436,7 +1436,7 @@ in the primitive with ID = " + primitiveId;
             var temp = grandChildren[1];
             var componentMaterials = [];
             if(temp.nodeName != "materials")
-                return "missing materials tag in component with ID = " + componentId;
+                return "missing / out of order materials tag in component with ID = " + componentId;
 
             var componentMaterialsCounter = 0;
             var componentMaterialChildren = temp.children;
@@ -1473,7 +1473,7 @@ in the primitive with ID = " + primitiveId;
             var temp = grandChildren[2];
             var componentTexture = [];
             if(temp.nodeName != "texture")
-                return "missing texture tag in component with ID = " + componentId;
+                return "missing / out of order texture tag in component with ID = " + componentId;
             
             var textureID = this.reader.getString(temp, 'id');
             var textureLengthS = null;
@@ -1482,6 +1482,10 @@ in the primitive with ID = " + primitiveId;
             if((this.reader.hasAttribute(temp, 'length_s')) && (this.reader.hasAttribute(temp, 'length_s'))){
                 textureLengthS = this.reader.getFloat(temp, 'length_s');
                 textureLengthT = this.reader.getFloat(temp, 'length_t');
+                if(textureLengthS == null || isNaN(textureLengthS) || textureLengthS <= 0 ||
+                textureLengthT == null || isNaN(textureLengthT) || textureLengthT <= 0) {
+                    return "error parsing lenght_s and/or lenght_t in component with ID = " + componentId + " (must be a number > 0)";
+                }
             }
             if(this.reader.hasAttribute(temp, 'length_s') != this.reader.hasAttribute(temp, 'length_t')) {
                 return "error on lenght_s and/or lenght_t in component with ID = " + componentId;
@@ -1518,7 +1522,7 @@ in the primitive with ID = " + primitiveId;
             var primitive = [];
             var component = [];
             if(temp.nodeName != "children")
-                return "missing children tag in component with ID = " + componentId;
+                return "missing / out of order children tag in component with ID = " + componentId;
 
             var componentChildrenCounter = 0;
             var componentChildrenChildren = temp.children;
