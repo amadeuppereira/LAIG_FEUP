@@ -5,15 +5,18 @@
     <views default="scene_view" >
 
         <perspective id="scene_view" near="0.1" far="500" angle="23">
-            <from x="90" y="180" z="180" />
-            <!-- <from x="15" y="15" z="15" /> -->
+            <from x="90" y="200" z="200" />
             <to x="50" y="0" z="50" />
-            <!-- <to x="0" y="0" z="0" /> -->
         </perspective>
 
         <perspective id="room_view" near="30" far="500" angle="30">
             <from x="26" y="20" z="70" />
             <to x="64" y="0" z="20" />
+        </perspective>
+
+        <perspective id="pickle_rick" near="0.1" far="500" angle="30">
+            <from x="41" y="8" z="30" />
+            <to x="41" y="0" z="25" />
         </perspective>
 
         <ortho id="house_ortho" near="0.1" far="500" left="-20" right="20" top="9" bottom="-9" >
@@ -24,6 +27,11 @@
         <ortho id="house_side_ortho" near="0.1" far="500" left="-20" right="20" top="9" bottom="-9" >
             <from x="35" y="9" z="40" />
             <to x="75" y="9" z="40" />
+        </ortho>
+
+        <ortho id="space_cruiser_ortho" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
+            <from x="15" y="21" z="40" />
+            <to x="15" y="21" z="20" />
         </ortho>
 
     </views>
@@ -57,7 +65,7 @@
         </omni>
 
         <spot id="carSpotLight1" enabled="1" angle="30" exponent="50">
-            <location x="18.6" y="18.3" z="32" w="0"/>
+            <location x="20" y="18.3" z="32" w="0"/>
             <target x="18.6" y="18.3" z="50" />
             <ambient r="0" g="0" b="0" a="0"/>
             <diffuse r="0.5" g="0.5" b="0.5" a="0"/>
@@ -92,7 +100,6 @@
         <texture id="amadeu" file="./scenes/images/amadeu.png" />
         <texture id="floaterTexture" file="./scenes/images/floater.png" />
         <texture id="ballTexture" file="./scenes/images/ball.png" />
-        <texture id="triangleTexture" file="./scenes/images/triangle.png" />
         <texture id="meeseeks_face" file="./scenes/images/meeseeks.png" />
         <texture id="shipTexture" file="./scenes/images/ship.png" />
         <texture id="thrusterTexture" file="./scenes/images/thruster.png" />
@@ -136,11 +143,25 @@
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 
+        <material id="portalBlueMaterial" shininess="10">
+            <emission r="0" g="0" b="0.9" a="1"/>
+            <ambient r="0" g="0" b="0.9" a="1"/>
+            <diffuse r="0" g="0" b="0.9" a="1"/>
+            <specular r="0" g="0" b="0.9" a="1"/>
+        </material>
+
         <material id="wallMaterial" shininess="1">
             <emission r="0" g="0" b="0" a="0"/>
             <ambient r="1" g="1" b="0.9" a="1"/>
             <diffuse r="1" g="1" b="0.9" a="1"/>
             <specular r="1" g="1" b="0.9" a="1"/>
+        </material>
+
+        <material id="wallGreenMaterial" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0" g="0.6" b="0.3" a="1"/>
+            <diffuse r="0" g="0.6" b="0.3" a="1"/>
+            <specular r="0" g="0.6" b="0.3" a="1"/>
         </material>
 
         <material id="robotWheelsMaterial" shininess="1">
@@ -183,6 +204,13 @@
             <ambient r="0" g="0.5" b="0" a="1"/>
             <diffuse r="0" g="0.5" b="0" a="1"/>
             <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="treeTopRedMaterial" shininess="1">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.6" g="0" b="0" a="1"/>
+            <diffuse r="0.6" g="0" b="0" a="1"/>
+            <specular r="0.6" g="0" b="0" a="1"/>
         </material>
 
         <material id="treeBottomMaterial" shininess="1">
@@ -405,8 +433,8 @@
                 <transformationref id="transformationGround"/>
             </transformation>
             <materials>
-                <material id="groundMaterial"/>
                 <material id="rockMaterial"/>
+                <material id="groundMaterial"/>
             </materials>
             <texture id="groundTexture" length_s="0.5" length_t="0.5" />
             <children>
@@ -499,6 +527,7 @@
             </transformation>
             <materials>
                 <material id="portalMaterial"/>
+                <material id="portalBlueMaterial"/>
             </materials>
             <texture id="portalTexture" length_s="1" length_t="1" />
             <children>
@@ -512,6 +541,7 @@
             </transformation>
             <materials>
                 <material id="portalMaterial"/>
+                <material id="portalBlueMaterial"/>
             </materials>
             <texture id="portalTexture" length_s="1" length_t="1" />
             <children>
@@ -538,6 +568,7 @@
             </transformation>
             <materials>
                 <material id="wallMaterial"/>
+                <material id="wallGreenMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -553,6 +584,7 @@
             </transformation>
             <materials>
                 <material id="wallMaterial"/>
+                <material id="wallGreenMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -568,6 +600,7 @@
             </transformation>
             <materials>
                 <material id="wallMaterial"/>
+                <material id="wallGreenMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -583,6 +616,7 @@
             </transformation>
             <materials>
                 <material id="wallMaterial"/>
+                <material id="wallGreenMaterial"/>
             </materials>
             <texture id="wallTexture" length_s="1" length_t="1" />
             <children>
@@ -1173,6 +1207,7 @@
             </transformation>
             <materials>
                 <material id="treeTopMaterial"/>
+                <material id="treeTopRedMaterial"/>
             </materials>
             <texture id="treetopTexture" length_s="1" length_t="1" />
             <children>
@@ -2105,7 +2140,7 @@
 
          <component id="ship_light_left">
 			<transformation>
-                <translate x="1.2" y="1.1" z="4"/>
+                <translate x="2" y="1.1" z="4"/>
 			</transformation>
 			<materials>
 				<material id="inherit"/>
@@ -2337,7 +2372,6 @@
                 <componentref id="pickle_rick_balls_5"/>
                 <componentref id="pickle_rick_balls_6"/>
                 <componentref id="pickle_rick_balls_7"/>
-                <componentref id="pickle_rick_balls_8"/>
 			</children>
 		</component>
 
@@ -2395,19 +2429,6 @@
 
          <component id="pickle_rick_balls_5">
             <transformation>
-                <translate x="0.6" y="0.9" z="4"/>
-			</transformation>
-			<materials>
-				<material id="inherit"/>
-			</materials>
-			<texture id="none" length_s="1" length_t="1"/>
-			<children>
-                <componentref id="pickle_rick_ball"/>
-			</children>
-		</component>
-
-         <component id="pickle_rick_balls_6">
-            <transformation>
                 <translate x="0.75" y="0.7" z="3"/>
 			</transformation>
 			<materials>
@@ -2419,7 +2440,7 @@
 			</children>
 		</component>
 
-        <component id="pickle_rick_balls_7">
+        <component id="pickle_rick_balls_6">
             <transformation>
                 <translate x="-0.4" y="0.65" z="1.5"/>
 			</transformation>
@@ -2432,7 +2453,7 @@
 			</children>
 		</component>
 
-         <component id="pickle_rick_balls_8">
+         <component id="pickle_rick_balls_7">
             <transformation>
                 <translate x="-0.5" y="0.8" z="0"/>
 			</transformation>
