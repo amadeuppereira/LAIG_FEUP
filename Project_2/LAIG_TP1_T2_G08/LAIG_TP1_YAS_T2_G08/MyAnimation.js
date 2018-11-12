@@ -7,18 +7,9 @@ class MyAnimation {
     /**
      * @constructor
      */
-    constructor() {
+    constructor() {}
 
+    update(){}
 
-    }
-
-    update(){
-
-    }
-
-    apply(){
-        
-    }
-
-
+    apply(){}
 }

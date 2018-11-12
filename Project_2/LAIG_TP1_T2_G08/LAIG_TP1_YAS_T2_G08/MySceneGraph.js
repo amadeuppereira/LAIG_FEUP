@@ -8,8 +8,9 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -176,6 +177,18 @@ class MySceneGraph {
 
             //Parse transformations block
             if ((error = this.parseTransformations(nodes[index])) != null)
+                return error;
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
+
+            //Parse transformations block
+            if ((error = this.parseAnimations(nodes[index])) != null)
                 return error;
         }
 
@@ -1095,6 +1108,107 @@ class MySceneGraph {
     }
 
     /**
+     * Parses the <animations> block.
+     * @param {animations block element} animationsNode
+     */
+    parseAnimations(animationsNode) {
+        var children = animationsNode.children;
+
+        var animations = [];
+        
+        for(let i = 0; i < children.length; i++) {
+            if(children[i].nodeName != "linear" && children[i].nodeName != "circular") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            //get the id of the current animation
+            var animationId = this.reader.getString(children[i], 'id');
+            if (animationId == null)
+                return "no ID defined for animation";
+                
+            // Checks for repeated IDs.
+            for(let i = 0; i < animations.length; i++){
+                if(animations[i].id == animationId) {
+                    return "ID must be unique for each animation (conflict: ID = " + animationId + ")";
+                }
+            }
+
+            //get the span of the current animation
+            var animationSpan = this.reader.getFloat(children[i], 'span');
+            if (animationSpan == null && !isNaN(animationSpan))
+                return "no span defined for animation";
+
+
+            if(children[i].nodeName == "linear"){
+                var grandChildren = children[i].children;
+
+                var controlpoints = [];
+                if(grandChildren.length != 2) {
+                    return "There must be at least two control points in the animation with ID = " + animationId;
+                }
+                for(let j = 0; j < grandChildren.length; j++) {
+                    if(grandChildren[j].nodeName == "controlpoint") {
+                        // x
+                        var x = this.reader.getFloat(grandChildren[j], 'x');
+                        if (!(x != null && !isNaN(x)))
+                            return "unable to parse controlpoint x for animation with ID = " + animationId;
+    
+                        // y
+                        var y = this.reader.getFloat(grandChildren[j], 'y');
+                        if (!(y != null && !isNaN(y)))
+                            return "unable to parse controlpoint y for animation with ID = " + animationId;
+    
+                        // z
+                        var z = this.reader.getFloat(grandChildren[j], 'z');
+                        if (!(z != null && !isNaN(z)))
+                            return "unable to parse controlpoint z for animation with ID = " + animationId;
+                        
+                        controlpoints.push({x: x, y: y, z: z});
+                    } else{
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
+                        continue;
+                    }
+                }
+                var animation = new MyLinearAnimation(this.scene, animationId, animationSpan, controlpoints);
+                animations.push(animation);
+            }
+            else {
+                var animationCenter = this.reader.getString(children[i], 'center');
+                if (animationCenter == null)
+                    return "no center defined for animation";
+                animationCenter = animationCenter.split(" ");
+                if(animationCenter.length != 3)
+                    return "wrong center coordinates for animation"
+                
+                for(let i = 0; i < animationCenter.length; i++){
+                    animationCenter[i] = parseInt(animationCenter[i]);
+                }
+                
+                var animationRadius = this.reader.getFloat(children[i], 'radius');
+                if (animationRadius == null && !isNaN(animationRadius))
+                    return "no radius defined for animation";
+
+                var animationStartAng = this.reader.getFloat(children[i], 'startang');
+                if (animationStartAng == null && !isNaN(animationStartAng))
+                    return "no startang defined for animation";
+                
+                var animationRotAng = this.reader.getFloat(children[i], 'rotang');
+                if (animationRotAng == null && !isNaN(animationRotAng))
+                    return "no rotang defined for animation";
+
+                var animation = new MyCircularAnimation(this.scene, animationId, animationSpan, animationCenter, animationStartAng, animationRotAng, animationRadius);
+                animations.push(animation);
+            }
+        }
+
+        this.animations = animations;
+        this.log("Parsed animations");
+
+        return null;
+    }
+
+    /**
      * Parses the <primitives> block.
      * @param {primitives block element} primitivesNode
      */
@@ -1309,6 +1423,7 @@ in the primitive with ID = " + primitiveId;
         var components = [];
 
         for(let i = 0; i < children.length; i++) {
+            var counter = 0;
             if(children[i].nodeName != "component") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
@@ -1326,12 +1441,13 @@ in the primitive with ID = " + primitiveId;
             }
 
             var grandChildren = children[i].children;
-            if(grandChildren.length != 4) {
-                return "There must be a transformation, materials, texture and a children tags in component with ID = " +componentId;
+            if(grandChildren.length < 4) {
+                return "There must be a transformation, materials, texture and a children tags in component with ID = " + componentId;
             }
 
             //Transformation
-            var temp = grandChildren[0];
+            var temp = grandChildren[counter];
+            counter++;
             var componentTransformations = [];
             if(temp.nodeName != "transformation")
                 return "missing / out of order transformation tag in component with ID = " + componentId;
@@ -1431,9 +1547,23 @@ in the primitive with ID = " + primitiveId;
             else{
                 componentTransformations = null;
             }
+            
+            //Animations
+            var temp = grandChildren[counter];
+            if(temp.nodeName == "animations"){
+
+
+
+                //handle animations here
+
+
+
+                counter++;
+            }
 
             //Materials
-            var temp = grandChildren[1];
+            var temp = grandChildren[counter];
+            counter++;
             var componentMaterials = [];
             if(temp.nodeName != "materials")
                 return "missing / out of order materials tag in component with ID = " + componentId;
@@ -1470,7 +1600,8 @@ in the primitive with ID = " + primitiveId;
             }
 
             //Texture
-            var temp = grandChildren[2];
+            var temp = grandChildren[counter];
+            counter++;
             var componentTexture = [];
             if(temp.nodeName != "texture")
                 return "missing / out of order texture tag in component with ID = " + componentId;
@@ -1517,7 +1648,8 @@ in the primitive with ID = " + primitiveId;
             }
             
             //Children
-            var temp = grandChildren[3];
+            var temp = grandChildren[counter];
+            counter++;
             var componentChildren = [];
             var primitive = [];
             var component = [];
