@@ -358,6 +358,18 @@
 
     </transformations>
 
+    <animations>
+        <linear id="linearAnimation" span="10">
+            <controlpoint x="0" y="0" z="0"/>
+            <controlpoint x="10" y="0" z="0"/>
+        </linear>
+        <circular id="circularAnimation" span="10" center="10 1 10" radius="5" startang="10" rotang="30"/>
+        <linear id="linearAnimation2" span="4">
+            <controlpoint x="2" y="1" z="9"/>
+            <controlpoint x="12" y="1" z="4"/>
+        </linear>
+    </animations>
+
     <primitives>
 
         <primitive id="rectangle">          
@@ -771,6 +783,9 @@
                 <translate x="10" y="0" z="40" />
                 <scale x="0.8" y="0.8" z="0.8"/>
             </transformation>
+            <animations>
+                <animationref id="linearAnimation"/>
+            </animations>
             <materials>
                 <material id="robotMaterial"/>
             </materials>
