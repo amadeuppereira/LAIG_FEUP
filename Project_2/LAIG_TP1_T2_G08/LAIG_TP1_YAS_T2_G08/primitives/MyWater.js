@@ -22,6 +22,8 @@ class MyWater extends MyPlane {
 
         this.texture = new CGFtexture(this.scene, this.idtexture);
         this.heightmap = new CGFtexture(this.scene, this.idheightmap);
+
+        this.t = 0;
     };
 
     display() {
