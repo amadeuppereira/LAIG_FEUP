@@ -17,29 +17,30 @@ class MyLinearAnimation extends MyAnimation{
         this.totalDistance = 0;
         this.routes = [];
         for(var i = 0; i < points.length - 1; i++){
-            this.totalDistance += vec3.dist(vec3.fromValues(points[i][0], points[i][1], points[i][2]), vec3.fromValues(points[i + 1][0], points[i + 1][1], points[i + 1][2]));
+            this.totalDistance += vec3.dist(vec3.fromValues(points[i].x, points[i].y, points[i].z), vec3.fromValues(points[i + 1].x, points[i + 1].y, points[i + 1].z));
             this.routes.push(this.totalDistance);
         }
-        this.animationVelocity = this.currentDistance / this.time;
+        this.animationVelocity = this.totalDistance / this.time;
         this.previousAngle = 0;
         
         this.difference = 0;
         this.currentFirstPoint = 0;
         this.currentSecondPoint = 0;
+        this.timeCounter = 0;
     }
 
-    update(time){
-        if(time > this.time)
-            time = this.time;
+    update(deltaTime){
+        this.timeCounter += (deltaTime / 1000);
 
+        if(this.timeCounter > this.time)
+            this.timeCounter = this.time;
+        
         //Calculations for translation
-        this.currentPosition = this.animationVelocity * time;
+        this.currentPosition = this.animationVelocity * this.timeCounter;
 
-        var i;
-        for(i = 0; i < this.routes.length; ){
-            if(this.currentPosition > this.routes[i])
-                i++;
-        }
+        var i = 0;
+        while (this.currentPosition > this.routes[i] && i < this.routes.length)
+		    i++;
 
         this.currentFirstPoint = this.points[i];
         this.currentSecondPoint = this.points[i+1];
@@ -48,21 +49,24 @@ class MyLinearAnimation extends MyAnimation{
             this.difference = this.currentPosition/this.routes[i];
         else
             this.difference = (this.currentPosition - this.routes[i-1]) / (this.routes[i] - this.routes[i-1]);
-
     
         //Calculations for rotation
-        var angle = Math.atan((this.currentSecondPoint[0] - p1[0]) / (this.currentSecondPoint[2] - p1[2]));
+        var angle = Math.atan((this.currentSecondPoint.x - this.currentFirstPoint.x) / (this.currentSecondPoint.z - this.currentFirstPoint.z));
 
-        if (this.currentSecondPoint[2] - this.currentFirstPoint[2] < 0)
+        if (this.currentSecondPoint.z - this.currentFirstPoint.z < 0)
             angle += Math.PI;
-        else if ((this.currentSecondPoint[0] - this.currentFirstPoint[0] == 0) && (this.currentSecondPoint[2] - this.currentFirstPoint[2] == 0))
+        else if ((this.currentSecondPoint.x - this.currentFirstPoint.x == 0) && (this.currentSecondPoint.z - this.currentFirstPoint.z == 0))
             angle = this.previousAngle;
     
         this.previousAngle = angle;
     }
 
     apply(){
-        this.scene.translate((this.currentSecondPoint[0] - this.currentFirstPoint[0]) * this.difference + this.currentFirstPoint[0], (this.currentSecondPoint[1] - this.currentFirstPoint[1]) * this.difference + this.currentFirstPoint[1], (this.currentSecondPoint[2] - this.currentFirstPoint[2]) * this.difference + this.currentFirstPoint[2]);
+        this.scene.translate((this.currentSecondPoint.x - this.currentFirstPoint.x) * this.difference + this.currentFirstPoint.x, (this.currentSecondPoint.y - this.currentFirstPoint.y) * this.difference + this.currentFirstPoint.y, (this.currentSecondPoint.z - this.currentFirstPoint.z) * this.difference + this.currentFirstPoint.z);
         this.scene.rotate(this.previousAngle, 0, 1, 0);
+    }
+
+    clone(){
+        return new MyLinearAnimation(this.scene, this.id, this.time, this.points);
     }
 }

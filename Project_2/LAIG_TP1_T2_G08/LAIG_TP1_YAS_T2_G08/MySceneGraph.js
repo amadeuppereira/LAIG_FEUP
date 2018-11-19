@@ -49,7 +49,7 @@ class MySceneGraph {
         this.reader.open('scenes/' + filename, this);
 
         this.materialDefault = new CGFappearance(this.scene);
-        this.materialCounter = 0; 
+        this.materialCounter = 0;
     }
 
 
@@ -1114,7 +1114,7 @@ class MySceneGraph {
     parseAnimations(animationsNode) {
         var children = animationsNode.children;
 
-        var animations = [];
+        this.animations = [];
         
         for(let i = 0; i < children.length; i++) {
             if(children[i].nodeName != "linear" && children[i].nodeName != "circular") {
@@ -1126,13 +1126,10 @@ class MySceneGraph {
             var animationId = this.reader.getString(children[i], 'id');
             if (animationId == null)
                 return "no ID defined for animation";
-                
+
             // Checks for repeated IDs.
-            for(let i = 0; i < animations.length; i++){
-                if(animations[i].id == animationId) {
-                    return "ID must be unique for each animation (conflict: ID = " + animationId + ")";
-                }
-            }
+            if (this.animations[animationId] != null)
+                return "ID must be unique for each animation (conflict: ID = " + animationId + ")";
 
             //get the span of the current animation
             var animationSpan = this.reader.getFloat(children[i], 'span');
@@ -1144,7 +1141,7 @@ class MySceneGraph {
                 var grandChildren = children[i].children;
 
                 var controlpoints = [];
-                if(grandChildren.length != 2) {
+                if(grandChildren.length < 2) {
                     return "There must be at least two control points in the animation with ID = " + animationId;
                 }
                 for(let j = 0; j < grandChildren.length; j++) {
@@ -1171,38 +1168,38 @@ class MySceneGraph {
                     }
                 }
                 var animation = new MyLinearAnimation(this.scene, animationId, animationSpan, controlpoints);
-                animations.push(animation);
+                this.animations[animationId] = animation;
             }
             else {
                 var animationCenter = this.reader.getString(children[i], 'center');
                 if (animationCenter == null)
-                    return "no center defined for animation";
+                    return "no center defined for animation with ID : " + animationId;
                 animationCenter = animationCenter.split(" ");
                 if(animationCenter.length != 3)
-                    return "wrong center coordinates for animation"
+                    return "wrong center coordinates for animation with ID : " + animationId;
                 
                 for(let i = 0; i < animationCenter.length; i++){
                     animationCenter[i] = parseInt(animationCenter[i]);
                 }
                 
                 var animationRadius = this.reader.getFloat(children[i], 'radius');
-                if (animationRadius == null && !isNaN(animationRadius))
-                    return "no radius defined for animation";
+                if (animationRadius == null || isNaN(animationRadius))
+                    return "no radius defined for animation with ID : " + animationId;
 
                 var animationStartAng = this.reader.getFloat(children[i], 'startang');
-                if (animationStartAng == null && !isNaN(animationStartAng))
-                    return "no startang defined for animation";
+                if (animationStartAng == null || isNaN(animationStartAng))
+                    return "no startang defined for animation with ID : " + animationId;
                 
                 var animationRotAng = this.reader.getFloat(children[i], 'rotang');
-                if (animationRotAng == null && !isNaN(animationRotAng))
-                    return "no rotang defined for animation";
+                if (animationRotAng == null || isNaN(animationRotAng))
+                    return "no rotang defined for animation with ID : " + animationId;
 
+                
                 var animation = new MyCircularAnimation(this.scene, animationId, animationSpan, animationCenter, animationStartAng, animationRotAng, animationRadius);
-                animations.push(animation);
+                this.animations[animationId] = animation;
             }
         }
 
-        this.animations = animations;
         this.log("Parsed animations");
 
         return null;
@@ -1550,14 +1547,17 @@ in the primitive with ID = " + primitiveId;
             
             //Animations
             var temp = grandChildren[counter];
+            var componentAnimations = [];
             if(temp.nodeName == "animations"){
-
-
-
-                //handle animations here
-
-
-
+                var componentAnimationsChildren = temp.children;
+                for(let i = 0; i < componentAnimationsChildren.length; i++){
+                    if(componentAnimationsChildren[i].nodeName == "animationref"){
+                        var newObject = this.animations[this.reader.getString(componentAnimationsChildren[i],'id')].clone();
+                        componentAnimations.push(newObject);
+                       if(componentAnimations == null)
+                           return "no animation with ID = " + this.reader.getString(componentAnimationsChildren[i],'id');
+                    }
+               }
                 counter++;
             }
 
@@ -1695,14 +1695,15 @@ in the primitive with ID = " + primitiveId;
                 transformations: componentTransformations,
                 materials: componentMaterials,
                 texture: componentTexture,
-                children: componentChildren
+                children: componentChildren,
+                animations: componentAnimations
             });   
         }
 
         //Creates Components objects
         var componentsTemp = [];
         components.forEach(function(element) {
-            componentsTemp.push(new MyComponent(element.id, element.transformations, element.materials, element.texture, element.children));
+            componentsTemp.push(new MyComponent(element.id, element.transformations, element.materials, element.texture, element.children, element.animations));
         })
         
         //Adding childrens to the components
@@ -1862,11 +1863,21 @@ in the primitive with ID = " + primitiveId;
             length_t = currComponent.texture.length_t;
         }
 
+        for(let n = 0; n < currComponent.animations.length; n++){
+            if(currComponent.animations[n].timeCounter == currComponent.animations[n].time)
+                currComponent.animations[n].apply();
+
+            if(currComponent.animations[n].timeCounter != currComponent.animations[n].time){
+                currComponent.animations[n].apply();
+                break;
+            }
+        }
+            
         for (let i = 0; i < currComponent.children.componentref.length; i++) {
-                    this.scene.pushMatrix();
-                    var children = currComponent.children.componentref[i];
-                    this.displaySceneRecursive(children, currMaterial, currTexture, length_s, length_t);
-                    this.scene.popMatrix();
+            this.scene.pushMatrix();
+            var children = currComponent.children.componentref[i];
+            this.displaySceneRecursive(children, currMaterial, currTexture, length_s, length_t);
+            this.scene.popMatrix();
         }
 
         for (let i = 0; i < currComponent.children.primitiveref.length; i++){

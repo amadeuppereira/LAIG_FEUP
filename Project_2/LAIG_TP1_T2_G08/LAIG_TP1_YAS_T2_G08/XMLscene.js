@@ -37,6 +37,9 @@ class XMLscene extends CGFscene {
 
         //to check when M key is pressed or released
         this.KeyMPressed = false;
+
+        this.FPS = 100;
+        this.setUpdatePeriod(1000/this.FPS);
     }
 
     /**
@@ -198,12 +201,9 @@ class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
-        // ---- BEGIN Background, camera and axis setup
-
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
 
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
@@ -222,9 +222,30 @@ class XMLscene extends CGFscene {
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
+
             this.popMatrix();
         }
+    }
 
-        // ---- END Background, camera and axis setup
+    update(currTime){
+        var today = new Date();
+
+		currTime -= today.getTimezoneOffset()*60*1000;
+
+		this.lastTime = this.lastTime || 0;
+		this.deltaTime = currTime - this.lastTime;
+		this.lastTime = currTime;
+
+        if(this.sceneInited){
+            var components = this.graph.components;
+            for(let i = 0; i < components.length; i++){
+                for(let n = 0; n < components[i].animations.length; n++){
+                    if(components[i].animations[n].timeCounter != components[i].animations[n].time){
+                        components[i].animations[n].update(this.deltaTime);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

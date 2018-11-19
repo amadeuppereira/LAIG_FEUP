@@ -11,13 +11,15 @@ class MyComponent {
      * @param materials
      * @param texture
      * @param children
+     * @param animations
      */
-    constructor(id, transformations, materials, texture, children) {
+    constructor(id, transformations, materials, texture, children, animations) {
         this.id = id;
         this.transformations = transformations;
         this.materials = materials;
         this.texture = texture;
         this.children = children;
+        this.animations = animations;
     }
 
     /*
