@@ -363,24 +363,20 @@
             <controlpoint x="30" y="0" z="55"/>
             <controlpoint x="15" y="0" z="55"/>
         </linear>
-        <linear id="robotAnimation2" span="0.0001">
-            <controlpoint x="0" y="0" z="-63"/>
-            <controlpoint x="-59" y="0" z="-63"/>
+        <linear id="robotAnimation2" span="3">
+            <controlpoint x="78" y="0" z="-4"/>
+            <controlpoint x="63" y="0" z="-4"/>
         </linear>
+        <circular id="robotCircularAnimation" span="3" center="63 0 -4" radius="0" startang="-90" rotang="180"/>
         <linear id="robotAnimation3" span="3">
-            <controlpoint x="0" y="0" z="0"/>
-            <controlpoint x="10" y="0" z="0"/>
+            <controlpoint x="63" y="0" z="-4"/>
+            <controlpoint x="78" y="0" z="-4"/>
         </linear>
         <linear id="robotAnimation4" span="3">
-            <controlpoint x="0" y="0" z="0"/>
-            <controlpoint x="0" y="0" z="10"/>
+            <controlpoint x="15" y="0" z="55"/>
+            <controlpoint x="30" y="0" z="55"/>
         </linear>
-        <linear id="robotAnimation5" span="3">
-            <controlpoint x="0" y="0" z="0"/>
-            <controlpoint x="15" y="0" z="0"/>
-        </linear>
-        <circular id="robotCircularAnimation" span="3" center="0 0 0" radius="0" startang="0" rotang="180"/>
-        <circular id="shipCircularAnimation" span="3" center="10 1 10" radius="5" startang="0" rotang="90"/>
+        <circular id="shipCircularAnimation" span="25" center="25 20 25" radius="30" startang="180" rotang="-1080"/>
     </animations>
 
     <primitives>
@@ -420,6 +416,35 @@
         <primitive id="triangle">
             <triangle x1="0.5" y1="1" z1="0" x2="0" y2="0" z2="0" x3="1" y3="0" z3="0" />
         </primitive>
+
+        <primitive id="plane">
+            <plane npartsU="5" npartsV="2"/>
+        </primitive>
+
+        <primitive id="patch">
+            <patch npointsU="2" npointsV="2" npartsU="2" npartsV="2" >
+                <controlpoint xx="0" yy="1" zz="2" />
+                <controlpoint xx="0" yy="2" zz="4" />
+                <controlpoint xx="0" yy="3" zz="5" />
+                <controlpoint xx="0" yy="4" zz="6" />
+            </patch>
+        </primitive>
+
+        <primitive id="vehicle">
+            <vehicle />
+        </primitive>
+
+        <primitive id="cylinder2">
+            <cylinder2 base="5" top="3" height="2" slices="30" stacks="30" />
+        </primitive>
+
+        <primitive id="terrain">
+            <terrain idtexture="ballTexture" idheightmap="ballTexture" parts="2" heightscale="2"/>
+        </primitive>
+
+        <primitive id="water">
+            <water idtexture="ballTexture" idwavemap="ballTexture" parts="2" heightscale="2" texscale="2"/>
+        </primitive>            
 
     </primitives >
 
@@ -799,11 +824,9 @@
             <animations>
                 <animationref id="robotAnimation1"/>
                 <animationref id="robotAnimation2"/>
-                <animationref id="robotAnimation3"/>
                 <animationref id="robotCircularAnimation"/>
+                <animationref id="robotAnimation3"/>
                 <animationref id="robotAnimation4"/>
-                <animationref id="robotAnimation2"/>
-                <animationref id="robotAnimation5"/>
             </animations>
             <materials>
                 <material id="robotMaterial"/>
@@ -2032,9 +2055,11 @@
 
         <component id="ship">
 			<transformation>
-                <translate x="15" y="15" z="20"/>
-                <scale x="3" y="3" z="3"/>
+                <scale x="2" y="2" z="2"/>
 			</transformation>
+            <animations>
+                <animationref id="shipCircularAnimation"/>
+            </animations>
 			<materials>
 				<material id="shipMaterial"/>
 			</materials>

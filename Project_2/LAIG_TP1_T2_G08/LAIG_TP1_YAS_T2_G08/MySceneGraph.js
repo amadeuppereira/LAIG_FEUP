@@ -1240,7 +1240,7 @@ in the primitive with ID = " + primitiveId;
             }
 
             var temp = grandChildren[0];
-            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus")
+            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water")
                 return "invalid tag in primitive with ID = " + primitiveId;
 
             switch(temp.nodeName) {
@@ -1390,8 +1390,165 @@ in the primitive with ID = " + primitiveId;
                     if (!(loops != null && !isNaN(loops)))
                         return "unable to parse loops value for primitive with ID = " + primitiveId;
 
-                        var torus = new MyTorus(this.scene, inner, outer, slices, loops);
-                        primitives.push({id: primitiveId, type: "torus", primitive: torus});
+                    var torus = new MyTorus(this.scene, inner, outer, slices, loops);
+                    primitives.push({id: primitiveId, type: "torus", primitive: torus});
+                    break;
+
+                case "plane":
+                    var npartsU = this.reader.getInteger(temp, 'npartsU');
+                    if (!(npartsU != null && !isNaN(npartsU)))
+                        return "unable to parse npartsU value for primitive with ID = " + primitiveId;
+
+                    var npartsV = this.reader.getInteger(temp, 'npartsV');
+                    if (!(npartsV != null && !isNaN(npartsV)))
+                        return "unable to parse npartsV value for primitive with ID = " + primitiveId;
+
+                    var plane = new MyPlane(this.scene, npartsU, npartsV);
+                    primitives.push({id: primitiveId, type: "plane", primitive: plane});
+                    break;
+
+                case "patch":
+                    var npointsU = this.reader.getInteger(temp, 'npointsU');
+                    if (!(npointsU != null && !isNaN(npointsU)))
+                        return "unable to parse npointsU value for primitive with ID = " + primitiveId;
+
+                    var npointsV = this.reader.getInteger(temp, 'npointsV');
+                    if (!(npointsV != null && !isNaN(npointsV)))
+                        return "unable to parse npointsV value for primitive with ID = " + primitiveId;
+
+                    var npartsU = this.reader.getInteger(temp, 'npartsU');
+                    if (!(npartsU != null && !isNaN(npartsU)))
+                        return "unable to parse npartsU value for primitive with ID = " + primitiveId;
+
+                    var npartsV = this.reader.getInteger(temp, 'npartsV');
+                    if (!(npartsV != null && !isNaN(npartsV)))
+                        return "unable to parse npartsV value for primitive with ID = " + primitiveId;
+
+                    var controlpoints = [];
+                    var grandGrandChildren = temp.children;
+                    if(grandGrandChildren.length != (npointsU * npointsV))
+                        return "invalid number of controlpoints for primitive with ID = " + primitiveId;
+
+                    for(let n = 0; n < grandGrandChildren.length; n++){
+                        var xx = this.reader.getFloat(grandGrandChildren[n], 'xx');
+                        if (!(xx != null && !isNaN(xx)))
+                            return "unable to parse xx value for primitive with ID = " + primitiveId;
+
+                        var yy = this.reader.getFloat(grandGrandChildren[n], 'yy');
+                        if (!(yy != null && !isNaN(yy)))
+                            return "unable to parse yy value for primitive with ID = " + primitiveId;
+
+                        var zz = this.reader.getFloat(grandGrandChildren[n], 'zz');
+                        if (!(zz != null && !isNaN(zz)))
+                            return "unable to parse zz value for primitive with ID = " + primitiveId;
+
+                        controlpoints.push([xx, yy, zz, 1]);
+                    }
+
+                    var patch = new MyPatch(this.scene, npointsU, npointsV, npartsU, npartsV, controlpoints);
+                    primitives.push({id: primitiveId, type: "patch", primitive: patch});
+                    break;
+
+                case "vehicle":
+                    var vehicle = new MyVehicle(this.scene);
+                    primitives.push({id: primitiveId, type: "vehicle", primitive: vehicle});
+                    break;
+
+                case "cylinder2":
+                    var base = this.reader.getFloat(temp, 'base');
+                    if (!(base != null && !isNaN(base)))
+                        return "unable to parse base value for primitive with ID = " + primitiveId;
+
+                    var top = this.reader.getFloat(temp, 'top');
+                    if (!(top != null && !isNaN(top)))
+                        return "unable to parse top value for primitive with ID = " + primitiveId;
+
+                    var height = this.reader.getFloat(temp, 'height');
+                    if (!(height != null && !isNaN(height)))
+                        return "unable to parse height value for primitive with ID = " + primitiveId;
+
+                    var slices = this.reader.getInteger(temp, 'slices');
+                    if (!(slices != null && !isNaN(slices)))
+                        return "unable to parse slices value for primitive with ID = " + primitiveId;
+
+                    var stacks = this.reader.getInteger(temp, 'stacks');
+                    if (!(stacks != null && !isNaN(stacks)))
+                        return "unable to parse stacks value for primitive with ID = " + primitiveId;
+
+                    var cylinder2 = new MyCylinder2(this.scene, base, top, height, slices, stacks);
+                    primitives.push({id: primitiveId, type: "cylinder2", primitive: cylinder2});
+                    break;
+
+                case "terrain":
+                    var idtexture = this.reader.getString(temp, 'idtexture');
+                    if (idtexture == null)
+                        return "no ID defined for texture in primitive with ID = " + primitiveId;
+
+                    var idheightmap = this.reader.getString(temp, 'idheightmap');
+                    if (idheightmap == null)
+                        return "no ID defined for height map in primitive with ID = " + primitiveId;
+
+                    var texture = null;
+                    var heightmap = null;
+                    for(let m = 0; m < this.textures.length; m++){
+                        if(this.textures[m].id == idtexture)
+                            texture = this.textures[m];
+                        if(this.textures[m].id == idheightmap)
+                            heightmap = this.textures[m];
+                    }
+                    if(texture == null)
+                        return "no texture with ID = " + idtexture + " in primitive with ID = "+ primitiveId;
+                    if(heightmap == null)
+                        return "no height map with ID = " + idheightmap + " in primitive with ID = "+ primitiveId;
+
+                    var parts = this.reader.getInteger(temp, 'parts');
+                    if (!(parts != null && !isNaN(parts)))
+                        return "unable to parse parts value for primitive with ID = " + primitiveId;
+
+                    var heightscale = this.reader.getFloat(temp, 'heightscale');
+                    if (!(heightscale != null && !isNaN(heightscale)))
+                        return "unable to parse heightscale value for primitive with ID = " + primitiveId;
+
+                    var terrain = new MyTerrain(this.scene, texture, heightmap, parts, heightscale);
+                    primitives.push({id: primitiveId, type: "terrain", primitive: terrain});
+                    break;
+                
+                case "water":
+                    var idtexture = this.reader.getString(temp, 'idtexture');
+                    if (idtexture == null)
+                        return "no ID defined for texture in primitive with ID = " + primitiveId;
+
+                    var idwavemap = this.reader.getString(temp, 'idwavemap');
+                    if (idwavemap == null)
+                        return "no ID defined for wave map in primitive with ID = " + primitiveId;
+
+                    var texture = null;
+                    var wavemap = null;
+                    for(let m = 0; m < this.textures.length; m++){
+                        if(this.textures[m].id == idtexture)
+                            texture = this.textures[m];
+                        if(this.textures[m].id == idwavemap)
+                            wavemap = this.textures[m];
+                    }
+                    if(texture == null)
+                        return "no texture with ID = " + idtexture + " in primitive with ID = "+ primitiveId;
+                    if(wavemap == null)
+                        return "no height map with ID = " + idwavemap + " in primitive with ID = "+ primitiveId;
+
+                    var parts = this.reader.getInteger(temp, 'parts');
+                    if (!(parts != null && !isNaN(parts)))
+                        return "unable to parse parts value for primitive with ID = " + primitiveId;
+
+                    var heightscale = this.reader.getFloat(temp, 'heightscale');
+                    if (!(heightscale != null && !isNaN(heightscale)))
+                        return "unable to parse heightscale value for primitive with ID = " + primitiveId;
+
+                    var texscale = this.reader.getFloat(temp, 'texscale');
+                    if (!(texscale != null && !isNaN(texscale)))
+                        return "unable to parse texscale value for primitive with ID = " + primitiveId;
+
+                    var water = new MyWater(this.scene, texture, wavemap, parts, heightscale, texscale);
+                    primitives.push({id: primitiveId, type: "water", primitive: water});
                     break;
                 
                 default:
@@ -1864,13 +2021,13 @@ in the primitive with ID = " + primitiveId;
         }
 
         for(let n = 0; n < currComponent.animations.length; n++){
-            if(currComponent.animations[n].timeCounter == currComponent.animations[n].time)
-                currComponent.animations[n].apply();
-
             if(currComponent.animations[n].timeCounter != currComponent.animations[n].time){
                 currComponent.animations[n].apply();
                 break;
             }
+
+            if(n == (currComponent.animations.length-1))
+                currComponent.animations[n].apply();
         }
             
         for (let i = 0; i < currComponent.children.componentref.length; i++) {
