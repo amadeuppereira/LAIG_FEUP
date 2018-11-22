@@ -55,8 +55,6 @@ class MyLinearAnimation extends MyAnimation{
 
         if (this.currentSecondPoint.z - this.currentFirstPoint.z < 0)
             angle += Math.PI;
-        else if ((this.currentSecondPoint.x - this.currentFirstPoint.x == 0) && (this.currentSecondPoint.z - this.currentFirstPoint.z == 0))
-            angle = this.previousAngle;
     
         this.previousAngle = angle;
     }

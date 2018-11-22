@@ -359,19 +359,28 @@
     </transformations>
 
     <animations>
-        <linear id="linearAnimation" span="3">
+        <linear id="robotAnimation1" span="3">
+            <controlpoint x="30" y="0" z="55"/>
+            <controlpoint x="15" y="0" z="55"/>
+        </linear>
+        <linear id="robotAnimation2" span="0.0001">
+            <controlpoint x="0" y="0" z="-63"/>
+            <controlpoint x="-59" y="0" z="-63"/>
+        </linear>
+        <linear id="robotAnimation3" span="3">
             <controlpoint x="0" y="0" z="0"/>
-            <controlpoint x="10" y="0" z="10"/>
+            <controlpoint x="10" y="0" z="0"/>
         </linear>
-        <linear id="linearAnimation3" span="3">
+        <linear id="robotAnimation4" span="3">
             <controlpoint x="0" y="0" z="0"/>
-            <controlpoint x="10" y="0" z="10"/>
+            <controlpoint x="0" y="0" z="10"/>
         </linear>
-        <circular id="circularAnimation" span="3" center="10 1 10" radius="5" startang="0" rotang="90"/>
-        <linear id="linearAnimation2" span="4">
-            <controlpoint x="2" y="0" z="9"/>
-            <controlpoint x="12" y="0" z="4"/>
+        <linear id="robotAnimation5" span="3">
+            <controlpoint x="0" y="0" z="0"/>
+            <controlpoint x="15" y="0" z="0"/>
         </linear>
+        <circular id="robotCircularAnimation" span="3" center="0 0 0" radius="0" startang="0" rotang="180"/>
+        <circular id="shipCircularAnimation" span="3" center="10 1 10" radius="5" startang="0" rotang="90"/>
     </animations>
 
     <primitives>
@@ -788,9 +797,13 @@
                 <scale x="0.8" y="0.8" z="0.8"/>
             </transformation>
             <animations>
-                <animationref id="circularAnimation"/>
-                <animationref id="linearAnimation"/>
-                <animationref id="linearAnimation"/>
+                <animationref id="robotAnimation1"/>
+                <animationref id="robotAnimation2"/>
+                <animationref id="robotAnimation3"/>
+                <animationref id="robotCircularAnimation"/>
+                <animationref id="robotAnimation4"/>
+                <animationref id="robotAnimation2"/>
+                <animationref id="robotAnimation5"/>
             </animations>
             <materials>
                 <material id="robotMaterial"/>
@@ -1004,7 +1017,7 @@
 
         <component id="portal_gun">
             <transformation>
-                <translate x="40" y="1" z="80"/>
+                <translate x="42" y="1" z="82.5"/>
                 <rotate axis="y" angle="180"/>
             </transformation>
             <materials>
@@ -1949,8 +1962,8 @@
 
         <component id="meeseeks_1">
 			<transformation>
-				<translate x="65" y="0" z="40"/>
-                <rotate axis="y" angle="90"/>
+				<translate x="48" y="0" z="30"/>
+                <rotate axis="y" angle="180"/>
 			</transformation>
 			<materials>
 				<material id="inherit"/>
