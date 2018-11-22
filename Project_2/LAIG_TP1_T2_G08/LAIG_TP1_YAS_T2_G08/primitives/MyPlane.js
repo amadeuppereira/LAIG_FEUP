@@ -30,5 +30,7 @@ class MyPlane extends CGFobject
         this.obj.display();
     }
 
+    updateTexCoords(s, t) {}
+
 };
 

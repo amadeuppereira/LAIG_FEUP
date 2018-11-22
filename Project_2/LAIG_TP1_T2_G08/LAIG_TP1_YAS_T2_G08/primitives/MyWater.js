@@ -7,8 +7,8 @@ class MyWater extends MyPlane {
 	constructor(scene, texture, heightmap, parts, heightscale, texscale) {
         super(scene, parts, parts);
 
-        this.idtexture = texture;
-        this.idheightmap = heightmap;
+        this.texture = texture;
+        this.heightmap = heightmap;
         this.heightscale = heightscale || 1.0;
         this.texscale = texscale || 1.0;
         this.speed = 1.6 * 1000;
@@ -20,10 +20,8 @@ class MyWater extends MyPlane {
                                     uHeightScale: this.heightscale,
                                     uTexscale: this.texscale});
 
-        this.texture = new CGFtexture(this.scene, this.idtexture);
-        this.heightmap = new CGFtexture(this.scene, this.idheightmap);
-
-        this.t = 0;
+        // this.texture = new CGFtexture(this.scene, this.idtexture);
+        // this.heightmap = new CGFtexture(this.scene, this.idheightmap);
     };
 
     display() {
@@ -39,5 +37,7 @@ class MyWater extends MyPlane {
         this.timeFactor += this.speed * deltaTime; //this.speed * deltaTime ~= 0.01;
         this.shader.setUniformsValues({uTimeFactor: this.timeFactor});
     }
+
+    updateTexCoords(s, t) {}
 };
 

@@ -10,7 +10,6 @@ varying float vTexscale;
 uniform sampler2D uTexture;
 
 void main() {
-	vec4 textureColor =
-        texture2D(uTexture, vTextureCoord*vTexscale + vTimeFactor);
+	vec4 textureColor = texture2D(uTexture, vTextureCoord*vTexscale + vTimeFactor);
 	gl_FragColor = textureColor * vFinalColor;
 }

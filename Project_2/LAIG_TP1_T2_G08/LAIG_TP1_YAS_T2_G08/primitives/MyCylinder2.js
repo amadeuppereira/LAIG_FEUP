@@ -45,8 +45,9 @@ class MyCylinder2 extends CGFobject
     }
 
 	display(){
-		this.scene.scale(5,5,5);
 		this.obj.display();
 	}
+
+	updateTexCoords(s, t) {}
 
 };
