@@ -1492,9 +1492,9 @@ in the primitive with ID = " + primitiveId;
                     var heightmap = null;
                     for(let m = 0; m < this.textures.length; m++){
                         if(this.textures[m].id == idtexture)
-                            texture = this.textures[m];
+                            texture = this.textures[m].texture;
                         if(this.textures[m].id == idheightmap)
-                            heightmap = this.textures[m];
+                            heightmap = this.textures[m].texture;
                     }
                     if(texture == null)
                         return "no texture with ID = " + idtexture + " in primitive with ID = "+ primitiveId;
@@ -1526,9 +1526,9 @@ in the primitive with ID = " + primitiveId;
                     var wavemap = null;
                     for(let m = 0; m < this.textures.length; m++){
                         if(this.textures[m].id == idtexture)
-                            texture = this.textures[m];
+                            texture = this.textures[m].texture;
                         if(this.textures[m].id == idwavemap)
-                            wavemap = this.textures[m];
+                            wavemap = this.textures[m].texture;
                     }
                     if(texture == null)
                         return "no texture with ID = " + idtexture + " in primitive with ID = "+ primitiveId;
@@ -1563,7 +1563,7 @@ in the primitive with ID = " + primitiveId;
 
         this.primitives = primitives;
         this.log("Parsed primitives");
-
+        console.log(this.primitives);
         return null;
     }
 

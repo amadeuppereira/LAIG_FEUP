@@ -103,6 +103,12 @@
         <texture id="meeseeks_face" file="./scenes/images/meeseeks.png" />
         <texture id="shipTexture" file="./scenes/images/ship.png" />
         <texture id="thrusterTexture" file="./scenes/images/thruster.png" />
+        <texture id="terrainTexture" file="./scenes/images/terrain.png" />
+        <texture id="terrain1Texture" file="./scenes/images/terrain1.png" />
+        <texture id="waterTexture" file="./scenes/images/water.png" />
+        <texture id="terrainHeightmap" file="./scenes/heightmaps/terrain.png" />
+        <texture id="terrain1Heightmap" file="./scenes/heightmaps/terrain1.png" />
+        <texture id="waterHeightmap" file="./scenes/heightmaps/water.png" />
 
     </textures>
 
@@ -439,11 +445,11 @@
         </primitive>
 
         <primitive id="terrain">
-            <terrain idtexture="ballTexture" idheightmap="ballTexture" parts="2" heightscale="2"/>
+            <terrain idtexture="terrainTexture" idheightmap="terrainHeightmap" parts="1" heightscale="1"/>
         </primitive>
 
         <primitive id="water">
-            <water idtexture="ballTexture" idwavemap="ballTexture" parts="2" heightscale="2" texscale="2"/>
+            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="1" heightscale="1" texscale="1"/>
         </primitive>            
 
     </primitives >
@@ -480,7 +486,9 @@
 
         <component id="ground">
             <transformation>
-                <transformationref id="transformationGround"/>
+                <!-- <transformationref id="transformationGround"/> -->
+                <translate x="0" y="0" z="0" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="rockMaterial"/>
@@ -488,7 +496,8 @@
             </materials>
             <texture id="groundTexture" length_s="0.5" length_t="0.5" />
             <children>
-                <primitiveref id="rectangle"/>
+                <!-- <primitiveref id="rectangle"/> -->
+                <primitiveref id="terrain"/>
             </children>
         </component>
 
