@@ -17,36 +17,37 @@ class MyCylinder2 extends CGFobject
 		this.stacks = stacks;
 		this.controlPoints = [
 			[
-				[0, 		 -this.base,  0, 1],
-				[-this.base, -this.base,  0, 1],
-				[-this.base, 0,   		  0, 1],
-				[-this.base, this.base,   0, 1],
-				[0,		     this.base,   0, 1],
-				[this.base,  this.base,   0, 1],
-				[this.base,	 0,    	      0, 1],
-				[this.base,	 -this.base,  0, 1],
-				[0, 		 -this.base,  0, 1]
+				[0, 		 -this.base,  0, 		    1			  ],
+				[-this.base, -this.base,  0, 		    Math.sqrt(2)/2],
+				[-this.base, 0,   		  0, 		    1			  ],
+				[-this.base, this.base,   0, 		    Math.sqrt(2)/2],
+				[0,		     this.base,   0, 		    1			  ],
+				[this.base,  this.base,   0, 		    Math.sqrt(2)/2],
+				[this.base,	 0,    	      0, 		    1			  ],
+				[this.base,	 -this.base,  0, 		    Math.sqrt(2)/2],
+				[0, 		 -this.base,  0, 		    1			  ]
 			],
 			[
-				[0, 		  -this.base,  this.heigth, 1],
-				[-this.base,  -this.base,  this.heigth, 1],
-				[-this.base,  0,  		   this.heigth, 1],
-				[-this.base,  this.base,   this.heigth, 1],
-				[0,		      this.base,   this.heigth, 1],
-				[this.base,   this.base,   this.height, 1],
-				[this.base,	  0,    	   this.height, 1],
-				[this.base,	  -this.base,  this.height, 1],
-				[0, 		  -this.base,  this.height, 1]
+				[0, 		 -this.top,   this.heigth,  1             ],
+				[-this.top,  -this.top,   this.heigth,  Math.sqrt(2)/2],
+				[-this.top,  0,  		  this.heigth,  1             ],
+				[-this.top,  this.top,    this.heigth,  Math.sqrt(2)/2],
+				[0,		     this.top,    this.heigth,  1             ],
+				[this.top,   this.top,    this.heigth,  Math.sqrt(2)/2],
+				[this.top,	 0,    	      this.heigth,  1             ],
+				[this.top,	 -this.top,   this.heigth,  Math.sqrt(2)/2],
+				[0, 		 -this.top,   this.heigth,  1             ]
 			]
 		];
 
 		let nurbsSurface = new CGFnurbsSurface(1, 8, this.controlPoints);
-		this.obj = new CGFnurbsObject(this.scene, this.slices, this.stacks, nurbsSurface);
-		
-		console.log(this.obj.vertices);
+		this.obj = new CGFnurbsObject(this.scene, this.stacks, this.slices, nurbsSurface);
+
+		console.log(this.controlPoints);
     }
 
 	display(){
+		this.scene.scale(5,5,5);
 		this.obj.display();
 	}
 
