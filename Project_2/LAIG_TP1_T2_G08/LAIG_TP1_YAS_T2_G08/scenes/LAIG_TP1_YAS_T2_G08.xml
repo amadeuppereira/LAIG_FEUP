@@ -103,12 +103,10 @@
         <texture id="meeseeks_face" file="./scenes/images/meeseeks.png" />
         <texture id="shipTexture" file="./scenes/images/ship.png" />
         <texture id="thrusterTexture" file="./scenes/images/thruster.png" />
-        <texture id="terrainTexture" file="./scenes/images/terrain.png" />
-        <texture id="terrain1Texture" file="./scenes/images/terrain1.png" />
         <texture id="waterTexture" file="./scenes/images/water.png" />
-        <texture id="terrainHeightmap" file="./scenes/heightmaps/terrain.png" />
-        <texture id="terrain1Heightmap" file="./scenes/heightmaps/terrain1.png" />
         <texture id="waterHeightmap" file="./scenes/heightmaps/water.png" />
+        <texture id="ibizaTexture" file="./scenes/images/ibiza.png" />
+        <texture id="ibizaHeightmap" file="./scenes/heightmaps/ibiza.png" />
 
     </textures>
 
@@ -333,13 +331,6 @@
             <translate x="35" y="0" z="20" />
         </transformation>
 
-        <transformation id="transformationGround">
-            <translate x="0" y="0" z="100" />
-            <rotate axis="x" angle="-90" />
-            <translate x="50" y="50" z="0" />
-            <scale x="100" y="100" z="1" />
-        </transformation>
-
         <transformation id="transformationWall">
             <translate x="20" y="9" z="0.25" />
             <scale x="40" y="18" z="0.5" />
@@ -444,12 +435,12 @@
             <cylinder2 base="0.5" top="0.5" height="1" slices="20" stacks="20" />
         </primitive>
 
-        <primitive id="terrain">
-            <terrain idtexture="terrainTexture" idheightmap="terrainHeightmap" parts="2" heightscale="1"/>
+        <primitive id="terrainIbiza">
+            <terrain idtexture="ibizaTexture" idheightmap="ibizaHeightmap" parts="50" heightscale="0.4"/>
         </primitive>
 
         <primitive id="water">
-            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="3" heightscale="1" texscale="2"/>
+            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="50" heightscale="0.001" texscale="10"/>
         </primitive>            
 
     </primitives >
@@ -464,6 +455,21 @@
             <texture id="none"/>
             <children>
                 <componentref id="ground" />
+                <componentref id="sea" />
+                <componentref id="myPreviousScene" />
+            </children>
+        </component>
+
+        <component id="myPreviousScene">
+            <transformation>
+                <translate x="38" y="1" z="72" />
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none"/>
+            <children>
                 <componentref id="portal1" />
                 <componentref id="house" />
                 <componentref id="rock1" />
@@ -486,9 +492,8 @@
 
         <component id="ground">
             <transformation>
-                <!-- <transformationref id="transformationGround"/> -->
-                <translate x="50" y="-50" z="50" />
-                <scale x="100" y="100" z="100" />
+                <translate x="50" y="0" z="50" />
+                <scale x="100" y="50" z="100" />
             </transformation>
             <materials>
                 <material id="rockMaterial"/>
@@ -496,8 +501,21 @@
             </materials>
             <texture id="groundTexture" length_s="0.5" length_t="0.5" />
             <children>
-                <!-- <primitiveref id="rectangle"/> -->
-                <!-- <primitiveref id="terrain"/> -->
+                <primitiveref id="terrainIbiza"/>
+            </children>
+        </component>
+
+        <component id="sea">
+            <transformation>
+                <translate x="50" y="0.5" z="50" />
+                <scale x="100" y="100" z="100" />
+            </transformation>
+            <materials>
+                <material id="rockMaterial"/>
+                <material id="groundMaterial"/>
+            </materials>
+            <texture id="waterTexture" length_s="0.5" length_t="0.5" />
+            <children>
                 <primitiveref id="water"/>
             </children>
         </component>
@@ -832,6 +850,16 @@
                 <scale x="0.8" y="0.8" z="0.8"/>
             </transformation>
             <animations>
+                <animationref id="robotAnimation1"/>
+                <animationref id="robotAnimation2"/>
+                <animationref id="robotCircularAnimation"/>
+                <animationref id="robotAnimation3"/>
+                <animationref id="robotAnimation4"/>
+                <animationref id="robotAnimation1"/>
+                <animationref id="robotAnimation2"/>
+                <animationref id="robotCircularAnimation"/>
+                <animationref id="robotAnimation3"/>
+                <animationref id="robotAnimation4"/>
                 <animationref id="robotAnimation1"/>
                 <animationref id="robotAnimation2"/>
                 <animationref id="robotCircularAnimation"/>

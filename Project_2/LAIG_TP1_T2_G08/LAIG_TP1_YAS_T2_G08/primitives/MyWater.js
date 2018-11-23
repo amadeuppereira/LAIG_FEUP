@@ -11,7 +11,7 @@ class MyWater extends MyPlane {
         this.heightmap = heightmap;
         this.heightscale = heightscale || 1.0;
         this.texscale = texscale || 1.0;
-        this.speed = 1.6 * 1000;
+        this.speed = 0.00007;
         this.timeFactor = 0;
 
         this.shader = new CGFshader(this.scene.gl, "shaders/water_shader.vert", "shaders/water_shader.frag");
@@ -34,7 +34,7 @@ class MyWater extends MyPlane {
     }
 
     update(deltaTime) {
-        this.timeFactor += (this.speed *deltaTime/100000000); //this.speed * deltaTime ~= 0.01;
+        this.timeFactor += this.speed *deltaTime; //this.speed * deltaTime ~= 0.01;
         this.shader.setUniformsValues({uTimeFactor: this.timeFactor});
     }
 
