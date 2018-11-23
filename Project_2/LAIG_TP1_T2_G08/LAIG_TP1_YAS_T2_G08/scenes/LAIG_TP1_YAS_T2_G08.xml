@@ -441,15 +441,15 @@
         </primitive>
 
         <primitive id="cylinder2">
-            <cylinder2 base="5" top="3" height="2" slices="30" stacks="30" />
+            <cylinder2 base="0.5" top="0.5" height="1" slices="20" stacks="20" />
         </primitive>
 
         <primitive id="terrain">
-            <terrain idtexture="terrainTexture" idheightmap="terrainHeightmap" parts="1" heightscale="1"/>
+            <terrain idtexture="terrainTexture" idheightmap="terrainHeightmap" parts="2" heightscale="1"/>
         </primitive>
 
         <primitive id="water">
-            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="1" heightscale="1" texscale="1"/>
+            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="3" heightscale="1" texscale="2"/>
         </primitive>            
 
     </primitives >
@@ -487,8 +487,8 @@
         <component id="ground">
             <transformation>
                 <!-- <transformationref id="transformationGround"/> -->
-                <translate x="0" y="0" z="0" />
-                <scale x="1" y="1" z="1" />
+                <translate x="50" y="-50" z="50" />
+                <scale x="100" y="100" z="100" />
             </transformation>
             <materials>
                 <material id="rockMaterial"/>
@@ -497,7 +497,8 @@
             <texture id="groundTexture" length_s="0.5" length_t="0.5" />
             <children>
                 <!-- <primitiveref id="rectangle"/> -->
-                <primitiveref id="terrain"/>
+                <!-- <primitiveref id="terrain"/> -->
+                <primitiveref id="water"/>
             </children>
         </component>
 

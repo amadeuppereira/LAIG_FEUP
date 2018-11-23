@@ -28,13 +28,13 @@ class MyWater extends MyPlane {
         this.scene.setActiveShader(this.shader);
         this.texture.bind(0);
         this.heightmap.bind(1);
-        this.scene.scale(50, 50, 50);
+        // this.scene.scale(50, 50, 50);
         this.obj.display();
         this.scene.setActiveShader(this.scene.defaultShader);
     }
 
     update(deltaTime) {
-        this.timeFactor += this.speed * deltaTime; //this.speed * deltaTime ~= 0.01;
+        this.timeFactor += (this.speed *deltaTime/100000000); //this.speed * deltaTime ~= 0.01;
         this.shader.setUniformsValues({uTimeFactor: this.timeFactor});
     }
 

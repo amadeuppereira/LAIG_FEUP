@@ -1563,7 +1563,7 @@ in the primitive with ID = " + primitiveId;
 
         this.primitives = primitives;
         this.log("Parsed primitives");
-        console.log(this.primitives);
+
         return null;
     }
 
