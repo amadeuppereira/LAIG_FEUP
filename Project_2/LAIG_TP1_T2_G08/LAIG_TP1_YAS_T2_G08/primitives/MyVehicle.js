@@ -105,6 +105,13 @@ class MyVehicle extends CGFobject
                 this.scene.translate(0, -0.3, 4.5);
                 this.scene.rotate(70 * DEGREE_TO_RAD, 1, 0, 0);
                 this.light.display();
+            this.scene.popMatrix();
+            
+            this.scene.pushMatrix();
+                this.scene.rotate(ang*i, 0, 1, 0);
+                this.scene.translate(0, 0.3, 4.5);
+                this.scene.rotate(-70 * DEGREE_TO_RAD, 1, 0, 0);
+                this.light.display();
 		    this.scene.popMatrix();
         }
 
