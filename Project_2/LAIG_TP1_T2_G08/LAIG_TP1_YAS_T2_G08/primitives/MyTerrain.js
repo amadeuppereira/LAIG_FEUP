@@ -26,7 +26,6 @@ class MyTerrain extends MyPlane {
         this.scene.setActiveShader(this.shader);
         this.texture.bind(0);
         this.heightmap.bind(1);
-        // this.scene.scale(50, 50, 50);
         this.obj.display();
         this.scene.setActiveShader(this.scene.defaultShader);
     }
