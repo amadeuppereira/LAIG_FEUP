@@ -27,8 +27,6 @@ class MyLinearAnimation extends MyAnimation{
     }
 
     update(deltaTime){
-        if(this.timeCounter >= this.time) return;
-
         this.timeCounter += (deltaTime / 1000);
 
         if(this.timeCounter > this.time)

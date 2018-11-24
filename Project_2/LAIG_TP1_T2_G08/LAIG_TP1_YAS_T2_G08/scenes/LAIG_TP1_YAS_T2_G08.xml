@@ -1,6 +1,6 @@
 <yas>
 
-    <scene root="myScene" axis_length="5" />
+    <scene root="vehicle" axis_length="5" />
 
     <views default="scene_view" >
 
@@ -375,10 +375,7 @@
         </linear>
         <circular id="shipCircularAnimation" span="25" center="25 20 25" radius="30" startang="180" rotang="-1080"/>
 
-        <linear id="test" span="3">
-            <controlpoint x="0" y="0" z="0"/>
-            <controlpoint x="5" y="0" z="0"/>
-        </linear>
+        <circular id="test" span="10" center="10 0 10" radius="10" startang="0" rotang="360"/>
     </animations>
 
     <primitives>
@@ -455,6 +452,9 @@
             <transformation>
                 <scale x="5" y="5" z="5"/>
             </transformation>
+            <!-- <animations>
+                <animationref id="test"/>
+            </animations> -->
             <materials>
                 <material id="default"/>
             </materials>
