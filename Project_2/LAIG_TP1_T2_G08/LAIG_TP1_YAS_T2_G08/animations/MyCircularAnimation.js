@@ -10,11 +10,8 @@ class MyCircularAnimation extends MyAnimation{
      * @constructor
      */
     constructor(scene, id, time, center, initialAngle, rotationAngle, radius) {
-        super();
+        super(scene, id, time);
 
-        this.scene = scene;
-        this.id = id;
-        this.time = time;
         this.center = center;
         this.initialAngle = initialAngle;
         this.rotationAngle = rotationAngle;
@@ -27,6 +24,8 @@ class MyCircularAnimation extends MyAnimation{
     }
 
     update(deltaTime){
+        if(this.timeCounter >= this.time) return;
+
         this.timeCounter += (deltaTime / 1000);
 
         if(this.timeCounter > this.time)

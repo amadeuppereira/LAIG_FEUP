@@ -11,7 +11,7 @@ class MyWater extends MyPlane {
         this.heightmap = heightmap;
         this.heightscale = heightscale || 1.0;
         this.texscale = texscale || 1.0;
-        this.speed = 0.00007;
+        this.speed = 0.07;
         this.timeFactor = 0;
 
         this.shader = new CGFshader(this.scene.gl, "shaders/water_shader.vert", "shaders/water_shader.frag");
@@ -19,22 +19,18 @@ class MyWater extends MyPlane {
                                     uHeightmap: 1,
                                     uHeightScale: this.heightscale,
                                     uTexscale: this.texscale});
-
-        // this.texture = new CGFtexture(this.scene, this.idtexture);
-        // this.heightmap = new CGFtexture(this.scene, this.idheightmap);
     };
 
     display() {
         this.scene.setActiveShader(this.shader);
         this.texture.bind(0);
         this.heightmap.bind(1);
-        // this.scene.scale(50, 50, 50);
         this.obj.display();
         this.scene.setActiveShader(this.scene.defaultShader);
     }
 
     update(deltaTime) {
-        this.timeFactor += this.speed *deltaTime; //this.speed * deltaTime ~= 0.01;
+        this.timeFactor += this.speed *deltaTime/1000; //this.speed * deltaTime ~= 0.01;
         this.shader.setUniformsValues({uTimeFactor: this.timeFactor});
     }
 

@@ -7,7 +7,11 @@ class MyAnimation {
     /**
      * @constructor
      */
-    constructor() {}
+    constructor(scene, id, time) {
+        this.scene = scene;
+        this.id = id;
+        this.time = time;
+    }
 
     update(){}
 

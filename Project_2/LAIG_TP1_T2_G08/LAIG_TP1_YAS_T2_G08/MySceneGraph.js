@@ -1134,16 +1134,14 @@ class MySceneGraph {
             //get the span of the current animation
             var animationSpan = this.reader.getFloat(children[i], 'span');
             if (animationSpan == null && !isNaN(animationSpan))
-                return "no span defined for animation";
+                return "no span defined for animation with ID = " + animationId;
 
 
             if(children[i].nodeName == "linear"){
                 var grandChildren = children[i].children;
 
                 var controlpoints = [];
-                if(grandChildren.length < 2) {
-                    return "There must be at least two control points in the animation with ID = " + animationId;
-                }
+                let controlPointsCounter = 0;
                 for(let j = 0; j < grandChildren.length; j++) {
                     if(grandChildren[j].nodeName == "controlpoint") {
                         // x
@@ -1162,11 +1160,16 @@ class MySceneGraph {
                             return "unable to parse controlpoint z for animation with ID = " + animationId;
                         
                         controlpoints.push({x: x, y: y, z: z});
+                        controlPointsCounter++;
                     } else{
                         this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
                         continue;
                     }
                 }
+                if(controlPointsCounter < 2) {
+                    return "There must be at least two control points in the animation with ID = " + animationId;
+                }
+
                 var animation = new MyLinearAnimation(this.scene, animationId, animationSpan, controlpoints);
                 this.animations[animationId] = animation;
             }
@@ -1425,25 +1428,31 @@ in the primitive with ID = " + primitiveId;
                         return "unable to parse npartsV value for primitive with ID = " + primitiveId;
 
                     var controlpoints = [];
+                    let controlPointsCounter = 0;
                     var grandGrandChildren = temp.children;
-                    if(grandGrandChildren.length != (npointsU * npointsV))
-                        return "invalid number of controlpoints for primitive with ID = " + primitiveId;
 
                     for(let n = 0; n < grandGrandChildren.length; n++){
-                        var xx = this.reader.getFloat(grandGrandChildren[n], 'xx');
-                        if (!(xx != null && !isNaN(xx)))
-                            return "unable to parse xx value for primitive with ID = " + primitiveId;
+                        if(grandGrandChildren[n].nodeName == "controlpoint") {
+                            var xx = this.reader.getFloat(grandGrandChildren[n], 'xx');
+                            if (!(xx != null && !isNaN(xx)))
+                                return "unable to parse xx value for primitive with ID = " + primitiveId;
 
-                        var yy = this.reader.getFloat(grandGrandChildren[n], 'yy');
-                        if (!(yy != null && !isNaN(yy)))
-                            return "unable to parse yy value for primitive with ID = " + primitiveId;
+                            var yy = this.reader.getFloat(grandGrandChildren[n], 'yy');
+                            if (!(yy != null && !isNaN(yy)))
+                                return "unable to parse yy value for primitive with ID = " + primitiveId;
 
-                        var zz = this.reader.getFloat(grandGrandChildren[n], 'zz');
-                        if (!(zz != null && !isNaN(zz)))
-                            return "unable to parse zz value for primitive with ID = " + primitiveId;
+                            var zz = this.reader.getFloat(grandGrandChildren[n], 'zz');
+                            if (!(zz != null && !isNaN(zz)))
+                                return "unable to parse zz value for primitive with ID = " + primitiveId;
 
-                        controlpoints.push([xx, yy, zz, 1]);
+                            controlpoints.push([xx, yy, zz, 1]);
+                            controlPointsCounter++;
+                        } else {
+                            this.onXMLMinorError("unknown tag <" + grandGrandChildren[n].nodeName + ">");
+                        }
                     }
+                    if(controlPointsCounter != (npointsU * npointsV))
+                        return "invalid number of controlpoints for primitive with ID = " + primitiveId;
 
                     var patch = new MyPatch(this.scene, npointsU, npointsV, npartsU, npartsV, controlpoints);
                     primitives.push({id: primitiveId, type: "patch", primitive: patch});

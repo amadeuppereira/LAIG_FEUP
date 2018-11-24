@@ -249,10 +249,7 @@ class XMLscene extends CGFscene {
 
                 //update animations
                 for(let n = 0; n < components[i].animations.length; n++){
-                    if(components[i].animations[n].timeCounter != components[i].animations[n].time){
-                        components[i].animations[n].update(this.deltaTime);
-                        break;
-                    }
+                    components[i].animations[n].update(this.deltaTime);
                 }
             }
         }

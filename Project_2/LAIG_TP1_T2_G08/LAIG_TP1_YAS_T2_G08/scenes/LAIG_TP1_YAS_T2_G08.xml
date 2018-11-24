@@ -374,6 +374,11 @@
             <controlpoint x="30" y="0" z="55"/>
         </linear>
         <circular id="shipCircularAnimation" span="25" center="25 20 25" radius="30" startang="180" rotang="-1080"/>
+
+        <linear id="test" span="3">
+            <controlpoint x="0" y="0" z="0"/>
+            <controlpoint x="5" y="0" z="0"/>
+        </linear>
     </animations>
 
     <primitives>
@@ -440,12 +445,25 @@
         </primitive>
 
         <primitive id="water">
-            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="50" heightscale="0.001" texscale="10"/>
+            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="50" heightscale="0.01" texscale="10"/>
         </primitive>            
 
     </primitives >
 
     <components>
+        <component id="vehicle">
+            <transformation>
+                <scale x="5" y="5" z="5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="vehicle" />
+            </children>
+        </component>
+
         <component id="myScene">
             <transformation>
             </transformation>
@@ -456,7 +474,7 @@
             <children>
                 <componentref id="ground" />
                 <componentref id="sea" />
-                <componentref id="myPreviousScene" />
+                <!-- <componentref id="myPreviousScene" /> -->
             </children>
         </component>
 
@@ -493,7 +511,7 @@
         <component id="ground">
             <transformation>
                 <translate x="50" y="0" z="50" />
-                <scale x="100" y="50" z="100" />
+                <scale x="50" y="50" z="50" />
             </transformation>
             <materials>
                 <material id="rockMaterial"/>
@@ -508,7 +526,7 @@
         <component id="sea">
             <transformation>
                 <translate x="50" y="0.5" z="50" />
-                <scale x="100" y="100" z="100" />
+                <scale x="50" y="50" z="50" />
             </transformation>
             <materials>
                 <material id="rockMaterial"/>

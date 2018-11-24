@@ -8,15 +8,12 @@ class MyLinearAnimation extends MyAnimation{
      * @constructor
      */
     constructor(scene, id, time, points) {
-        super();
+        super(scene, id, time);
 
-        this.scene = scene;
-        this.id = id;
-        this.time = time;
         this.points = points;
         this.totalDistance = 0;
         this.routes = [];
-        for(var i = 0; i < points.length - 1; i++){
+        for(let i = 0; i < points.length - 1; i++){
             this.totalDistance += vec3.dist(vec3.fromValues(points[i].x, points[i].y, points[i].z), vec3.fromValues(points[i + 1].x, points[i + 1].y, points[i + 1].z));
             this.routes.push(this.totalDistance);
         }
@@ -30,6 +27,8 @@ class MyLinearAnimation extends MyAnimation{
     }
 
     update(deltaTime){
+        if(this.timeCounter >= this.time) return;
+
         this.timeCounter += (deltaTime / 1000);
 
         if(this.timeCounter > this.time)
@@ -38,7 +37,7 @@ class MyLinearAnimation extends MyAnimation{
         //Calculations for translation
         this.currentPosition = this.animationVelocity * this.timeCounter;
 
-        var i = 0;
+        let i = 0;
         while (this.currentPosition > this.routes[i] && i < this.routes.length)
 		    i++;
 
@@ -51,7 +50,7 @@ class MyLinearAnimation extends MyAnimation{
             this.difference = (this.currentPosition - this.routes[i-1]) / (this.routes[i] - this.routes[i-1]);
     
         //Calculations for rotation
-        var angle = Math.atan((this.currentSecondPoint.x - this.currentFirstPoint.x) / (this.currentSecondPoint.z - this.currentFirstPoint.z));
+        let angle = Math.atan((this.currentSecondPoint.x - this.currentFirstPoint.x) / (this.currentSecondPoint.z - this.currentFirstPoint.z));
 
         if (this.currentSecondPoint.z - this.currentFirstPoint.z < 0)
             angle += Math.PI;
@@ -60,7 +59,9 @@ class MyLinearAnimation extends MyAnimation{
     }
 
     apply(){
-        this.scene.translate((this.currentSecondPoint.x - this.currentFirstPoint.x) * this.difference + this.currentFirstPoint.x, (this.currentSecondPoint.y - this.currentFirstPoint.y) * this.difference + this.currentFirstPoint.y, (this.currentSecondPoint.z - this.currentFirstPoint.z) * this.difference + this.currentFirstPoint.z);
+        this.scene.translate((this.currentSecondPoint.x - this.currentFirstPoint.x) * this.difference + this.currentFirstPoint.x,
+                             (this.currentSecondPoint.y - this.currentFirstPoint.y) * this.difference + this.currentFirstPoint.y,
+                             (this.currentSecondPoint.z - this.currentFirstPoint.z) * this.difference + this.currentFirstPoint.z);
         this.scene.rotate(this.previousAngle, 0, 1, 0);
     }
 
