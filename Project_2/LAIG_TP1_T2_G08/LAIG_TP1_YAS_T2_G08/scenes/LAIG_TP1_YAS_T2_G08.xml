@@ -367,7 +367,7 @@
         </linear>
         <linear id="vehicleAnimation4" span="1">
             <controlpoint x="-10" y="15" z="0"/>
-            <controlpoint x="-10" y="100" z="0"/>
+            <controlpoint x="-10" y="30" z="0"/>
         </linear>
         <linear id="vehicleAnimation5" span="3">
             <controlpoint x="15" y="0" z="55"/>
@@ -497,13 +497,13 @@
                 <scale x="0.3" y="0.3" z="0.3"/>
             </transformation>
             <animations>
-                <!-- <animationref id="vehicleCircularAnimation1"/>
+                <animationref id="vehicleCircularAnimation1"/>
                 <animationref id="vehicleAnimation1"/>
                 <animationref id="vehicleAnimation2"/>
                 <animationref id="vehicleCircularAnimation2"/>
-                <animationref id="vehicleAnimation3"/> -->
+                <animationref id="vehicleAnimation3"/>
                 <animationref id="vehicleCircularAnimation3"/>
-                <animationref id="vehicleAnimation4"/>
+                <!-- <animationref id="vehicleAnimation4"/> -->
                 <!-- <animationref id="vehicleAnimation5"/> -->
             </animations>
             <materials>
