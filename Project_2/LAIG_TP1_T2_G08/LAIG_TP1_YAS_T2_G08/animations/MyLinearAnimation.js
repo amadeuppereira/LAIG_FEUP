@@ -44,8 +44,9 @@ class MyLinearAnimation extends MyAnimation{
 
         if(i == 0)
             this.difference = this.currentPosition/this.routes[i];
-        else
+        else{
             this.difference = (this.currentPosition - this.routes[i-1]) / (this.routes[i] - this.routes[i-1]);
+        }
     
         //Calculations for rotation
         let angle = Math.atan((this.currentSecondPoint.x - this.currentFirstPoint.x) / (this.currentSecondPoint.z - this.currentFirstPoint.z));

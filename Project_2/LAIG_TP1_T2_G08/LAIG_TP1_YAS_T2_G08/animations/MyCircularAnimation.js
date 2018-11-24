@@ -19,7 +19,7 @@ class MyCircularAnimation extends MyAnimation{
         this.rotationAngleRad = rotationAngle * degToRad;
         this.radius = radius;
         this.animationVelocity = this.rotationAngleRad / this.time;
-        this.currentAngle = 0;
+        this.currentAngle = this.initialAngleRad;
         this.timeCounter = 0;
     }
 
