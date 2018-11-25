@@ -8,24 +8,6 @@ class MyTorus extends CGFobject {
       this.loops = loops;
 
       this.initBuffers();
-
-      // var func = function(u, v) {
-      //   u *= 2*Math.PI; 
-      //   v *= 2*Math.PI; 
-
-      //   let x = (outer + inner * Math.cos(v)) * Math.cos(u);
-      //   let z = inner * Math.sin(v);
-      //   let y = (outer + inner * Math.cos(v)) * Math.sin(u);
-
-
-      //   return [x, y, z];
-      // };   
-
-      // this.object = new CGFnurbsObject(this.scene, func, this.slices, this.loops);
-
-      // console.log(this.object.vertices);
-      // console.log(this.vertices);
-
     };
 
     initBuffers() {

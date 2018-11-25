@@ -30,7 +30,7 @@ class MyWater extends MyPlane {
     }
 
     update(deltaTime) {
-        this.timeFactor += this.speed *deltaTime/1000; //this.speed * deltaTime ~= 0.01;
+        this.timeFactor += this.speed *deltaTime/1000;
         this.shader.setUniformsValues({uTimeFactor: this.timeFactor});
     }
 
