@@ -50,6 +50,9 @@ class MyLinearAnimation extends MyAnimation{
     
         //Calculations for rotation
         let angle = Math.atan((this.currentSecondPoint.x - this.currentFirstPoint.x) / (this.currentSecondPoint.z - this.currentFirstPoint.z));
+        
+        if(isNaN(angle))
+            angle = 0;
 
         if (this.currentSecondPoint.z - this.currentFirstPoint.z < 0)
             angle += Math.PI;
@@ -58,9 +61,11 @@ class MyLinearAnimation extends MyAnimation{
     }
 
     apply(){
-        this.scene.translate((this.currentSecondPoint.x - this.currentFirstPoint.x) * this.difference + this.currentFirstPoint.x,
-                             (this.currentSecondPoint.y - this.currentFirstPoint.y) * this.difference + this.currentFirstPoint.y,
-                             (this.currentSecondPoint.z - this.currentFirstPoint.z) * this.difference + this.currentFirstPoint.z);
+        var x = (this.currentSecondPoint.x - this.currentFirstPoint.x) * this.difference + this.currentFirstPoint.x;
+        var y = (this.currentSecondPoint.y - this.currentFirstPoint.y) * this.difference + this.currentFirstPoint.y;
+        var z = (this.currentSecondPoint.z - this.currentFirstPoint.z) * this.difference + this.currentFirstPoint.z;
+
+        this.scene.translate(x, y, z);
         this.scene.rotate(this.previousAngle, 0, 1, 0);
     }
 
