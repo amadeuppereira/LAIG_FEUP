@@ -21,8 +21,8 @@ class MyLinearAnimation extends MyAnimation{
         this.previousAngle = 0;
         
         this.difference = 0;
-        this.currentFirstPoint = 0;
-        this.currentSecondPoint = 0;
+        this.currentFirstPoint = this.points[0];
+        this.currentSecondPoint = this.points[1];
         this.timeCounter = 0;
     }
 
