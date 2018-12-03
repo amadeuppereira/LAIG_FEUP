@@ -67,6 +67,7 @@
         <texture id="couchTexture" file="./scenes/images/couch.png" />
         <texture id="tableTexture" file="./scenes/images/table.png" />
         <texture id="chairTexture" file="./scenes/images/chair.png" />
+        <texture id="boardTexture" file="./scenes/images/board.png" />
  
     </textures>
 
@@ -159,6 +160,10 @@
 
         <primitive id="triangle">
             <triangle x1="0.5" y1="1" z1="0" x2="0" y2="0" z2="0" x3="1" y3="0" z3="0" />
+        </primitive>   
+
+        <primitive id="board">
+            <board size="19"/>
         </primitive>    
 
     </primitives >
@@ -170,9 +175,10 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="none"/>
+            <texture id="boardTexture" length_s="19" length_t="19"/>
             <children>
-                <componentref id="house" />
+                <!-- <componentref id="house" /> -->
+                <primitiveref id="board"/>
             </children>
         </component>
 

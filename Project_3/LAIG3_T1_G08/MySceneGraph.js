@@ -1243,7 +1243,7 @@ in the primitive with ID = " + primitiveId;
             }
 
             var temp = grandChildren[0];
-            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water")
+            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "board")
                 return "invalid tag in primitive with ID = " + primitiveId;
 
             switch(temp.nodeName) {
@@ -1558,6 +1558,14 @@ in the primitive with ID = " + primitiveId;
 
                     var water = new MyWater(this.scene, texture, wavemap, parts, heightscale, texscale);
                     primitives.push({id: primitiveId, type: "water", primitive: water});
+                    break;
+
+                case "board":
+                    var size = this.reader.getInteger(temp, 'size');
+                    if (size == null || isNaN(size))
+                        return "unable to parse size value for primitive with ID = " + primitiveId;
+                    var board = new MyBoard(this.scene, size);
+                    primitives.push({id: primitiveId, type: "board", primitive: board});
                     break;
                 
                 default:
