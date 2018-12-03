@@ -1243,7 +1243,7 @@ in the primitive with ID = " + primitiveId;
             }
 
             var temp = grandChildren[0];
-            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water")
+            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "piece")
                 return "invalid tag in primitive with ID = " + primitiveId;
 
             switch(temp.nodeName) {
@@ -1559,6 +1559,34 @@ in the primitive with ID = " + primitiveId;
                     var water = new MyWater(this.scene, texture, wavemap, parts, heightscale, texscale);
                     primitives.push({id: primitiveId, type: "water", primitive: water});
                     break;
+
+                case "piece":
+                    var idmaterial = this.reader.getString(temp, 'idmaterial');
+                    if (idmaterial == null)
+                        return "no ID defined for material in primitive with ID = " + primitiveId;
+                    
+                    var material = null;
+                    for(let m = 0; m < this.materials.length; m++){
+                        if(this.materials[m].id == idmaterial)
+                        material = this.materials[m].material;
+                    }
+                    if(material == null){
+                        return "no material with ID = " + idmaterial + " in primitive with ID = "+ primitiveId;
+                    }
+
+                    var npartsU = this.reader.getInteger(temp, 'npartsU');
+                    if (!(npartsU != null && !isNaN(npartsU)))
+                        return "unable to parse npartsU value for primitive with ID = " + primitiveId;
+
+                    var npartsV = this.reader.getInteger(temp, 'npartsV');
+                    if (!(npartsV != null && !isNaN(npartsV)))
+                        return "unable to parse npartsV value for primitive with ID = " + primitiveId;
+
+                    var piece = new MyPiece(this.scene, npartsU, npartsV, material);
+                    primitives.push({id: primitiveId, type: "piece", primitive: piece});
+                    break;
+                
+                //TODO: adicionar MyCounter parser
                 
                 default:
                     this.onXMLMinorError("unknown tag <" + temp.nodeName + ">");
