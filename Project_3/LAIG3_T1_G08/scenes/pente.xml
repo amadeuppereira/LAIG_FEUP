@@ -62,31 +62,12 @@
 
     <textures>
 
-        <texture id="groundTexture" file="./scenes/images/ground.png" />
-        <texture id="portalTexture" file="./scenes/images/portal.png" />
-        <texture id="rockTexture" file="./scenes/images/rock.png" />
         <texture id="wallTexture" file="./scenes/images/wallHouse.png" />
         <texture id="floorTexture" file="./scenes/images/floor.png" />
-        <texture id="trunkTexture" file="./scenes/images/trunk.png" />
-        <texture id="treetopTexture" file="./scenes/images/tree_top.png" />
         <texture id="couchTexture" file="./scenes/images/couch.png" />
-        <texture id="robotBodyTexture" file="./scenes/images/robot_body.png" />
         <texture id="tableTexture" file="./scenes/images/table.png" />
-        <texture id="metalTexture" file="./scenes/images/metal.png" />
         <texture id="chairTexture" file="./scenes/images/chair.png" />
-        <texture id="tvScreenTexture" file="./scenes/images/tv_screen.png" />
-        <texture id="amadeu" file="./scenes/images/amadeu.png" />
-        <texture id="floaterTexture" file="./scenes/images/floater.png" />
-        <texture id="ballTexture" file="./scenes/images/ball.png" />
-        <texture id="meeseeks_face" file="./scenes/images/meeseeks.png" />
-        <texture id="shipTexture" file="./scenes/images/ship.png" />
-        <texture id="thrusterTexture" file="./scenes/images/thruster.png" />
-        <texture id="waterTexture" file="./scenes/images/water.png" />
-        <texture id="waterHeightmap" file="./scenes/heightmaps/water.png" />
-        <texture id="ibizaTexture" file="./scenes/images/ibiza.png" />
-        <texture id="ibizaHeightmap" file="./scenes/heightmaps/ibiza.png" />
-        <texture id="ovniTexture" file="./scenes/images/ovni.png" />
-
+ 
     </textures>
 
     <materials>
@@ -105,102 +86,11 @@
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 
-        <material id="rockMaterial" shininess="0.001">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.41" g="0.41" b="0.41" a="1"/>
-            <diffuse r="0.41" g="0.41" b="0.41" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="groundMaterial" shininess="0.001">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.53" g="0.26" b="0.12" a="1"/>
-            <diffuse r="0.53" g="0.26" b="0.12" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="portalMaterial" shininess="10">
-            <emission r="0" g="0.9" b="0.3" a="1"/>
-            <ambient r="0" g="0.9" b="0.3" a="1"/>
-            <diffuse r="0" g="0.9" b="0.3" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="portalBlueMaterial" shininess="10">
-            <emission r="0" g="0" b="0.9" a="1"/>
-            <ambient r="0" g="0" b="0.9" a="1"/>
-            <diffuse r="0" g="0" b="0.9" a="1"/>
-            <specular r="0" g="0" b="0.9" a="1"/>
-        </material>
-
         <material id="wallMaterial" shininess="1">
             <emission r="0" g="0" b="0" a="0"/>
             <ambient r="1" g="1" b="0.9" a="1"/>
             <diffuse r="1" g="1" b="0.9" a="1"/>
             <specular r="1" g="1" b="0.9" a="1"/>
-        </material>
-
-        <material id="wallGreenMaterial" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0.6" b="0.3" a="1"/>
-            <diffuse r="0" g="0.6" b="0.3" a="1"/>
-            <specular r="0" g="0.6" b="0.3" a="1"/>
-        </material>
-
-        <material id="robotWheelsMaterial" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0" g="0" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="robotMaterial" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.24" g="0.24" b="0.24" a="1"/>
-            <diffuse r="0.24" g="0.24" b="0.24" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="robotBodyMaterial" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.55" g="0" b="0" a="1"/>
-            <diffuse r="0.55" g="0" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="portal_gun_red" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.5" g="0" b="0" a="1"/>
-            <diffuse r="0.5" g="0" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="portal_gun_green" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0.5" b="0" a="1"/>
-            <diffuse r="0" g="0.5" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="treeTopMaterial" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0.5" b="0" a="1"/>
-            <diffuse r="0" g="0.5" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="treeTopRedMaterial" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.6" g="0" b="0" a="1"/>
-            <diffuse r="0.6" g="0" b="0" a="1"/>
-            <specular r="0.6" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="treeBottomMaterial" shininess="1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0.36" g="0.25" b="0.2" a="1"/>
-            <diffuse r="0.36" g="0.25" b="0.2" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
         </material>
 
         <material id="couchMaterial" shininess="0.1">
@@ -231,77 +121,6 @@
             <specular r="0.8" g="0.8" b="0.8" a="1"/>
         </material>
 
-        <material id="tvMaterial" shininess="100">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0" g="0" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="tvScreenMaterial" shininess="100">
-            <emission r="1" g="1" b="1" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0" g="0" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="meeseeks" shininess="0.01">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0.65" g="0.89" b="0.95" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="shipMaterial" shininess="100">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0.57" g="0.57" b="0.57" a="1"/>
-            <specular r="0.57" g="0.57" b="0.57" a="1"/>
-        </material>
-
-        <material id="shipMaterial1" shininess="100">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0" g="0.19" b="0" a="1"/>
-            <specular r="0" g="0.19" b="0" a="1"/>
-        </material>
-
-        <material id="shipLightsMaterial" shininess="100">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="1" g="1" b="0" a="1"/>
-            <specular r="1" g="1" b="0" a="1"/>
-        </material>
-
-        <material id="pickle_rick_green" shininess="0.01">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0.29" g="0.44" b="0.27" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="pickle_rick_dark_green" shininess="0.01">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0.16" g="0.25" b="0.15" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="pickle_rick_white" shininess="0.01">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="1" g="1" b="1" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-
-        <material id="pickle_rick_black" shininess="0.01">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0" b="0" a="1"/>
-            <diffuse r="0" g="0" b="0" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
-        </material>
-        
-
     </materials>
 
     <transformations>
@@ -311,11 +130,6 @@
             <scale x="40" y="18" z="0.5" />
         </transformation>
 
-        <transformation id="transformationPortal">
-            <translate x="4" y="7" z="0.375" />
-            <scale x="8" y="14" z="0.001" />
-        </transformation>
-
         <transformation id="transformationFloor">
             <translate x="0" y="0.1" z="40" />
             <rotate axis="x" angle="-90" />
@@ -323,56 +137,9 @@
             <scale x="40" y="40" z="1" />
         </transformation>
 
-        <transformation id="transformationRock">
-            <translate x="0" y="3" z="0" />
-            <scale x="6" y="6" z="6" />
-        </transformation>
-
     </transformations>
 
     <animations>
-        <linear id="robotAnimation1" span="3">
-            <controlpoint x="30" y="0" z="55"/>
-            <controlpoint x="15" y="0" z="55"/>
-        </linear>
-        <linear id="robotAnimation2" span="3">
-            <controlpoint x="78" y="0" z="-4"/>
-            <controlpoint x="63" y="0" z="-4"/>
-        </linear>
-        <circular id="robotCircularAnimation" span="3" center="63 0 -4" radius="0" startang="-90" rotang="180"/>
-        <linear id="robotAnimation3" span="3">
-            <controlpoint x="63" y="0" z="-4"/>
-            <controlpoint x="78" y="0" z="-4"/>
-        </linear>
-        <linear id="robotAnimation4" span="3">
-            <controlpoint x="15" y="0" z="55"/>
-            <controlpoint x="30" y="0" z="55"/>
-        </linear>
-        <circular id="shipCircularAnimation" span="25" center="25 20 25" radius="30" startang="180" rotang="-1080"/>
-        <linear id="vehicleAnimation1" span="5">
-            <controlpoint x="0" y="0" z="0"/>
-            <controlpoint x="0.1" y="10" z="0.1"/>
-        </linear>
-        <linear id="vehicleAnimation2" span="3">
-            <controlpoint x="0" y="10" z="0"/>
-            <controlpoint x="55" y="10" z="50"/>
-        </linear>
-        <linear id="vehicleAnimation3" span="3">
-            <controlpoint x="55" y="10" z="50"/>
-            <controlpoint x="45" y="15" z="-55"/>
-        </linear>
-        <linear id="vehicleAnimation4" span="1">
-            <controlpoint x="-10" y="15" z="0"/>
-            <controlpoint x="-10" y="100" z="0"/>
-        </linear>
-        <linear id="vehicleAnimation5" span="3">
-            <controlpoint x="-10" y="100" z="0"/>
-            <controlpoint x="30" y="10" z="55"/>
-        </linear>
-        <circular id="vehicleCircularAnimation1" span="5" center="0 0 0" radius="0" startang="0" rotang="180"/>
-        <circular id="vehicleCircularAnimation2" span="2" center="55 10 50" radius="0" startang="0" rotang="360"/>
-        <circular id="vehicleCircularAnimation3" span="8" center="45 15 0" radius="55" startang="90" rotang="90"/>
-        <circular id="vehicleCircularAnimation4" span="1.5" center="-10 100 0" radius="0" startang="90" rotang="90"/>
 
     </animations>
 
@@ -386,62 +153,13 @@
             <cylinder base="0.5" top="0.5" height="1" slices="20" stacks="20" />
         </primitive>
 
-        <primitive id="ship_body">
-            <cylinder base="5" top="3" height="2" slices="30" stacks="30" />
-        </primitive>
-
-        <primitive id="ship_torus">
-            <torus inner="0.2" outer="3" slices="50" loops="50" />          
-        </primitive>
-
-        <primitive id="robot_arm">
-            <cylinder base="0.7" top="0.2" height="4" slices="8" stacks="8" />
-        </primitive>
-
         <primitive id="sphere">
             <sphere radius="0.5" slices="50" stacks="20" />
         </primitive>
 
-        <primitive id="sphere_tree">
-            <sphere radius="0.5" slices="8" stacks="8" />
-        </primitive>
-
-        <primitive id="torus">
-            <torus inner="1.5" outer="3" slices="50" loops="50" />
-        </primitive>
-
         <primitive id="triangle">
             <triangle x1="0.5" y1="1" z1="0" x2="0" y2="0" z2="0" x3="1" y3="0" z3="0" />
-        </primitive>
-
-        <primitive id="plane">
-            <plane npartsU="5" npartsV="2"/>
-        </primitive>
-
-        <primitive id="patch">
-            <patch npointsU="2" npointsV="2" npartsU="2" npartsV="2" >
-                <controlpoint xx="0" yy="1" zz="2" />
-                <controlpoint xx="0" yy="2" zz="4" />
-                <controlpoint xx="0" yy="3" zz="5" />
-                <controlpoint xx="0" yy="4" zz="6" />
-            </patch>
-        </primitive>
-
-        <primitive id="vehicle">
-            <vehicle />
-        </primitive>
-
-        <primitive id="cylinder2">
-            <cylinder2 base="0.5" top="0.5" height="1" slices="20" stacks="20" />
-        </primitive>
-
-        <primitive id="terrainIbiza">
-            <terrain idtexture="ibizaTexture" idheightmap="ibizaHeightmap" parts="50" heightscale="0.4"/>
-        </primitive>
-
-        <primitive id="water">
-            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="50" heightscale="0.005" texscale="10"/>
-        </primitive>            
+        </primitive>    
 
     </primitives >
 
