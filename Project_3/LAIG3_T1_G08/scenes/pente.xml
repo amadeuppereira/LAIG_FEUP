@@ -204,7 +204,8 @@
             <texture id="boardTexture" length_s="19" length_t="19"/>
             <children>
                 <!-- <componentref id="house" /> -->
-                <primitiveref id="counter"/>
+                <!-- <primitiveref id="counter"/> -->
+                <primitiveref id="board"/>
             </children>
         </component>
 

@@ -11,9 +11,10 @@ class MyBoard extends CGFobject
         this.board = new MyQuad(this.scene, 0, 0, 19, 19);
         this.sensor = new MyPickableObject(this.scene, 0.72);
 
-        this.material = new CGFappearance(this.scene);
-        this.material.setAmbient(0,0,1,0); 
-        
+        this.previewMaterial = new CGFappearance(this.scene);
+        this.previewMaterial.setAmbient(1,0,0,0); 
+        this.piecePreview = new MyPiece(this.scene, 30, 30, this.previewMaterial); 
+        this.piecePreviewCoord = undefined;
     };
 
     sensorIdToCoord(id) {
@@ -29,10 +30,24 @@ class MyBoard extends CGFobject
                     let sensor = this.scene.pickResults[i][0];
                     if(sensor) {
                         let coords = this.sensorIdToCoord(this.scene.pickResults[i][1]);
-                        console.log(coords.row,coords.col);
+                        if(this.scene.mouseHoverEvent) {
+                            this.piecePreviewCoord = {
+                                row: coords.row - 1,
+                                col: 19 - coords.col
+                            };
+                            this.scene.mouseHoverEvent = false;
+                        } else {
+                            console.log(coords);
+                        }
                     }
                 }
                 this.scene.pickResults.splice(0, this.scene.pickResults.length);
+            }
+            else {
+                if(this.scene.mouseHoverEvent) {
+                    this.scene.mouseHoverEvent = false;
+                    this.piecePreviewCoord = undefined;
+                }
             }
         }
 
@@ -48,15 +63,25 @@ class MyBoard extends CGFobject
 
         if(this.scene.pickMode == false) {
             this.board.display();
-            this.material.apply();
+            if(this.piecePreviewCoord != undefined) {
+                this.scene.pushMatrix();
+                this.scene.translate(0.6, 0.6, 0);
+                this.scene.translate(this.piecePreviewCoord.row*0.99,
+                                    this.piecePreviewCoord.col*0.99,
+                                    0);
+                this.scene.rotate(Math.PI/2, 1,0,0);
+                this.scene.scale(0.4, 0.4, 0.4);
+                this.piecePreview.display();
+                this.scene.popMatrix();
+            }
         }
         else {
             this.scene.pushMatrix();
-            this.scene.translate(0.23, 0.3, 0.00001);
+            this.scene.translate(0.23, 0.3, 0);
             for(let i = 0; i < this.size; i++) {
                 for(let j = 0; j < this.size; j++) {
                     this.scene.pushMatrix();
-                    this.scene.translate(j*0.99, i*0.99, 0.001);
+                    this.scene.translate(j*0.99, i*0.99, 0);
                     this.scene.registerForPick(j+i*this.size, this.sensor);
                     this.sensor.display();
                     this.scene.popMatrix();
