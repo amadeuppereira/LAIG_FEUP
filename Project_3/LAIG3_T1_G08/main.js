@@ -34,6 +34,7 @@ serialInclude(['../lib/CGF.js',
                 './primitives/MyBoard.js',
                 './primitives/MyPiece.js',
                 './primitives/MyCounter.js',
+                './primitives/MyCube.js',
 
 
 main=function()
