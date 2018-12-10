@@ -40,6 +40,8 @@ class XMLscene extends CGFscene {
         //to check when M key is pressed or released
         this.KeyMPressed = false;
     
+        //Project 3
+        this.client = new Client();
 
         this.FPS = 150;
         this.setUpdatePeriod(1000/this.FPS);
