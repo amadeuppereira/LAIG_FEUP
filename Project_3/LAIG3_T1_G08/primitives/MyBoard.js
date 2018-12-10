@@ -6,7 +6,7 @@ class MyBoard extends CGFobject
 {
 	constructor(scene, size) {
         super(scene);
-        this.size = size;
+        this.size = size || 19;
 
         this.board = new MyQuad(this.scene, 0, 0, 19, 19);
         this.sensor = new MyPickableObject(this.scene, 0.72);

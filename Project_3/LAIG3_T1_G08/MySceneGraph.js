@@ -1587,10 +1587,7 @@ in the primitive with ID = " + primitiveId;
                     break;
                 
                 case "board":
-                    var size = this.reader.getInteger(temp, 'size');
-                    if (size == null || isNaN(size))
-                        return "unable to parse size value for primitive with ID = " + primitiveId;
-                    var board = new MyBoard(this.scene, size);
+                    var board = new MyBoard(this.scene);
                     primitives.push({id: primitiveId, type: "board", primitive: board});
                     break;
                 

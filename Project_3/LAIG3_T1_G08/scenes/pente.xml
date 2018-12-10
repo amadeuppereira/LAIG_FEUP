@@ -177,7 +177,7 @@
         </primitive>   
 
         <primitive id="board">
-            <board size="19"/>
+            <board/>
         </primitive>    
 
         <primitive id="greenPiece">
