@@ -186,6 +186,10 @@
 
         <primitive id="redPiece">
             <piece npartsU="50" npartsV="50" idmaterial="redPieceMaterial" />
+        </primitive>
+        
+        <primitive id="counter">
+            <counter/>
         </primitive>   
 
     </primitives >
@@ -200,7 +204,7 @@
             <texture id="boardTexture" length_s="19" length_t="19"/>
             <children>
                 <!-- <componentref id="house" /> -->
-                <primitiveref id="board"/>
+                <primitiveref id="counter"/>
             </children>
         </component>
 

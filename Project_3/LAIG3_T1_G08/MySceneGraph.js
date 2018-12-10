@@ -1243,7 +1243,7 @@ in the primitive with ID = " + primitiveId;
             }
 
             var temp = grandChildren[0];
-            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "board" && temp.nodeName != "piece")
+            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "board" && temp.nodeName != "piece" && temp.nodeName != "counter")
                 return "invalid tag in primitive with ID = " + primitiveId;
 
             switch(temp.nodeName) {
@@ -1594,7 +1594,10 @@ in the primitive with ID = " + primitiveId;
                     primitives.push({id: primitiveId, type: "board", primitive: board});
                     break;
                 
-                //TODO: adicionar MyCounter parser
+                case "counter":
+                    var counter = new MyCounter(this.scene);
+                    primitives.push({id: primitiveId, type: "counter", primitive: counter});
+                    break;
                 
                 default:
                     this.onXMLMinorError("unknown tag <" + temp.nodeName + ">");
