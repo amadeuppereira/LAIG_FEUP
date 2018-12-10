@@ -51,6 +51,12 @@ class MyQuad extends CGFobject
 		this.initGLBuffers();
 	};
 
+	display() {
+		if(this.scene.pickMode == false) {
+		  super.display();
+		}
+	}
+
 	updateTexCoords(s, t) {
 		const tempx = this.width/s;
 		const tempy = this.height/t;

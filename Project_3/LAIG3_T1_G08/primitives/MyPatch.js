@@ -29,7 +29,9 @@ class MyPatch extends CGFobject
     };
 
     display() {
-        this.obj.display();
+        if(this.scene.pickMode == false) {
+            this.obj.display();
+        }
     }
 
     updateTexCoords(s, t) {}

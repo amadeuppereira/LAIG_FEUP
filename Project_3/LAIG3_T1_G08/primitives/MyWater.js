@@ -22,11 +22,13 @@ class MyWater extends MyPlane {
     };
 
     display() {
-        this.scene.setActiveShader(this.shader);
-        this.texture.bind(0);
-        this.heightmap.bind(1);
-        this.obj.display();
-        this.scene.setActiveShader(this.scene.defaultShader);
+        if(this.scene.pickMode == false) {
+            this.scene.setActiveShader(this.shader);
+            this.texture.bind(0);
+            this.heightmap.bind(1);
+            this.obj.display();
+            this.scene.setActiveShader(this.scene.defaultShader);
+        }
     }
 
     update(deltaTime) {

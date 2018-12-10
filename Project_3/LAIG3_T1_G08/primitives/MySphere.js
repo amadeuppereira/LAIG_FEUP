@@ -65,5 +65,11 @@ class MySphere extends CGFobject {
         }
     }
 
+    display() {
+        if(this.scene.pickMode == false) {
+          super.display();
+        }
+    }
+
     updateTexCoords(s, t) {}
 }

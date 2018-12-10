@@ -65,10 +65,12 @@ class MyTorus extends CGFobject {
     }
 
     display() {
-      this.scene.pushMatrix();
-      this.scene.rotate(Math.PI/2, 1, 0, 0);
-      super.display();
-      this.scene.popMatrix();
+      if(this.scene.pickMode == false) {
+        this.scene.pushMatrix();
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        super.display();
+        this.scene.popMatrix();
+      }
     }
     
     updateTexCoords(s, t) {}

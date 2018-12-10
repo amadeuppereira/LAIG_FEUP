@@ -35,8 +35,11 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
+        this.setPickEnabled(true);
+
         //to check when M key is pressed or released
         this.KeyMPressed = false;
+    
 
         this.FPS = 150;
         this.setUpdatePeriod(1000/this.FPS);

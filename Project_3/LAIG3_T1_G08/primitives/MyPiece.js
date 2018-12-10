@@ -46,21 +46,23 @@ class MyPiece extends CGFobject
     };
 
     display() {
-        this.material.apply();
-
-        this.scene.pushMatrix();
-        this.scene.scale(1, 0.5, 1);
-
-        this.scene.pushMatrix();
-        this.obj.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.rotate(Math.PI, 1, 0, 0);
-        this.obj.display();
-        this.scene.popMatrix();
-
-        this.scene.popMatrix();
+        if(this.scene.pickMode == false) {
+            this.material.apply();
+            
+            this.scene.pushMatrix();
+            this.scene.scale(1, 0.5, 1);
+            
+            this.scene.pushMatrix();
+            this.obj.display();
+            this.scene.popMatrix();
+            
+            this.scene.pushMatrix();
+            this.scene.rotate(Math.PI, 1, 0, 0);
+            this.obj.display();
+            this.scene.popMatrix();
+            
+            this.scene.popMatrix();
+        }
     }
 
     updateTexCoords(s, t) {}

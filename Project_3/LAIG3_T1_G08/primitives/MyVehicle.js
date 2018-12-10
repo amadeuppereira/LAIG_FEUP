@@ -60,6 +60,7 @@ class MyVehicle extends CGFobject
     }
 
 	display(){
+        if(this.scene.pickMode == true) return;
 
         this.scene.pushMatrix();
             this.scene.rotate(-90 * DEGREE_TO_RAD, 1, 0, 0);

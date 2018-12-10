@@ -83,17 +83,19 @@ class MyCylinder extends CGFobject
 	}
 
 	display(){
-		super.display();
-
-		this.scene.pushMatrix();
-			this.scene.translate(0, 0, this.heigth);
-			this.topCover.display();
-		this.scene.popMatrix();
-
-		this.scene.pushMatrix();
-			this.scene.rotate(Math.PI, 1, 0, 0);
-			this.baseCover.display();
-		this.scene.popMatrix();
+		if(this.scene.pickMode == false) {
+			super.display();
+			
+			this.scene.pushMatrix();
+				this.scene.translate(0, 0, this.heigth);
+				this.topCover.display();
+			this.scene.popMatrix();
+			
+			this.scene.pushMatrix();
+				this.scene.rotate(Math.PI, 1, 0, 0);
+				this.baseCover.display();
+			this.scene.popMatrix();
+		}
 
 	}
 

@@ -111,4 +111,10 @@ class MyInterface extends CGFinterface {
             return true;
     }
 
+    processMouseMove(event) {
+        super.processMouseMove(event);
+        this.scene.onPick(event);
+        this.scene.mouse
+    }
+
 }

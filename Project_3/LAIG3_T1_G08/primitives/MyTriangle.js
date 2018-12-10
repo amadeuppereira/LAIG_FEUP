@@ -55,6 +55,12 @@ class MyTriangle extends CGFobject
 		this.normals.push(normal[0], normal[1], normal[2]);
 	};
 
+	display() {
+		if(this.scene.pickMode == false) {
+		  super.display();
+		}
+	}
+
 	updateTexCoords(s, t) {
 		this.texCoords = [
 			(this.c - this.a * Math.cos(this.beta))/s, (t - this.a * Math.sin(this.beta)),
