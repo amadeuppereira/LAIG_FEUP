@@ -100,15 +100,16 @@ print_header_line(_).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                       Commands                                                  %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+ 
 :- consult('main.pl').
 
 parse_input(handshake, handshake).
-parse_input(test(C,N), Res) :- test(C,Res,N).
+
 parse_input(quit, goodbye).
 
-test(_,[],N) :- N =< 0.
-test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
+parse_input(make_board(Size), Board) :- make_board(Size, Board).
 
-parse_input(size(Size), Board) :- make_board(Size, Board).
-	
+parse_input(valid_move(Board, Turn, Tournament, Move), true) :- valid_move(Board, Turn, Tournament, Move).
+parse_input(valid_move(Board, Turn, Tournament, Move), false).
+
+parse_input(move(Move, Game), NewGame) :- move(Move, Game, NewGame).

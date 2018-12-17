@@ -198,6 +198,16 @@ class XMLscene extends CGFscene {
 
         if(this.gui.isKeyReleased("KeyM") && this.KeyMPressed == true){
             //Pressed M Key
+            this.client.makeRequest("make_board(19)")
+            .then((response) => {
+                // console.log(response)
+                this.client.makeRequest("valid_move("+response+",0,true,[9,10])")
+                .then((r) => {
+                    console.log(r);
+                })
+            })
+            .catch((error => {console.log(error)}))
+
             this.graph.materialCounter++;
             this.KeyMPressed = false;
         }

@@ -7,23 +7,45 @@ class Client{
         this.requestPort = port || 8081;
     }
 
-    getPrologRequest(requestString, onSuccess, onError){
-        var request = new XMLHttpRequest();
-        request.open('GET', 'http://localhost:'+this.requestPort+'/'+requestString, true);
+    // getPrologRequest(requestString, onSuccess, onError){
+    //     var request = new XMLHttpRequest();
+    //     request.open('GET', 'http://localhost:'+this.requestPort+'/'+requestString, true);
 
-        request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
-        request.onerror = onError || function(){console.log("Error waiting for response");};
+    //     let self = this;
 
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        request.send();
-    }
+    //     request.onload = onSuccess || function(data){ self.getReply(data); this.data = data.target.response};
+    //     request.onerror = onError || function(){console.log("Error waiting for response");};
+
+    //     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    //     request.send();
+    // }
 
     makeRequest(requestString){
-        this.getPrologRequest(requestString, this.getReply);
-    }
+        let requestPort = this.requestPort;
+        return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+            request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
 
-    getReply(data){
-        console.log(data.target.response);
-        return data.target.response;
+            request.onload = function(data){
+                if(this.status >= 200 && this.status < 300){
+                    resolve(data.target.response);
+                }
+                else{
+                    reject({
+                        status: this.status,
+                        statusText: request.statusText
+                    });
+                }
+            };
+            request.onerror = function(){
+                reject({
+                    status: this.status, 
+                    statusText: request.statusText
+                });
+            };
+
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.send();
+        })
     }
 }
