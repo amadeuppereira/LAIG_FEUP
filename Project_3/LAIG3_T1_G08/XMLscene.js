@@ -42,7 +42,9 @@ class XMLscene extends CGFscene {
         
         //Project 3
         this.mouseHoverEvent = false;
-        this.client = new Client();
+        this.pente = new Pente();
+        this.board;
+        this.playerTurn = true;
 
         this.FPS = 150;
         this.setUpdatePeriod(1000/this.FPS);
@@ -120,7 +122,6 @@ class XMLscene extends CGFscene {
         }
     }
 
-
     /* 
      * Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
@@ -197,19 +198,23 @@ class XMLscene extends CGFscene {
         }
 
         if(this.gui.isKeyReleased("KeyM") && this.KeyMPressed == true){
-            //Pressed M Key
-            this.client.makeRequest("make_board(19)")
-            .then((response) => {
-                // console.log(response)
-                this.client.makeRequest("valid_move("+response+",0,true,[9,10])")
-                .then((r) => {
-                    console.log(r);
-                })
-            })
-            .catch((error => {console.log(error)}))
-
             this.graph.materialCounter++;
             this.KeyMPressed = false;
+        }
+    }
+
+    playerMove(coords) {
+        if(this.playerTurn) {
+            this.playerTurn = false;
+            this.pente.move(coords.row, coords.col)
+            .then(() => {
+                this.board.updateBoard(this.pente.board);
+                this.pente.bot().then(() => {
+                    this.board.updateBoard(this.pente.board);
+                    this.playerTurn = true;
+                    console.log("Player Turn");
+                })
+            }) 
         }
     }
 

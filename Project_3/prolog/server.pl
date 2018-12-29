@@ -103,13 +103,27 @@ print_header_line(_).
  
 :- consult('main.pl').
 
-parse_input(handshake, handshake).
-
 parse_input(quit, goodbye).
 
 parse_input(make_board(Size), Board) :- make_board(Size, Board).
 
-parse_input(valid_move(Board, Turn, Tournament, Move), true) :- valid_move(Board, Turn, Tournament, Move).
-parse_input(valid_move(Board, Turn, Tournament, Move), false).
+parse_input(options(Options), O) :- sanitize_options(Options, O).
 
-parse_input(move(Move, Game), NewGame) :- move(Move, Game, NewGame).
+parse_input(move(Game, Move), NewGame) :-
+	Game = game(Board, _, _, Turn, Options),
+	opt_tournament(Options, Tournament),
+	valid_move(Board, Turn, Tournament, Move), !,
+	move(Move, Game, NewGame).
+parse_input(move(_, _), false) :- write('fail'),nl.
+
+parse_input(bot(Game), NewGame) :-
+	Game = game(_, _, _, _, Options),
+	analyze_tree(Game, Tree),
+	choose_move(Tree, Move, Options),
+	move(Move, Game, NewGame).
+
+parse_input(gameover(Game), P) :-
+	is_player(P),
+	game_over(Game, P),
+	victory(P).
+parse_input(gameover(_), false).

@@ -10,7 +10,6 @@ class MyPiece extends CGFobject
         this.uDiv = uDiv;
         this.vDiv = vDiv;
         this.material = material;
-        console.log(this.material);
         let controlPoints = [
             [
                 [ 0, 0, 1, 1 ],

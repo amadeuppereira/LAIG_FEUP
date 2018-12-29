@@ -116,5 +116,4 @@ class MyInterface extends CGFinterface {
         this.scene.onPick(event);
         this.scene.mouseHoverEvent = true;
     }
-
 }

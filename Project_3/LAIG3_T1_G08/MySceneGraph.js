@@ -1587,7 +1587,40 @@ in the primitive with ID = " + primitiveId;
                     break;
                 
                 case "board":
-                    var board = new MyBoard(this.scene);
+                    var idp1 = this.reader.getString(temp, 'p1');
+                    if (idp1 == null)
+                        return "no ID defined for p1 material in primitive with ID = " + primitiveId;
+
+                    var idp2 = this.reader.getString(temp, 'p2');
+                    if (idp2 == null)
+                        return "no ID defined for p2 material in primitive with ID = " + primitiveId;
+
+                    var idpreview = this.reader.getString(temp, 'preview');
+                    if (idpreview == null)
+                        return "no ID defined for preview material in primitive with ID = " + primitiveId;
+
+                    var p1 = null, p2 = null, preview = null;
+                    for(let m = 0; m < this.materials.length; m++){
+                        if(this.materials[m].id == idp1)
+                            p1 = this.materials[m].material;
+                        else if(this.materials[m].id == idp2)
+                            p2 = this.materials[m].material;
+                        else if(this.materials[m].id == idpreview)
+                            preview = this.materials[m].material;
+                    }
+                    if(p1 == null){
+                        return "no material with ID = " + idp1 + " in primitive with ID = "+ primitiveId;
+                    }
+
+                    if(p2 == null){
+                        return "no material with ID = " + idp2 + " in primitive with ID = "+ primitiveId;
+                    }
+
+                    if(preview == null){
+                        return "no material with ID = " + idpreview + " in primitive with ID = "+ primitiveId;
+                    }
+
+                    var board = new MyBoard(this.scene, p1, p2, preview);
                     primitives.push({id: primitiveId, type: "board", primitive: board});
                     break;
                 
