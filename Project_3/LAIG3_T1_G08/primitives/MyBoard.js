@@ -67,6 +67,7 @@ class MyBoard extends CGFobject
                 if(coords.row == this.pieces[j].coords.row && coords.col == this.pieces[j].coords.col) {
                     flag = false;
                     if(board[i] == "c") {
+                        //TODO: REMOVE PIECES ANIMATION
                         this.pieces.splice(j, 1);
                         break;
                     } else if (board[i] == "w" || board[i] == "b") break;
@@ -108,7 +109,7 @@ class MyBoard extends CGFobject
             this.scene.scale(0.4, 0.4, 0.4);
             e.piece.display();
             this.scene.popMatrix();
-            
+
             let finalCoords = {x: (e.coords.row-1) *0.99, y: (this.size - e.coords.col)*0.99, z: 0.2};
             let x_increment = 0.1;
             let y_increment = 0.1;

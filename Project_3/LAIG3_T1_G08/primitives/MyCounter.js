@@ -100,6 +100,13 @@ class MyCounter extends CGFobject
                 break;
         }
     }
+    
+    reset(){
+        this.minutesCounter = 0;
+        this.secondsCounter = 0;
+        this.piecesACounter = 0;
+        this.piecesBCounter = 0;
+    }
 
 	display(){
         if(this.scene.pickMode == true) return;

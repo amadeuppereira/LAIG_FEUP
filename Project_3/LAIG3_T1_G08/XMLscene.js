@@ -390,11 +390,17 @@ class XMLscene extends CGFscene {
             var components = this.graph.components;
             for(let i = 0; i < components.length; i++){
 
-                //update water movement
                 if(components[i].children.primitiveref.length == 1){
-                    if(components[i].children.primitiveref[0].type == "water" || components[i].children.primitiveref[0].type == "counter"){
-                        if(this.pente.active_game)
+                    if(components[i].children.primitiveref[0].type == "water"){
+                        components[i].children.primitiveref[0].primitive.update(this.deltaTime);
+                    }
+                    else if(components[i].children.primitiveref[0].type == "counter"){
+                        if(this.pente.game_mode == null)
+                            components[i].children.primitiveref[0].primitive.reset();
+                        else if(this.pente.active_game)
                             components[i].children.primitiveref[0].primitive.update(this.deltaTime, this.pente.captures);
+                        else if(this.pente.winner == null)
+                            components[i].children.primitiveref[0].primitive.reset();
                     }
                 }
 
