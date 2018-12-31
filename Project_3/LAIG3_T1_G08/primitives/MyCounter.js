@@ -47,7 +47,7 @@ class MyCounter extends CGFobject
         this.twoPointsTexture = new CGFtexture(this.scene, "./scenes/images/two_points.jpg");
     }
 
-    update(deltaTime){
+    update(deltaTime, captures){
         this.secondsCounter += deltaTime / 1000;
         if(Math.floor(this.secondsCounter) >= 60){
             this.minutesCounter++;
@@ -57,6 +57,9 @@ class MyCounter extends CGFobject
             this.minutesCounter = 0;
             this.secondsCounter = 0;
         }
+
+        this.piecesACounter = parseInt(captures.b);
+        this.piecesBCounter = parseInt(captures.w);
 
         this.updateTextures();
     }
@@ -96,14 +99,6 @@ class MyCounter extends CGFobject
             default:
                 break;
         }
-    }
-
-    incrementPlayerAEatenPieces(){
-        this.piecesACounter++;
-    }
-
-    incrementPlayerBEatenPieces(){
-        this.piecesBCounter++;
     }
 
 	display(){

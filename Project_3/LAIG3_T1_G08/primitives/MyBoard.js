@@ -73,8 +73,14 @@ class MyBoard extends CGFobject
                 }
             }
             if(flag) {
-                if(board[i] == "w") this.pieces.push({coords: coords, piece: this.pieceP1});
-                else if(board[i] == "b") this.pieces.push({coords: coords, piece: this.pieceP2});
+                if(board[i] == "w") {
+                    let initialCoordsP1 = {x: 20.4, y: -0.1, z: 1};
+                    this.pieces.push({coords: coords, currentCoords: initialCoordsP1, piece: this.pieceP1});
+                }
+                else if(board[i] == "b") {
+                    let initialCoordsP2 = {x: 20.4, y: 17.9, z: 1};
+                    this.pieces.push({coords: coords, currentCoords: initialCoordsP2, piece: this.pieceP2});
+                }
             }
         }            
     }
@@ -97,13 +103,50 @@ class MyBoard extends CGFobject
         this.pieces.forEach(e => {
             this.scene.pushMatrix();
             this.scene.translate(0.6, 0.6, 0);
-            this.scene.translate((e.coords.row-1) *0.99,
-                                (this.size - e.coords.col)*0.99,
-                                0.1);
+            this.scene.translate(e.currentCoords.x, e.currentCoords.y, e.currentCoords.z);
             this.scene.rotate(Math.PI/2, 1,0,0);
             this.scene.scale(0.4, 0.4, 0.4);
             e.piece.display();
             this.scene.popMatrix();
+            
+            let finalCoords = {x: (e.coords.row-1) *0.99, y: (this.size - e.coords.col)*0.99, z: 0.2};
+            let x_increment = 0.1;
+            let y_increment = 0.1;
+
+            if(Math.abs(finalCoords.x-e.currentCoords.x) > Math.abs(finalCoords.y-e.currentCoords.y)){
+                y_increment = Math.abs(finalCoords.y-e.currentCoords.y)* 0.1/Math.abs(finalCoords.x-e.currentCoords.x);
+            }
+            else{
+                x_increment = Math.abs(finalCoords.x-e.currentCoords.x)*0.1/Math.abs(finalCoords.y-e.currentCoords.y);
+            }
+
+            if(Math.abs(finalCoords.x-e.currentCoords.x) < 0.1){
+                e.currentCoords.x = finalCoords.x;
+            } else{
+                if(finalCoords.x > e.currentCoords.x){
+                    e.currentCoords.x += x_increment;
+                } else{
+                    e.currentCoords.x -= x_increment;
+                }
+            }
+
+            if(Math.abs(finalCoords.y-e.currentCoords.y) < 0.1){
+                e.currentCoords.y = finalCoords.y;
+            } else{
+                if(finalCoords.y > e.currentCoords.y){
+                    e.currentCoords.y += y_increment;
+                } else{
+                    e.currentCoords.y -= y_increment;
+                }
+            }
+
+            if(e.currentCoords.y == finalCoords.y && e.currentCoords.x == finalCoords.x){
+                if(e.currentCoords.z > finalCoords.z)
+                    e.currentCoords.z -= 0.1;
+                else{
+                    e.currentCoords.z = finalCoords.z;
+                }
+            }
         });
     }
 

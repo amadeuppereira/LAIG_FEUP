@@ -86,7 +86,7 @@ class Pente{
     move(R, C) {
         return this.client.makeRequest("move(" + this + ",[" + R + "," + C + "])")
         .then(r => {
-            if(this.active_game && r != false) this.updateGame(r);
+            if(this.active_game && r != "false") this.updateGame(r);
         }); 
     }
 

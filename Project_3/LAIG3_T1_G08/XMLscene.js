@@ -393,7 +393,8 @@ class XMLscene extends CGFscene {
                 //update water movement
                 if(components[i].children.primitiveref.length == 1){
                     if(components[i].children.primitiveref[0].type == "water" || components[i].children.primitiveref[0].type == "counter"){
-                        components[i].children.primitiveref[0].primitive.update(this.deltaTime);
+                        if(this.pente.active_game)
+                            components[i].children.primitiveref[0].primitive.update(this.deltaTime, this.pente.captures);
                     }
                 }
 
