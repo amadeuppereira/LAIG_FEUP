@@ -41,7 +41,7 @@ class MyBoard extends CGFobject
                             };
                             this.scene.mouseHoverEvent = false;
                         } else {
-                            this.scene.playerMove(coords);
+                            this.scene.board_click(coords);
                         }
                     }
                 }
