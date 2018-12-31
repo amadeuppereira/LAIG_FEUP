@@ -9,11 +9,6 @@
             <to x="0" y="0" z="0" />
         </perspective>
 
-        <perspective id="previous_scene_view" near="0.1" far="500" angle="30">
-            <from x="22" y="10" z="45" />
-            <to x="20" y="0" z="35" />
-        </perspective>
-
     </views>
 
     <ambient>
@@ -210,9 +205,68 @@
             </materials>
             <texture id="boardTexture" length_s="19" length_t="19"/>
             <children>
-                <!-- <componentref id="house" /> -->
+                <componentref id="ambient1" />
                 <!-- <primitiveref id="counter"/> -->
+                <!-- <componentref id="board"/> -->
+            </children>
+        </component>
+
+        
+
+        <component id="ambient1">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="house"/>
+                <componentref id="board"/>
+                <componentref id="boardTable"/>
+                <componentref id="counter"/>
+            </children>
+        </component>
+
+        <component id="board">
+            <transformation>
+                <translate x="10.3" y="2.01" z="10.6" />
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
                 <primitiveref id="board"/>
+            </children>
+        </component>
+
+        <component id="counter">
+            <transformation>
+                <translate x="14.8" y="2.2" z="11.7" />
+                <scale x="0.2" y="0.4" z="0.2"/>
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="counter"/>
+            </children>
+        </component>
+
+        <component id="boardTable">
+            <transformation>
+                <translate x="12.5" y="1.5" z="12.5" />
+                <scale x="5" y="1" z="5"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="cube"/>
             </children>
         </component>
 
