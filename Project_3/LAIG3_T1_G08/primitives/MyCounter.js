@@ -62,7 +62,7 @@ class MyCounter extends CGFobject
 
         this.piecesACounter = parseInt(captures.b);
         this.piecesBCounter = parseInt(captures.w);
-        console.log(this.piecesACounter);
+
         this.updateTextures();
     }
 
