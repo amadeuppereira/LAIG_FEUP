@@ -55,7 +55,7 @@ class XMLscene extends CGFscene {
         let init = this.pente.init(mode, op);
         if(init) init.then(() => {
             this.updateMessage();
-            this.board.pieces = [];
+            this.board.reset();
             this.board.updateBoard(this.pente.board);
             if(mode == 4) this.botvbot();
         })
@@ -127,6 +127,7 @@ class XMLscene extends CGFscene {
 
         //TODO: Filme do jogo
         console.log("Filme do Jogo");
+        
     }
 
     board_click(coords) {        
