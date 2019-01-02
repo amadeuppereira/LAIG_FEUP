@@ -18,12 +18,14 @@ class MyCounter extends CGFobject
 
         this.cube = new MyCube(scene);
 
-        this.piecesATexture = this.zero;
+        this.dozensPiecesATexture = this.zero;
+        this.unitsPiecesATexture = this.zero;
+        this.dozensPiecesBTexture = this.zero;
+        this.unitsPiecesBTexture = this.zero;
         this.dozensMinutesTexture = this.zero;
         this.unitsMinutesTexture = this.zero;
         this.dozensSecondsTexture = this.zero;
         this.unitsSecondsTexture = this.zero;
-        this.piecesBTexture = this.zero;
 
         this.materialDefault = new CGFappearance(this.scene);
         this.dividerAppearance = new CGFappearance(this.scene);
@@ -60,13 +62,15 @@ class MyCounter extends CGFobject
 
         this.piecesACounter = parseInt(captures.b);
         this.piecesBCounter = parseInt(captures.w);
-
+        console.log(this.piecesACounter);
         this.updateTextures();
     }
 
     updateTextures(){
-        this.piecesATexture = this.getTexture(this.piecesACounter);
-        this.piecesBTexture = this.getTexture(this.piecesBCounter);
+        this.dozensPiecesATexture = this.getTexture(Math.floor(this.piecesACounter/10));
+        this.unitsPiecesATexture = this.getTexture(this.piecesACounter%10);
+        this.dozensPiecesBTexture = this.getTexture(Math.floor(this.piecesBCounter/10));
+        this.unitsPiecesBTexture = this.getTexture(this.piecesBCounter%10);
 
         this.dozensMinutesTexture = this.getTexture(Math.floor(this.minutesCounter/10));
         this.unitsMinutesTexture = this.getTexture(this.minutesCounter%10);
@@ -112,7 +116,14 @@ class MyCounter extends CGFobject
         if(this.scene.pickMode == true) return;
 
         this.scene.pushMatrix();
-        this.materialDefault.setTexture(this.piecesATexture);
+        this.materialDefault.setTexture(this.dozensPiecesATexture);
+        this.materialDefault.apply();
+        this.scene.translate(-1, 0, 0);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.materialDefault.setTexture(this.unitsPiecesATexture);
         this.materialDefault.apply();
         this.cube.display();
         this.scene.popMatrix();
@@ -166,9 +177,16 @@ class MyCounter extends CGFobject
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.materialDefault.setTexture(this.piecesBTexture);
+        this.materialDefault.setTexture(this.dozensPiecesBTexture);
         this.materialDefault.apply();
         this.scene.translate(7.5, 0, 0);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.materialDefault.setTexture(this.unitsPiecesBTexture);
+        this.materialDefault.apply();
+        this.scene.translate(8.5, 0, 0);
         this.cube.display();
         this.scene.popMatrix();
     }
