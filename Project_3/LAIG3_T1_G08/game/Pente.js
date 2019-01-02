@@ -74,8 +74,14 @@ class Pente{
         game = game.slice(game.search("]],") + 3, game.length);
         let next = game[0];
         game = game.slice(2, game.length);
-        let captures = {w: game[1], b: game[3]};
-        game = game.slice(6, game.length);
+        let captures;
+        if(game[2] == ",") {
+            captures = {w: game[1], b: game[3]};
+            game = game.slice(6, game.length);
+        } else {
+            captures = {w: game.substr(1, 2), b: game[4]};
+            game = game.slice(7, game.length);
+        }
         let turn = game[0];
         game = game.slice(2, game.length - 1);
         let options = this.parseOptions(game);
