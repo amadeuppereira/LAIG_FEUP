@@ -1243,7 +1243,7 @@ in the primitive with ID = " + primitiveId;
             }
 
             var temp = grandChildren[0];
-            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "board" && temp.nodeName != "piece" && temp.nodeName != "counter")
+            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "board" && temp.nodeName != "piece" && temp.nodeName != "counter" && temp.nodeName != "obj")
                 return "invalid tag in primitive with ID = " + primitiveId;
 
             switch(temp.nodeName) {
@@ -1627,6 +1627,14 @@ in the primitive with ID = " + primitiveId;
                 case "counter":
                     var counter = new MyCounter(this.scene);
                     primitives.push({id: primitiveId, type: "counter", primitive: counter});
+                    break;
+
+                case "obj":
+                    var file = this.reader.getString(temp, 'file');
+                    if (file == null)
+                        return "no file defined in primitive with ID = " + primitiveId;
+                    var obj = new CGFOBJModel(this.scene, file);
+                    primitives.push({id: primitiveId, type: "obj", primitive: obj});
                     break;
                 
                 default:

@@ -208,6 +208,10 @@
         
         <primitive id="counter">
             <counter/>
+        </primitive>  
+
+        <primitive id="human">
+            <obj file="./scenes/models/male.obj"/>
         </primitive>   
 
     </primitives >
@@ -219,9 +223,24 @@
             <materials>
                 <material id="default"/>
             </materials>
-            <texture id="boardTexture" length_s="19" length_t="19"/>
+            <texture id="none" length_s="19" length_t="19"/>
             <children>
                 <componentref id="ambient1" />
+                <componentref id="nuno"/>
+            </children>
+        </component>
+
+        <component id="nuno">
+            <transformation>
+                <translate x="10" y="0" z="10"/>
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="human"/>
             </children>
         </component>
 

@@ -38,6 +38,8 @@ serialInclude(['../lib/CGF.js',
                 './primitives/MyCube.js',
                 './game/Client.js',
                 './game/Pente.js',
+                './primitives/CGFOBJModel.js',
+                './CGFResourceReader.js',
 
 
 main=function()
