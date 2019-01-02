@@ -54,7 +54,8 @@ class XMLscene extends CGFscene {
         let init = this.pente.init(mode, op);
         if(init) init.then(() => {
             this.updateMessage();
-            this.board.updateBoard(this.pente.board)
+            this.board.pieces = [];
+            this.board.updateBoard(this.pente.board, this.pente.captures)
             if(mode == 4) this.botvbot();
         })
     }
@@ -109,14 +110,16 @@ class XMLscene extends CGFscene {
 
     undo() {
         if(this.pente.undo()) {
-            this.board.updateBoard(this.pente.board);
+            this.board.movePiecesToPile(true);
+            this.board.updateBoard(this.pente.board, this.pente.captures);
+            this.board.movePiecesToPile(false);
             this.updateMessage();
         }
     }
 
     reset() {
         this.pente.reset().then( () => {
-            this.board.updateBoard(this.pente.board);
+            this.board.reset();
             this.updateMessage();
         })
     }
@@ -128,7 +131,7 @@ class XMLscene extends CGFscene {
                     this.pente.player_turn = false;
                     this.pente.move(coords.row, coords.col)
                     .then(() => {
-                        this.board.updateBoard(this.pente.board);
+                        this.board.updateBoard(this.pente.board, this.pente.captures);
                         this.pente.gameover().then(r => {
                             this.pente.player_turn = true;
                             this.updateMessage();
@@ -139,11 +142,11 @@ class XMLscene extends CGFscene {
                     this.pente.player_turn = false;
                     this.pente.move(coords.row, coords.col)
                     .then(() => {
-                        this.board.updateBoard(this.pente.board);
+                        this.board.updateBoard(this.pente.board, this.pente.captures);
                         this.pente.gameover().then(r => {
                             if(!r) {
                                 this.pente.bot().then( () => {
-                                    this.board.updateBoard(this.pente.board);
+                                    this.board.updateBoard(this.pente.board, this.pente.captures);
                                     this.pente.gameover().then(r => {
                                         this.pente.player_turn = true;
                                         this.updateMessage();
@@ -158,11 +161,11 @@ class XMLscene extends CGFscene {
                     this.pente.player_turn = false;
                     this.pente.move(coords.row, coords.col)
                     .then(() => {
-                        this.board.updateBoard(this.pente.board);
+                        this.board.updateBoard(this.pente.board, this.pente.captures);
                         this.pente.gameover().then(r => {
                             if(!r) {
                                 this.pente.bot().then( () => {
-                                    this.board.updateBoard(this.pente.board);
+                                    this.board.updateBoard(this.pente.board, this.pente.captures);
                                     this.pente.gameover().then(r => {
                                         this.pente.player_turn = true;
                                         this.updateMessage();
@@ -181,7 +184,7 @@ class XMLscene extends CGFscene {
         if(this.pente.active_game) {
             this.pente.bot()
             .then(() => {
-                this.board.updateBoard(this.pente.board);
+                this.board.updateBoard(this.pente.board, this.pente.captures);
                 this.pente.gameover().then(r => {
                     if(!r) {
                         this.botvbot();
