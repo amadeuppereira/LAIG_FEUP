@@ -72,19 +72,23 @@ class MyBoard extends CGFobject
         for(let i = 0; i < this.size*this.size; i++) {
             flag = true;
             let t = Math.floor(i/this.size);
-            let coords = {row: t + 1, col: i - t*this.size + 1}
+            let finalCoords = {row: t + 1, col: i - t*this.size + 1}
             for(let j = this.pieces.length - 1; j >= 0; j--) {
-                if(coords.row == this.pieces[j].coords.row && coords.col == this.pieces[j].coords.col) {
+                if(finalCoords.row == this.pieces[j].finalCoords.row && finalCoords.col == this.pieces[j].finalCoords.col) {
                     flag = false;
                     if(board[i] == "c") {
                         if(this.pieces[j].piece == this.pieceP1){
                             if(this.toPile){
-                                this.pieces[j].coords.row = 21.6;
-                                this.pieces[j].coords.col = 19.1;
+                                console.log("1");
+                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                                this.pieces[j].finalCoords.row = 21.6;
+                                this.pieces[j].finalCoords.col = 19.1;
                             }
                             else{
-                                this.pieces[j].coords.row = 21.6 + this.incrementPieceP1Row;
-                                this.pieces[j].coords.col = 4 + this.incrementPieceP1Col;
+                                console.log("2");
+                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                                this.pieces[j].finalCoords.row = 21.6 + this.incrementPieceP1Row;
+                                this.pieces[j].finalCoords.col = 4 + this.incrementPieceP1Col;
 
                                 if(this.incrementPieceP1Col == 4){
                                     this.incrementPieceP1Col = 0;
@@ -99,12 +103,16 @@ class MyBoard extends CGFobject
                         }
                         else{
                             if(this.toPile){
-                                this.pieces[j].coords.row = 21.6;
-                                this.pieces[j].coords.col = 0.92;
+                                console.log("3");
+                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                                this.pieces[j].finalCoords.row = 21.6;
+                                this.pieces[j].finalCoords.col = 0.92;
                             }
                             else{
-                                this.pieces[j].coords.row = 21.6 + this.incrementPieceP2Row;
-                                this.pieces[j].coords.col = 16.02 + this.incrementPieceP2Col;
+                                console.log("4");
+                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                                this.pieces[j].finalCoords.row = 21.6 + this.incrementPieceP2Row;
+                                this.pieces[j].finalCoords.col = 16.02 + this.incrementPieceP2Col;
 
                                 if(this.incrementPieceP2Col == -4){
                                     this.incrementPieceP2Col = 0;
@@ -135,9 +143,10 @@ class MyBoard extends CGFobject
                     }
  
                     this.pieces.forEach(e => {
-                        if((21.6 + previousPieceP1Row) == e.coords.row && (4 + previousPieceP1Col) == e.coords.col){
-                            e.coords.row = coords.row;
-                            e.coords.col = coords.col;
+                        if((21.6 + previousPieceP1Row) == e.finalCoords.row && (4 + previousPieceP1Col) == e.finalCoords.col){
+                            e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords));
+                            e.finalCoords.row = finalCoords.row;
+                            e.finalCoords.col = finalCoords.col;
     
                             this.incrementPieceP1Row = previousPieceP1Row;
                             this.incrementPieceP1Col = previousPieceP1Col;
@@ -159,9 +168,10 @@ class MyBoard extends CGFobject
                     }
 
                     this.pieces.forEach(e => {
-                        if((21.6 + previousPieceP2Row) == e.coords.row && (16.02 + previousPieceP2Col) == e.coords.col){
-                            e.coords.row = coords.row;
-                            e.coords.col = coords.col;
+                        if((21.6 + previousPieceP2Row) == e.finalCoords.row && (16.02 + previousPieceP2Col) == e.finalCoords.col){
+                            e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords))
+                            e.finalCoords.row = finalCoords.row;
+                            e.finalCoords.col = finalCoords.col;
     
                             this.incrementPieceP2Row = previousPieceP2Row;
                             this.incrementPieceP2Col = previousPieceP2Col;
@@ -172,11 +182,13 @@ class MyBoard extends CGFobject
                 else{
                     if(board[i] == "w") {
                         let initialCoordsP1 = {x: 20.4, y: -0.1, z: 1};
-                        this.pieces.push({coords: coords, currentCoords: initialCoordsP1, piece: this.pieceP1});
+                        let initialCoordsP1_2 = JSON.parse(JSON.stringify(initialCoordsP1));
+                        this.pieces.push({finalCoords: finalCoords, currentCoords: initialCoordsP1, initialCoords: initialCoordsP1_2,  piece: this.pieceP1});
                     }
                     else if(board[i] == "b") {
                         let initialCoordsP2 = {x: 20.4, y: 17.9, z: 1};
-                        this.pieces.push({coords: coords, currentCoords: initialCoordsP2, piece: this.pieceP2});
+                        let initialCoordsP2_2 = JSON.parse(JSON.stringify(initialCoordsP2));
+                        this.pieces.push({finalCoords: finalCoords, currentCoords: initialCoordsP2, initialCoords: initialCoordsP2_2, piece: this.pieceP2});
                     }
                 }
             }
@@ -186,12 +198,14 @@ class MyBoard extends CGFobject
     reset(){
         this.pieces.forEach(e => {
             if(e.piece == this.pieceP1){
-                e.coords.row = 21.6;
-                e.coords.col = 19.1;
+                e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords));
+                e.finalCoords.row = 21.6;
+                e.finalCoords.col = 19.1;
             }
             else{
-                e.coords.row = 21.6;
-                e.coords.col = 0.92;
+                e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords));
+                e.finalCoords.row = 21.6;
+                e.finalCoords.col = 0.92;
             }
         })
         this.capturesPiecesP1 = 0;
@@ -230,42 +244,56 @@ class MyBoard extends CGFobject
             e.piece.display();
             this.scene.popMatrix();
 
-            let finalCoords = {x: (e.coords.row-1) *0.99, y: (this.size - e.coords.col)*0.99, z: 0.2};
+            let finalXYZCoords = {x: (e.finalCoords.row-1) *0.99, y: (this.size - e.finalCoords.col)*0.99, z: 0.2};
             let x_increment = 0.1;
             let y_increment = 0.1;
 
-            if(Math.abs(finalCoords.x-e.currentCoords.x) > Math.abs(finalCoords.y-e.currentCoords.y)){
-                y_increment = Math.abs(finalCoords.y-e.currentCoords.y)* 0.1/Math.abs(finalCoords.x-e.currentCoords.x);
+            if(Math.abs(finalXYZCoords.x-e.initialCoords.x) > Math.abs(finalXYZCoords.y-e.initialCoords.y)){
+                y_increment = Math.abs(finalXYZCoords.y-e.initialCoords.y)* 0.1/Math.abs(finalXYZCoords.x-e.initialCoords.x);
+
+                let half = Math.abs(finalXYZCoords.x-e.initialCoords.x) / 2;
+                if(Math.abs(finalXYZCoords.x-e.currentCoords.x) > half){
+                    e.currentCoords.z += 0.05;
+                }
+                else if(e.currentCoords.z > finalXYZCoords.z){
+                    e.currentCoords.z -= 0.05;
+                }
+                else{
+                    e.currentCoords.z = finalXYZCoords.z;
+                }
             }
             else{
-                x_increment = Math.abs(finalCoords.x-e.currentCoords.x)*0.1/Math.abs(finalCoords.y-e.currentCoords.y);
+                x_increment = Math.abs(finalXYZCoords.x-e.initialCoords.x)*0.1/Math.abs(finalXYZCoords.y-e.initialCoords.y);
+
+                let half = Math.abs(finalXYZCoords.y-e.initialCoords.y) / 2;
+                if(Math.abs(finalXYZCoords.y-e.currentCoords.y) > half){
+                    e.currentCoords.z += 0.05;
+                }
+                else if(e.currentCoords.z > finalXYZCoords.z){
+                    e.currentCoords.z -= 0.05;
+                }
+                else{
+                    e.currentCoords.z = finalXYZCoords.z;
+                }
             }
 
-            if(Math.abs(finalCoords.x-e.currentCoords.x) < 0.1){
-                e.currentCoords.x = finalCoords.x;
+            if(Math.abs(finalXYZCoords.x-e.currentCoords.x) < 0.1){
+                e.currentCoords.x = finalXYZCoords.x;
             } else{
-                if(finalCoords.x > e.currentCoords.x){
+                if(finalXYZCoords.x > e.currentCoords.x){
                     e.currentCoords.x += x_increment;
                 } else{
                     e.currentCoords.x -= x_increment;
                 }
             }
 
-            if(Math.abs(finalCoords.y-e.currentCoords.y) < 0.1){
-                e.currentCoords.y = finalCoords.y;
+            if(Math.abs(finalXYZCoords.y-e.currentCoords.y) < 0.1){
+                e.currentCoords.y = finalXYZCoords.y;
             } else{
-                if(finalCoords.y > e.currentCoords.y){
+                if(finalXYZCoords.y > e.currentCoords.y){
                     e.currentCoords.y += y_increment;
                 } else{
                     e.currentCoords.y -= y_increment;
-                }
-            }
-
-            if(e.currentCoords.y == finalCoords.y && e.currentCoords.x == finalCoords.x){
-                if(e.currentCoords.z > finalCoords.z)
-                    e.currentCoords.z -= 0.1;
-                else{
-                    e.currentCoords.z = finalCoords.z;
                 }
             }
         });
