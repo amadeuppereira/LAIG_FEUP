@@ -66,7 +66,7 @@ class MyBoard extends CGFobject
         }
     }
 
-    updateBoard(board, captures) {
+    updateBoard(board) {
         board = board.replace(/[,\[\]]/g, "");
         let flag;
         for(let i = 0; i < this.size*this.size; i++) {
@@ -78,58 +78,101 @@ class MyBoard extends CGFobject
                     flag = false;
                     if(board[i] == "c") {
                         if(this.pieces[j].piece == this.pieceP1){
-                            if(this.toPile){
-                                console.log("1");
-                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
-                                this.pieces[j].finalCoords.row = 21.6;
-                                this.pieces[j].finalCoords.col = 19.1;
+                            this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                            this.pieces[j].finalCoords.row = 21.6 + this.incrementPieceP1Row;
+                            this.pieces[j].finalCoords.col = 4 + this.incrementPieceP1Col;
+
+                            if(this.incrementPieceP1Col == 4){
+                                this.incrementPieceP1Col = 0;
+                                this.incrementPieceP1Row = -1;
                             }
                             else{
-                                console.log("2");
-                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
-                                this.pieces[j].finalCoords.row = 21.6 + this.incrementPieceP1Row;
-                                this.pieces[j].finalCoords.col = 4 + this.incrementPieceP1Col;
-
-                                if(this.incrementPieceP1Col == 4){
-                                    this.incrementPieceP1Col = 0;
-                                    this.incrementPieceP1Row = -1;
-                                }
-                                else{
-                                    this.incrementPieceP1Col++;
-                                }
-
-                                this.capturesPiecesP1++;
+                                this.incrementPieceP1Col++;
                             }
+
+                            this.capturesPiecesP1++;
                         }
                         else{
-                            if(this.toPile){
-                                console.log("3");
-                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
-                                this.pieces[j].finalCoords.row = 21.6;
-                                this.pieces[j].finalCoords.col = 0.92;
+                            this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                            this.pieces[j].finalCoords.row = 21.6 + this.incrementPieceP2Row;
+                            this.pieces[j].finalCoords.col = 16.02 + this.incrementPieceP2Col;
+
+                            if(this.incrementPieceP2Col == -4){
+                                this.incrementPieceP2Col = 0;
+                                this.incrementPieceP2Row = -1;
                             }
                             else{
-                                console.log("4");
-                                this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
-                                this.pieces[j].finalCoords.row = 21.6 + this.incrementPieceP2Row;
-                                this.pieces[j].finalCoords.col = 16.02 + this.incrementPieceP2Col;
-
-                                if(this.incrementPieceP2Col == -4){
-                                    this.incrementPieceP2Col = 0;
-                                    this.incrementPieceP2Row = -1;
-                                }
-                                else{
-                                    this.incrementPieceP2Col--;
-                                }
-                                this.capturesPiecesP2++;
+                                this.incrementPieceP2Col--;
                             }
+                            this.capturesPiecesP2++;
                         }
                         break;
                     } else if (board[i] == "w" || board[i] == "b") break;
                 }
             }
             if(flag) {
-                if(parseInt(captures.b) != this.capturesPiecesP1 && this.toPile && board[i] == "w"){
+                if(board[i] == "w") {
+                    let initialCoordsP1 = {x: 20.4, y: -0.1, z: 1};
+                    let initialCoordsP1_2 = JSON.parse(JSON.stringify(initialCoordsP1));
+                    this.pieces.push({finalCoords: finalCoords, currentCoords: initialCoordsP1, initialCoords: initialCoordsP1_2,  piece: this.pieceP1});
+                }
+                else if(board[i] == "b") {
+                    let initialCoordsP2 = {x: 20.4, y: 17.9, z: 1};
+                    let initialCoordsP2_2 = JSON.parse(JSON.stringify(initialCoordsP2));
+                    this.pieces.push({finalCoords: finalCoords, currentCoords: initialCoordsP2, initialCoords: initialCoordsP2_2, piece: this.pieceP2});
+                }
+            }
+        }            
+    }
+
+    reset(){
+        this.pieces.forEach(e => {
+            if(e.piece == this.pieceP1){
+                e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords));
+                e.finalCoords.row = 21.6;
+                e.finalCoords.col = 19.1;
+            }
+            else{
+                e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords));
+                e.finalCoords.row = 21.6;
+                e.finalCoords.col = 0.92;
+            }
+        })
+        this.capturesPiecesP1 = 0;
+        this.capturesPiecesP2 = 0;
+        this.incrementPieceP1Row = 0;
+        this.incrementPieceP1Col = 0;
+        this.incrementPieceP2Row = 0;
+        this.incrementPieceP2Col = 0;
+    }
+
+    undoBoard(board, captures){
+        board = board.replace(/[,\[\]]/g, "");
+        let flag;
+        for(let i = 0; i < this.size*this.size; i++) {
+            flag = true;
+            let t = Math.floor(i/this.size);
+            let finalCoords = {row: t + 1, col: i - t*this.size + 1}
+            for(let j = this.pieces.length - 1; j >= 0; j--) {
+                if(finalCoords.row == this.pieces[j].finalCoords.row && finalCoords.col == this.pieces[j].finalCoords.col) {
+                    flag = false;
+                    if(board[i] == "c") {
+                        if(this.pieces[j].piece == this.pieceP1){
+                            this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                            this.pieces[j].finalCoords.row = 21.6;
+                            this.pieces[j].finalCoords.col = 19.1;
+                        }
+                        else{
+                            this.pieces[j].initialCoords = JSON.parse(JSON.stringify(this.pieces[j].currentCoords));
+                            this.pieces[j].finalCoords.row = 21.6;
+                            this.pieces[j].finalCoords.col = 0.92;
+                        }
+                        break;
+                    } else if (board[i] == "w" || board[i] == "b") break;
+                }
+            }
+            if(flag) {
+                if(parseInt(captures.b) != this.capturesPiecesP1 && board[i] == "w"){
                     let previousPieceP1Row;
                     let previousPieceP1Col;
 
@@ -154,7 +197,7 @@ class MyBoard extends CGFobject
                         }
                     })
                 }
-                else if(parseInt(captures.w) != this.capturesPiecesP2 && this.toPile && board[i] == "b"){
+                else if(parseInt(captures.w) != this.capturesPiecesP2 && board[i] == "b"){
                     let previousPieceP2Row;
                     let previousPieceP2Col;
 
@@ -192,32 +235,7 @@ class MyBoard extends CGFobject
                     }
                 }
             }
-        }            
-    }
-
-    reset(){
-        this.pieces.forEach(e => {
-            if(e.piece == this.pieceP1){
-                e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords));
-                e.finalCoords.row = 21.6;
-                e.finalCoords.col = 19.1;
-            }
-            else{
-                e.initialCoords = JSON.parse(JSON.stringify(e.currentCoords));
-                e.finalCoords.row = 21.6;
-                e.finalCoords.col = 0.92;
-            }
-        })
-        this.capturesPiecesP1 = 0;
-        this.capturesPiecesP2 = 0;
-        this.incrementPieceP1Row = 0;
-        this.incrementPieceP1Col = 0;
-        this.incrementPieceP2Row = 0;
-        this.incrementPieceP2Col = 0;
-    }
-
-    movePiecesToPile(flag){
-        this.toPile = flag;
+        } 
     }
 
     displayPreview() {

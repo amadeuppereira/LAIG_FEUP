@@ -44,6 +44,7 @@ class XMLscene extends CGFscene {
         this.mouseHoverEvent = false;
         this.pente = new Pente();
         this.board;
+        this.cameraZindex = 30;
 
         this.FPS = 150;
         this.setUpdatePeriod(1000/this.FPS);
@@ -55,7 +56,7 @@ class XMLscene extends CGFscene {
         if(init) init.then(() => {
             this.updateMessage();
             this.board.pieces = [];
-            this.board.updateBoard(this.pente.board, this.pente.captures)
+            this.board.updateBoard(this.pente.board);
             if(mode == 4) this.botvbot();
         })
     }
@@ -110,9 +111,7 @@ class XMLscene extends CGFscene {
 
     undo() {
         if(this.pente.undo()) {
-            this.board.movePiecesToPile(true);
-            this.board.updateBoard(this.pente.board, this.pente.captures);
-            this.board.movePiecesToPile(false);
+            this.board.undoBoard(this.pente.board, this.pente.captures);
             this.updateMessage();
         }
     }
@@ -124,6 +123,12 @@ class XMLscene extends CGFscene {
         })
     }
 
+    replay(){
+
+        //TODO: Filme do jogo
+        console.log("Filme do Jogo");
+    }
+
     board_click(coords) {        
         if(this.pente.active_game && this.pente.player_turn) {
             switch(this.pente.game_mode) {
@@ -131,7 +136,7 @@ class XMLscene extends CGFscene {
                     this.pente.player_turn = false;
                     this.pente.move(coords.row, coords.col)
                     .then(() => {
-                        this.board.updateBoard(this.pente.board, this.pente.captures);
+                        this.board.updateBoard(this.pente.board);
                         this.pente.gameover().then(r => {
                             this.pente.player_turn = true;
                             this.updateMessage();
@@ -142,11 +147,11 @@ class XMLscene extends CGFscene {
                     this.pente.player_turn = false;
                     this.pente.move(coords.row, coords.col)
                     .then(() => {
-                        this.board.updateBoard(this.pente.board, this.pente.captures);
+                        this.board.updateBoard(this.pente.board);
                         this.pente.gameover().then(r => {
                             if(!r) {
                                 this.pente.bot().then( () => {
-                                    this.board.updateBoard(this.pente.board, this.pente.captures);
+                                    this.board.updateBoard(this.pente.board);
                                     this.pente.gameover().then(r => {
                                         this.pente.player_turn = true;
                                         this.updateMessage();
@@ -161,11 +166,11 @@ class XMLscene extends CGFscene {
                     this.pente.player_turn = false;
                     this.pente.move(coords.row, coords.col)
                     .then(() => {
-                        this.board.updateBoard(this.pente.board, this.pente.captures);
+                        this.board.updateBoard(this.pente.board);
                         this.pente.gameover().then(r => {
                             if(!r) {
                                 this.pente.bot().then( () => {
-                                    this.board.updateBoard(this.pente.board, this.pente.captures);
+                                    this.board.updateBoard(this.pente.board);
                                     this.pente.gameover().then(r => {
                                         this.pente.player_turn = true;
                                         this.updateMessage();
@@ -184,7 +189,7 @@ class XMLscene extends CGFscene {
         if(this.pente.active_game) {
             this.pente.bot()
             .then(() => {
-                this.board.updateBoard(this.pente.board, this.pente.captures);
+                this.board.updateBoard(this.pente.board);
                 this.pente.gameover().then(r => {
                     if(!r) {
                         this.botvbot();
@@ -325,8 +330,10 @@ class XMLscene extends CGFscene {
      * Changes current camera when changed on gui.
      */
     changeCamera(currentCamera){
-        this.camera = this.views[currentCamera];
-        this.interface.setActiveCamera(this.camera);
+        if(this.pente.active_game == false){
+            this.camera = this.views[currentCamera];
+            this.interface.setActiveCamera(this.camera);
+        }
     }
 
     /**
@@ -334,6 +341,26 @@ class XMLscene extends CGFscene {
      */
     updateCameraNear(){
         this.camera.near = this.cameraNear;
+    }
+
+    /**
+     * Rotates the camera between player A and player B view.
+     */
+    updateCamera(){
+        if(this.pente.active_game){
+            if(this.pente.next == "w"){
+                if(this.cameraZindex < 30)
+                    this.cameraZindex += 0.3;
+
+                this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(18, 13, this.cameraZindex), vec3.fromValues(20, 3, 20));
+            }
+            else{
+                if(this.cameraZindex > 10)
+                    this.cameraZindex -= 0.3;
+
+                this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(18, 13, this.cameraZindex), vec3.fromValues(20, 3, 20));
+            }
+        }
     }
 
     /**
@@ -375,6 +402,8 @@ class XMLscene extends CGFscene {
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
+
+            this.updateCamera();
 
             this.popMatrix();
         }

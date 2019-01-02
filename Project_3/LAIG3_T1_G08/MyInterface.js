@@ -41,6 +41,7 @@ class MyInterface extends CGFinterface {
             this.bot_vs_bot       = () => scene.updateGameMode(4);
             this.undo             = () => scene.undo();
             this.reset            = () => scene.reset();
+            this.replay           = () => scene.replay();
 
             this.difficulty       = 3;
 
@@ -123,6 +124,7 @@ class MyInterface extends CGFinterface {
         let options = group.addFolder("Actions");
         options.add(this.penteOptions, 'undo').name("Undo");
         options.add(this.penteOptions, 'reset').name("Reset");
+        options.add(this.penteOptions, 'replay').name("Replay");
     }
 
     update_bot_settings(v, bot_settings) {
