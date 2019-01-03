@@ -362,7 +362,7 @@ class XMLscene extends CGFscene {
                 this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(18, 13, this.cameraZindex), vec3.fromValues(20, 3, 20));
             }
         }
-        else if(this.pente.winner != null){
+        else{
             this.interface.setActiveCamera(this.camera);
         }
     }
