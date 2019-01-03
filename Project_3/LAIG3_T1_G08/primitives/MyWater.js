@@ -6,7 +6,6 @@ class MyWater extends MyPlane {
 
 	constructor(scene, texture, heightmap, parts, heightscale, texscale) {
         super(scene, parts, parts);
-
         this.texture = texture;
         this.heightmap = heightmap;
         this.heightscale = heightscale || 1.0;
@@ -15,6 +14,7 @@ class MyWater extends MyPlane {
         this.timeFactor = 0;
 
         this.shader = new CGFshader(this.scene.gl, "shaders/water_shader.vert", "shaders/water_shader.frag");
+
         this.shader.setUniformsValues({uTexture: 0,
                                     uHeightmap: 1,
                                     uHeightScale: this.heightscale,
