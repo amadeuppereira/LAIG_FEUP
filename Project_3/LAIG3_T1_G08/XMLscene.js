@@ -37,8 +37,9 @@ class XMLscene extends CGFscene {
 
         this.setPickEnabled(true);
 
-        //to check when M key is pressed or released
+        //to check when M/A key is pressed or released
         this.KeyMPressed = false;
+        this.KeyAPressed = false;
         
         //Project 3
         this.mouseHoverEvent = false;
@@ -396,6 +397,15 @@ class XMLscene extends CGFscene {
         if(this.gui.isKeyReleased("KeyM") && this.KeyMPressed == true){
             this.graph.materialCounter++;
             this.KeyMPressed = false;
+        }
+
+        if(this.gui.isKeyPressed("KeyA") && this.KeyAPressed == false){
+            this.KeyAPressed = true;
+        }
+
+        if(this.gui.isKeyReleased("KeyA") && this.KeyAPressed == true){
+            this.graph.ambientCounter++;
+            this.KeyAPressed = false;
         }
     }
 

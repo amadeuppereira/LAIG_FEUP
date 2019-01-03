@@ -60,6 +60,7 @@ class MySceneGraph {
         this.couchAppearance.setDiffuse(0.23, 0.36, 0.2);
 
         this.materialCounter = 0;
+        this.ambientCounter = 0;
     }
 
 
@@ -2056,16 +2057,19 @@ in the primitive with ID = " + primitiveId;
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        var rootMaterial;
-        if(this.rootComponent.materials[0].id == "inherit")
-            rootMaterial = this.materialDefault;
+        let index = this.ambientCounter % this.rootComponent.children.componentref.length;
+        let ambientComponent = this.rootComponent.children.componentref[index];
+
+        let ambientMaterial;
+        if(ambientComponent.materials[0].id == "inherit")
+            ambientMaterial = this.materialDefault;
         else{
-            rootMaterial = this.rootComponent.materials[0].material;
+            ambientMaterial = ambientComponent.materials[0].material;
         }
-        var rootTexture = this.rootComponent.texture;
+        let ambientTexture = ambientComponent.texture;
 
         this.scene.pushMatrix();
-        this.displaySceneRecursive(this.rootComponent, rootMaterial, rootTexture);
+        this.displaySceneRecursive(ambientComponent, ambientMaterial, ambientTexture);
         this.scene.popMatrix();
     }
     
@@ -2076,7 +2080,6 @@ in the primitive with ID = " + primitiveId;
         var currMaterial = materialFather;
         var currTexture;
         
-
         if(currComponent.transformations != null)
             this.scene.multMatrix(currComponent.transformations);
         
@@ -2085,7 +2088,6 @@ in the primitive with ID = " + primitiveId;
             currMaterial = currComponent.materials[index].material;
         }
 
-        
         if(currComponent.texture.id == "none")
             currTexture = null;
         else if(currComponent.texture.id == "inherit")

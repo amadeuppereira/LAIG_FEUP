@@ -255,6 +255,8 @@
             <texture id="none"/>
             <children>
                 <componentref id="ambient1" />
+                <componentref id="ambient2" />
+                <componentref id="ambient3" />
             </children>
         </component>
 
@@ -279,6 +281,32 @@
                 <componentref id="books_2"/>
                 <componentref id="books_3"/>
                 <componentref id="books_4"/> 
+            </children>
+        </component>
+
+        <component id="ambient2">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="game"/>
+            </children>
+        </component>
+
+        <component id="ambient3">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="game"/>
+                <componentref id="chair_1"/>
+                <componentref id="chair_2"/>
             </children>
         </component>
 
