@@ -56,9 +56,8 @@ class MySceneGraph {
         this.bookcaseAppearance.setAmbient(0.35, 0.26, 0.18);
         this.bookcaseAppearance.setDiffuse(0.35, 0.26, 0.18);
         this.couchAppearance = new CGFappearance(this.scene);
-        //this.couchAppearance.setShininess(0.000001);
-        this.couchAppearance.setAmbient(0.3, 0.5, 0.3);
-        this.couchAppearance.setDiffuse(0.3, 0.5, 0.3);
+        this.couchAppearance.setAmbient(0.23, 0.36, 0.2);
+        this.couchAppearance.setDiffuse(0.23, 0.36, 0.2);
 
         this.materialCounter = 0;
     }
