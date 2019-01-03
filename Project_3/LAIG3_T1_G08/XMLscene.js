@@ -134,12 +134,18 @@ class XMLscene extends CGFscene {
     }
 
     replay(){
-        this.board.reset();
-        this.pente.timeout = 2000;
-        let updateBoard = (board) => {
-            this.board.updateBoard(board);
+        if(!this.pente.active_game && this.pente.winner != null){
+            this.board.reset();
+            this.pente.timeout = 2000;
+    
+            this.camera = this.views["game_view"];
+            this.interface.setActiveCamera(this.camera);
+    
+            let updateBoard = (board) => {
+                this.board.updateBoard(board);
+            }
+            this.pente.replay(updateBoard);
         }
-        this.pente.replay(updateBoard);
     }
 
     board_click(coords) {        
@@ -443,12 +449,10 @@ class XMLscene extends CGFscene {
                         components[i].children.primitiveref[0].primitive.update(this.deltaTime);
                     }
                     else if(components[i].children.primitiveref[0].type == "counter"){
-                        if(this.pente.game_mode == null)
+                        if((this.pente.game_mode == null || this.pente.winner == null) && this.pente.active_game != true)
                             components[i].children.primitiveref[0].primitive.reset();
                         else if(this.pente.active_game)
-                            components[i].children.primitiveref[0].primitive.update(this.deltaTime, this.pente.captures);
-                        else if(this.pente.winner == null)
-                            components[i].children.primitiveref[0].primitive.reset();
+                            components[i].children.primitiveref[0].primitive.update(this.deltaTime, this.pente);
                     }
                 }
 

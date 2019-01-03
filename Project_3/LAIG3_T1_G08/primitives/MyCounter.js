@@ -13,6 +13,7 @@ class MyCounter extends CGFobject
         this.secondsCounter = 0;
         this.piecesACounter = 0;
         this.piecesBCounter = 0;
+        this.countdown = 0;
 
         this.openNumbersTextures();
 
@@ -26,13 +27,23 @@ class MyCounter extends CGFobject
         this.unitsMinutesTexture = this.zero;
         this.dozensSecondsTexture = this.zero;
         this.unitsSecondsTexture = this.zero;
+        this.dozensCountdownP1 = this.zero;
+        this.unitsCountdownP1 = this.zero;
+        this.dozensCountdownP2 = this.zero;
+        this.unitsCountdownP2 = this.zero;
 
         this.materialDefault = new CGFappearance(this.scene);
+        this.materialDefault.setEmission(0.5, 0.5, 0.5);
         this.dividerAppearance = new CGFappearance(this.scene);
         this.dividerAppearance.setShininess(100);
         this.dividerAppearance.setAmbient(0.1, 0.1, 0.1);
         this.dividerAppearance.setDiffuse(0.1, 0.1, 0.1);
         this.dividerAppearance.setSpecular(1, 1, 1);
+        this.redAppearance = new CGFappearance(this.scene);
+        this.redAppearance.setEmission(0.5, 0.5, 0.5);
+        this.redAppearance.setAmbient(0.9, 0, 0);
+        this.redAppearance.setDiffuse(0.9, 0, 0);
+        this.redAppearance.setSpecular(1, 1, 1);
     }
 
     openNumbersTextures(){
@@ -49,7 +60,7 @@ class MyCounter extends CGFobject
         this.twoPointsTexture = new CGFtexture(this.scene, "./scenes/images/two_points.jpg");
     }
 
-    update(deltaTime, captures){
+    update(deltaTime, pente){
         this.secondsCounter += deltaTime / 1000;
         if(Math.floor(this.secondsCounter) >= 60){
             this.minutesCounter++;
@@ -60,8 +71,17 @@ class MyCounter extends CGFobject
             this.secondsCounter = 0;
         }
 
-        this.piecesACounter = parseInt(captures.b);
-        this.piecesBCounter = parseInt(captures.w);
+        this.piecesACounter = parseInt(pente.captures.b);
+        this.piecesBCounter = parseInt(pente.captures.w);
+
+        if(pente.next == "w"){
+            this.countdownP1 = pente.maxTime - pente.timer;
+            this.countdownP2 = pente.maxTime;
+        }
+        else{
+            this.countdownP2 = pente.maxTime - pente.timer;
+            this.countdownP1 = pente.maxTime;
+        }
 
         this.updateTextures();
     }
@@ -76,6 +96,11 @@ class MyCounter extends CGFobject
         this.unitsMinutesTexture = this.getTexture(this.minutesCounter%10);
         this.dozensSecondsTexture = this.getTexture(Math.floor(this.secondsCounter/10));
         this.unitsSecondsTexture = this.getTexture(Math.floor(this.secondsCounter%10));
+
+        this.dozensCountdownP1 = this.getTexture(Math.floor(this.countdownP1/10));
+        this.unitsCountdownP1 = this.getTexture(Math.floor(this.countdownP1%10));
+        this.dozensCountdownP2 = this.getTexture(Math.floor(this.countdownP2/10));
+        this.unitsCountdownP2 = this.getTexture(Math.floor(this.countdownP2%10));
     }
 
     getTexture(number){
@@ -187,6 +212,87 @@ class MyCounter extends CGFobject
         this.materialDefault.setTexture(this.unitsPiecesBTexture);
         this.materialDefault.apply();
         this.scene.translate(8.5, 0, 0);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.dividerAppearance.apply();
+        this.scene.translate(3.75, 0.6, 0);
+        this.scene.scale(10.5, 0.2, 1);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        // UP
+        this.scene.pushMatrix();
+        if(this.countdownP2 < 4){
+            this.redAppearance.setTexture(this.dozensCountdownP2);
+            this.redAppearance.apply();
+        }
+        else{
+            this.materialDefault.setTexture(this.dozensCountdownP2);
+            this.materialDefault.apply();
+        }
+        this.scene.translate(0.5, 1.2, 0);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        if(this.countdownP2 < 4){
+            this.redAppearance.setTexture(this.unitsCountdownP2);
+            this.redAppearance.apply();
+        }
+        else{
+            this.materialDefault.setTexture(this.unitsCountdownP2);
+            this.materialDefault.apply();
+        }
+        this.scene.translate(1.5, 1.2, 0);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        if(this.countdownP1 < 4){
+            this.redAppearance.setTexture(this.dozensCountdownP1);
+            this.redAppearance.apply();
+        }
+        else{
+            this.materialDefault.setTexture(this.dozensCountdownP1);
+            this.materialDefault.apply();
+        }
+        this.scene.translate(6, 1.2, 0);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        if(this.countdownP1 < 4){
+            this.redAppearance.setTexture(this.unitsCountdownP1);
+            this.redAppearance.apply();
+        }
+        else{
+            this.materialDefault.setTexture(this.unitsCountdownP1);
+            this.materialDefault.apply();
+        }
+        this.scene.translate(7, 1.2, 0);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.dividerAppearance.apply();
+        this.scene.translate(-0.75, 1.2, 0);
+        this.scene.scale(1.5, 1, 1);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.dividerAppearance.apply();
+        this.scene.translate(3.75, 1.2, 0);
+        this.scene.scale(3.5, 1, 1);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.dividerAppearance.apply();
+        this.scene.translate(8.25, 1.2, 0);
+        this.scene.scale(1.5, 1, 1);
         this.cube.display();
         this.scene.popMatrix();
     }
