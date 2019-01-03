@@ -239,7 +239,7 @@ class MyBoard extends CGFobject
     }
 
     displayPreview() {
-        if(this.piecePreviewCoord != undefined) {
+        if(this.piecePreviewCoord != undefined && this.scene.pente.active_game) {
             this.scene.pushMatrix();
             this.scene.translate(0.6, 0.6, 0);
             this.scene.translate(this.piecePreviewCoord.row*0.99,

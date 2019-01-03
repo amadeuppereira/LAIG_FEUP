@@ -49,6 +49,17 @@ class MySceneGraph {
         this.reader.open('scenes/' + filename, this);
 
         this.materialDefault = new CGFappearance(this.scene);
+        this.fireplaceAppearance = new CGFappearance(this.scene);
+        this.fireplaceAppearance.setAmbient(0.1, 0.1, 0.1);
+        this.fireplaceAppearance.setDiffuse(0.1, 0.1, 0.1);
+        this.bookcaseAppearance = new CGFappearance(this.scene);
+        this.bookcaseAppearance.setAmbient(0.35, 0.26, 0.18);
+        this.bookcaseAppearance.setDiffuse(0.35, 0.26, 0.18);
+        this.couchAppearance = new CGFappearance(this.scene);
+        //this.couchAppearance.setShininess(0.000001);
+        this.couchAppearance.setAmbient(0.3, 0.5, 0.3);
+        this.couchAppearance.setDiffuse(0.3, 0.5, 0.3);
+
         this.materialCounter = 0;
     }
 
@@ -1243,7 +1254,7 @@ in the primitive with ID = " + primitiveId;
             }
 
             var temp = grandChildren[0];
-            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "board" && temp.nodeName != "piece" && temp.nodeName != "counter" && temp.nodeName != "obj")
+            if(temp.nodeName != "rectangle" && temp.nodeName != "triangle" && temp.nodeName != "cylinder" && temp.nodeName != "sphere" && temp.nodeName != "torus" && temp.nodeName != "plane" && temp.nodeName != "patch" && temp.nodeName != "vehicle" && temp.nodeName != "cylinder2" && temp.nodeName != "terrain" && temp.nodeName != "water" && temp.nodeName != "board" && temp.nodeName != "piece" && temp.nodeName != "counter" && temp.nodeName != "objfile")
                 return "invalid tag in primitive with ID = " + primitiveId;
 
             switch(temp.nodeName) {
@@ -1629,12 +1640,12 @@ in the primitive with ID = " + primitiveId;
                     primitives.push({id: primitiveId, type: "counter", primitive: counter});
                     break;
 
-                case "obj":
+                case "objfile":
                     var file = this.reader.getString(temp, 'file');
                     if (file == null)
                         return "no file defined in primitive with ID = " + primitiveId;
-                    var obj = new CGFOBJModel(this.scene, file);
-                    primitives.push({id: primitiveId, type: "obj", primitive: obj});
+                    var objfile = new CGFOBJModel(this.scene, file);
+                    primitives.push({id: primitiveId, type: "objfile", primitive: objfile});
                     break;
                 
                 default:
@@ -2091,6 +2102,8 @@ in the primitive with ID = " + primitiveId;
 
         currMaterial.apply();
 
+        // Updates Obj objects appearence
+        this.objAppearences(currComponent.id);
 
         var length_s = null;
         var length_t = null;
@@ -2127,6 +2140,22 @@ in the primitive with ID = " + primitiveId;
             var temp = currComponent.children.primitiveref[i];
             temp.primitive.updateTexCoords(length_s, length_t);
             temp.primitive.display();
+        }
+    }
+
+    objAppearences(id){
+        switch (id) {
+            case "fireplace":
+                this.fireplaceAppearance.apply();
+                break;
+            case "couch":
+                this.couchAppearance.apply();
+                break;
+            case "bookcase":
+                this.bookcaseAppearance.apply();
+                break;
+            default:
+                break;
         }
     }
 }
