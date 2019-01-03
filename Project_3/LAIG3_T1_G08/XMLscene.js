@@ -124,9 +124,20 @@ class XMLscene extends CGFscene {
         })
     }
 
+    sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+          if ((new Date().getTime() - start) > milliseconds){
+            break;
+          }
+        }
+    }
+
     replay(){
-        let updateBoard = () => {
-            this.board.updateBoard(this.pente.board);
+        this.board.reset();
+        this.pente.timeout = 2000;
+        let updateBoard = (board) => {
+            this.board.updateBoard(board);
         }
         this.pente.replay(updateBoard);
     }

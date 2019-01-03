@@ -20,6 +20,7 @@ class Pente{
         this.options = options || {};
 
         this.loaded = loaded || false;
+        this.timeout = 2000;
     }
 
     init(mode, options) {
@@ -231,12 +232,13 @@ class Pente{
             let index = 0;
 
             let film = () => {
-                callback();
+                setTimeout(callback, this.timeout, this.board);
+                this.timeout += 2000;
                 let move = this.history[index];
                 index++;
                 if(move) {
                     this.move(move.row, move.col)
-                    .then(r => film());
+                    .then(r => {film()});
                 } else {
                     this.film = false;
                 }
