@@ -5,6 +5,11 @@ class Pente{
         this.game_mode;
         this.player_turn = false;
         this.winner;
+        this.timer = 0;
+        this.maxTime = 10;
+        this.film = false;
+
+        this.history = [];
 
         this.previous = previous || null;
         
@@ -18,7 +23,7 @@ class Pente{
     }
 
     init(mode, options) {
-        if(!this.active_game) {
+        if(!this.active_game && !this.film) {
             return this.reset(options).then(() => {
                 this.game_mode = mode;
                 this.active_game = true;
@@ -65,7 +70,16 @@ class Pente{
         this.next = game_parsed.next;
         this.captures = game_parsed.captures;
         this.turn = game_parsed.turn;
-        this.options = game_parsed.options;               
+        this.options = game_parsed.options;    
+        this.timer = 0;           
+    }
+
+    updateGame_replay(game) {
+        let game_parsed = this.parseGameString(game);
+        
+        this.board = game_parsed.board;
+        this.next = game_parsed.next; 
+        this.captures = game_parsed.captures;
     }
 
     parseGameString(game) {
@@ -90,15 +104,43 @@ class Pente{
     move(R, C) {
         return this.client.makeRequest("move(" + this + ",[" + R + "," + C + "])")
         .then(r => {
-            if(this.active_game && r != "false") this.updateGame(r);
+            if(this.active_game && r != "false") {
+                this.updateGame(r);
+                this.history.push({row: R, col:C});
+            }
+            else if(this.film) {
+                this.updateGame_replay(r);
+            }
         }); 
     }
-
+    
     bot() {
         return this.client.makeRequest("bot(" + this + ")")
         .then( r => {
-            if(this.active_game) this.updateGame(r);
+            if(this.active_game) {
+                let previousBoard = this.board;
+                this.updateGame(r);
+                let currentBoard = this.board;
+                this.history.push(this.botMoveCoord(previousBoard, currentBoard));
+            }
+            else if(this.film) {
+                this.updateGame_replay(r);
+            }
         }) 
+    }
+
+    botMoveCoord(previousBoard, currentBoard) {
+        previousBoard = previousBoard.replace(/[,\[\]]/g, "");
+        currentBoard = currentBoard.replace(/[,\[\]]/g, "");
+        let coords;
+        for(let i = 0; i < currentBoard.length; i++) {
+            if(previousBoard[i] == "c" && currentBoard[i] != "c") {
+                let c = Math.floor(i/this.options.board_size);
+                coords =  {col: i - c * this.options.board_size + 1,
+                            row: c + 1};
+                return coords;
+            }
+        }
     }
 
     gameover() {
@@ -109,6 +151,7 @@ class Pente{
                 if(this.active_game) {
                     this.active_game = false;
                     this.winner = r;
+                    this.timer = 0;
                 }
                 return r;
             }
@@ -121,6 +164,9 @@ class Pente{
         this.player_turn = false;
         this.previous = null;
         this.winner = undefined;
+        this.timer = 0;
+        this.history = [];
+        this.film = false;
         
         this.next = "w";
         this.captures = {w: "0", b: "0"};
@@ -174,7 +220,35 @@ class Pente{
             this.previous    = this.previous.previous;
             this.active_game = true;
             this.winner      = undefined;
-        } 
+            this.timer       = 0;
+            if(this.history.length > 0) this.history.pop();
+        }
+    }
+
+    replay(callback) {
+        if(!this.active_game && this.winner) {
+            this.film = true;
+            let index = 0;
+
+            let film = () => {
+                callback();
+                let move = this.history[index];
+                index++;
+                if(move) {
+                    this.move(move.row, move.col)
+                    .then(r => film());
+                } else {
+                    this.film = false;
+                }
+            }
+            this.client.makeRequest("make_board(" + this.options.board_size + ")")
+            .then(r => {
+                this.board = r;
+                this.next= "w";
+                this.captures = {w: "0", b: "0"}
+                film();
+            })
+        }
     }
 
     toString() {
@@ -189,6 +263,20 @@ class Pente{
         return new Pente(this.board, this.next, this.captures,
                         this.turn, this.options, this.loaded,
                         this.previous);
+    }
+
+    update(deltaTime) {
+        if(this.active_game) {
+            let s = deltaTime / 1000;
+            this.timer += s;
+            if(this.timer >= this.maxTime) {
+                this.active_game = false;
+                this.winner = (this.next == "w") ? "b" : "w";
+                this.timer = 0;
+                return true;
+            }
+        }
+        return false;
     }
 
 }
