@@ -43,8 +43,9 @@ class MyInterface extends CGFinterface {
             this.reset            = () => scene.reset();
             this.replay           = () => scene.replay();
 
-            this.difficulty       = 3;
+            this.maxTime          = 10;
 
+            this.difficulty       = 3;
             this.custom           = false;
             this.depth            = 4;
             this.padding          = 2;
@@ -59,6 +60,7 @@ class MyInterface extends CGFinterface {
         this.penteOptions = new PenteOptions();
 
         group.add(this.penteOptions, 'status').listen().name("Status");
+        group.add(this.penteOptions, 'maxTime', 1, 60).name("Seconds/Turn");
 
         let gamemodes = group.addFolder("Game Modes");
         gamemodes.open();
@@ -67,7 +69,7 @@ class MyInterface extends CGFinterface {
         gamemodes.add(this.penteOptions, 'bot_vs_player').name("Bot vs Player");
         gamemodes.add(this.penteOptions, 'bot_vs_bot').name("Bot vs Bot");
     
-        let bot_options = group.addFolder("Bot Options");
+        let bot_options = group.addFolder("Options");
         bot_options.add(this.penteOptions, 'tournament').name("Tournament Rule");
         bot_options.add(this.penteOptions, 'difficulty', {Trivial: 1, Easy: 2, Medium: 3, Hard: 4, Hardcore: 5}).name("Difficulty")
         .onChange(value => {

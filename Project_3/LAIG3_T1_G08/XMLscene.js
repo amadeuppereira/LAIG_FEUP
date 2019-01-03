@@ -51,6 +51,7 @@ class XMLscene extends CGFscene {
     }
 
     updateGameMode(mode) {
+        this.pente.maxTime = this.interface.penteOptions.maxTime;
         let op = this.getOptionsString();
         let init = this.pente.init(mode, op);
         if(init) init.then(() => {
@@ -124,10 +125,10 @@ class XMLscene extends CGFscene {
     }
 
     replay(){
-
-        //TODO: Filme do jogo
-        console.log("Filme do Jogo");
-        
+        let updateBoard = () => {
+            this.board.updateBoard(this.pente.board);
+        }
+        this.pente.replay(updateBoard);
     }
 
     board_click(coords) {        
@@ -449,5 +450,7 @@ class XMLscene extends CGFscene {
                 }
             }
         }
+
+        if(this.pente.update(this.deltaTime)) this.updateMessage();
     }
 }
