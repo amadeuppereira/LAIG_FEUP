@@ -316,10 +316,11 @@ class XMLscene extends CGFscene {
         this.currentView = this.graph.defaultView;
         this.interface.addViews(this);
 
-        //Add Camera Near
+        // Add Camera Near
         this.cameraNear = this.camera.near;
         this.interface.addNear(this);
-
+        
+        // Add Pente Options to interface
         this.interface.addPenteGroup(this);
 
         this.sceneInited = true;

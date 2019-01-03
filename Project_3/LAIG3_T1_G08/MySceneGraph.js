@@ -2101,10 +2101,8 @@ in the primitive with ID = " + primitiveId;
         else
             currMaterial.setTexture(null);
 
-        currMaterial.apply();
-
         // Updates Obj objects appearence
-        this.objAppearences(currComponent.id);
+        this.objAppearences(currComponent.id, currMaterial);
 
         var length_s = null;
         var length_t = null;
@@ -2144,7 +2142,7 @@ in the primitive with ID = " + primitiveId;
         }
     }
 
-    objAppearences(id){
+    objAppearences(id, currMaterial){
         switch (id) {
             case "fireplace":
                 this.fireplaceAppearance.apply();
@@ -2156,6 +2154,7 @@ in the primitive with ID = " + primitiveId;
                 this.bookcaseAppearance.apply();
                 break;
             default:
+                currMaterial.apply();
                 break;
         }
     }

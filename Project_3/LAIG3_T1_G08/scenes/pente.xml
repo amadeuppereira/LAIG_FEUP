@@ -82,6 +82,8 @@
         <texture id="tvScreenTexture" file="./scenes/images/tv_screen.png" />
         <texture id="fireTexture" file="./scenes/images/fire.png" />
         <texture id="booksTexture" file="./scenes/images/books.png" />
+        <texture id="waterTexture" file="./scenes/images/water.png" />
+        <texture id="waterHeightmap" file="./scenes/heightmaps/water.png" />
  
     </textures>
 
@@ -243,6 +245,10 @@
             <objfile file="./scenes/models/bookcase.obj"/>
         </primitive>
 
+        <!-- <primitive id="water">
+            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="50" heightscale="0.005" texscale="10"/>
+        </primitive> -->
+
     </primitives >
 
     <components>
@@ -292,6 +298,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
+                <!-- <componentref id="sea"/> -->
                 <componentref id="game"/>
             </children>
         </component>
@@ -309,6 +316,20 @@
                 <componentref id="chair_2"/>
             </children>
         </component>
+
+        <!-- <component id="sea">
+            <transformation>
+                <translate x="25" y="0.25" z="25" />
+                <scale x="50" y="50" z="50" />
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="waterTexture" length_s="0.5" length_t="0.5" />
+            <children>
+                <primitiveref id="water"/>
+            </children>
+        </component> -->
 
         <component id="human">
             <transformation>
