@@ -124,25 +124,21 @@ class XMLscene extends CGFscene {
         })
     }
 
-    sleep(milliseconds) {
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
-          if ((new Date().getTime() - start) > milliseconds){
-            break;
-          }
-        }
-    }
-
     replay(){
-        if(!this.pente.active_game && this.pente.winner != null){
+        if(!this.pente.active_game && this.pente.winner != null && !this.pente.film){
             this.board.reset();
             this.pente.timeout = 2000;
     
             this.camera = this.views["game_view"];
             this.interface.setActiveCamera(this.camera);
     
-            let updateBoard = (board) => {
-                this.board.updateBoard(board);
+            let updateBoard = (board, currentTimeOut) => {
+                if(this.pente.film)
+                    this.board.updateBoard(board);
+
+                if(this.pente.timeout == currentTimeOut){
+                    this.pente.film = false;
+                }
             }
             this.pente.replay(updateBoard);
         }
@@ -370,17 +366,17 @@ class XMLscene extends CGFscene {
     /**
      * Rotates the camera between player A and player B view.
      */
-    updateCamera(){
+    updateCamera(deltaTime){
         if(this.pente.active_game){
             if(this.pente.next == "w"){
                 if(this.cameraZindex < 30)
-                    this.cameraZindex += 0.3;
+                    this.cameraZindex += deltaTime/100;
 
                 this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(18, 13, this.cameraZindex), vec3.fromValues(20, 3, 20));
             }
             else{
                 if(this.cameraZindex > 10)
-                    this.cameraZindex -= 0.3;
+                    this.cameraZindex -= deltaTime/100;
 
                 this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(18, 13, this.cameraZindex), vec3.fromValues(20, 3, 20));
             }
@@ -430,8 +426,6 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene(this.currentAmbient);
 
-            this.updateCamera();
-
             this.popMatrix();
         }
     }
@@ -469,6 +463,9 @@ class XMLscene extends CGFscene {
                     } 
                 }
             }
+
+            this.board.updatePieces(this.deltaTime);
+            this.updateCamera(this.deltaTime);
         }
 
         if(this.pente.update(this.deltaTime)) this.updateMessage();

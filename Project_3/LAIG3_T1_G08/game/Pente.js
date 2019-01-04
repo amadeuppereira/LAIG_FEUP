@@ -232,16 +232,14 @@ class Pente{
             let index = 0;
 
             let film = () => {
-                setTimeout(callback, this.timeout, this.board);
+                setTimeout(callback, this.timeout, this.board, (this.timeout+2000));
                 this.timeout += 2000;
                 let move = this.history[index];
                 index++;
                 if(move) {
                     this.move(move.row, move.col)
                     .then(r => {film()});
-                } else {
-                    this.film = false;
-                }
+                } 
             }
             this.client.makeRequest("make_board(" + this.options.board_size + ")")
             .then(r => {
