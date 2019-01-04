@@ -167,5 +167,10 @@ class CGFOBJModel extends CGFobject{
 		this.initGLBuffers();
 	};
 
+	display() {
+		if(this.scene.pickMode == false)
+			super.display();
+	}
+
 	updateTexCoords(s,v) {}
 }

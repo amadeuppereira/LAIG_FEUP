@@ -15,9 +15,6 @@ class MyTerrain extends MyPlane {
         this.scene.setActiveShader(this.shader);
         this.shader.setUniformsValues({uTexture: 0, uHeightmap: 1, uHeightScale: this.heightscale});
 
-        // this.texture = new CGFtexture(this.scene, this.idtexture);
-        // this.heightmap = new CGFtexture(this.scene, this.idheightmap);
-
         this.scene.setActiveShader(this.scene.defaultShader);
 
     };

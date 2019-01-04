@@ -86,6 +86,9 @@
         <texture id="terrainTexture" file="./scenes/images/terrain.png" />
         <texture id="terrainHeightmap" file="./scenes/heightmaps/terrain.png" />
         <texture id="ballTexture" file="./scenes/images/ball.png" />
+        <texture id="metalGridTexture" file="./scenes/images/metal_grid.png" />
+        <texture id="controlPanelTexture" file="./scenes/images/control_panel.png" />
+        <texture id="spaceTexture" file="./scenes/images/space.png" />
  
     </textures>
 
@@ -196,6 +199,20 @@
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 
+        <material id="metalMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.40" g="0.40" b="0.40" a="1"/>
+            <diffuse r="0.50" g="0.50" b="0.50" a="1"/>
+            <specular r="0.6" g="0.6" b="0.6" a="1"/>
+        </material>
+
+        <material id="alienMaterial" shininess="0">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.1" g="0.5" b="0.1" a="1"/>
+            <diffuse r="0.1" g="0.5" b="0.1" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
     </materials>
 
     <transformations>
@@ -233,8 +250,12 @@
         </primitive>
 
         <primitive id="triangle">
-            <triangle x1="0.5" y1="1" z1="0" x2="0" y2="0" z2="0" x3="1" y3="0" z3="0" />
-        </primitive>   
+            <triangle x1="0" y1="1" z1="0" x2="0" y2="0" z2="0" x3="1" y3="0" z3="0" />
+        </primitive>  
+
+        <primitive id="triangle2">
+            <triangle x1="0" y1="1" z1="0" x2="1" y2="0" z2="0" x3="0" y3="0" z3="0" />
+        </primitive> 
 
         <primitive id="board">
             <board p1="greenPieceMaterial" p2="redPieceMaterial" preview="previewPieceMaterial"/>
@@ -250,6 +271,10 @@
         
         <primitive id="counter">
             <counter/>
+        </primitive> 
+
+        <primitive id="vehicle">
+            <vehicle/>
         </primitive> 
 
         <primitive id="water">
@@ -278,6 +303,10 @@
 
         <primitive id="beach_chair">
             <objfile file="./scenes/models/beach_chair.obj"/>
+        </primitive>
+
+        <primitive id="alien">
+            <objfile file="./scenes/models/alien.obj"/>
         </primitive>
 
     </primitives >
@@ -335,20 +364,6 @@
                 <componentref id="beach_chair_1"/>
                 <componentref id="beach_chair_2"/>
                 <componentref id="ball"/>
-            </children>
-        </component>
-
-        <component id="ambient3">
-            <transformation>
-            </transformation>
-            <materials>
-                <material id="inherit"/>
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <componentref id="game"/>
-                <componentref id="chair_1"/>
-                <componentref id="chair_2"/>
             </children>
         </component>
 
@@ -1283,6 +1298,566 @@
 				<componentref id="cube" />
 			</children> 
 		</component>
+
+        <component id="triangle3D"> 
+			<transformation>
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="inherit" length_s="1.0" length_t="1.0" />
+			<children> 
+				<componentref id="triangle3D_1"/>
+                <componentref id="triangle3D_2"/>
+                <componentref id="triangle3D_3"/>
+                <componentref id="triangle3D_4"/>
+                <componentref id="triangle3D_5"/>
+			</children> 
+		</component>  
+
+        <component id="triangle3D_1"> 
+			<transformation>
+                <translate x="0" y="0" z="0.5"/>
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="inherit" length_s="1.0" length_t="1.0" />
+			<children> 
+				<primitiveref id="triangle"/>
+			</children> 
+		</component>
+
+        <component id="triangle3D_2"> 
+			<transformation>
+                <translate x="0" y="0" z="-0.5"/>
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="inherit" length_s="1.0" length_t="1.0" />
+			<children> 
+				<primitiveref id="triangle2"/>
+			</children> 
+		</component>  
+
+        <component id="triangle3D_3"> 
+			<transformation>
+                <translate x="0.5" y="0.5" z="0"/>
+                <rotate axis="z" angle="45"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="1" y="1.414213" z="1"/>
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="inherit" length_s="1.0" length_t="1.0" />
+			<children> 
+				<primitiveref id="rectangle"/>
+			</children> 
+		</component>   
+
+        <component id="triangle3D_4"> 
+			<transformation>
+                <translate x="0.5" y="0" z="0"/>
+                <rotate axis="z" angle="-90"/>
+                <rotate axis="y" angle="90"/>
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="inherit" length_s="1.0" length_t="1.0" />
+			<children> 
+				<primitiveref id="rectangle"/>
+			</children> 
+		</component>   
+
+        <component id="triangle3D_5"> 
+			<transformation>
+                <translate x="0" y="0.5" z="0"/>
+                <rotate axis="y" angle="-90"/>
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="inherit" length_s="1.0" length_t="1.0" />
+			<children> 
+				<primitiveref id="rectangle"/>
+			</children> 
+		</component>            
+
+        <component id="ambient3">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="metalMaterial"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="game"/>
+                <componentref id="ambient3_floor"/>
+                <componentref id="ambient3_wall1"/>
+                <componentref id="ambient3_wall2"/>                
+                <componentref id="ambient3_vehicle"/>
+                <componentref id="ambient3_alien_1"/>
+                <componentref id="ambient3_alien_2"/>
+                <componentref id="ambient3_alien_3"/>
+            </children>
+        </component>
+
+        <component id="ambient3_alien_1">
+            <transformation>
+                <translate x="20" y="0" z="12"/>
+                <scale x="10" y="10" z="10"/>
+            </transformation>
+            <materials>
+                <material id="alienMaterial"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="alien"/>
+            </children>
+        </component>
+
+        <component id="ambient3_alien_2">
+            <transformation>
+                <translate x="20" y="0" z="28"/>
+                <rotate axis="y" angle="180"/>
+                <scale x="10" y="10" z="10"/>
+            </transformation>
+            <materials>
+                <material id="alienMaterial"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="alien"/>
+            </children>
+        </component>
+
+        <component id="ambient3_alien_3">
+            <transformation>
+                <translate x="25" y="0" z="7"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="10" y="10" z="10"/>
+            </transformation>
+            <materials>
+                <material id="alienMaterial"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="alien"/>
+            </children>
+        </component>
+
+        <component id="ambient3_vehicle">
+            <transformation>
+                <translate x="50" y="20" z="-30"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="vehicle"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall2">
+            <transformation>
+                <translate x="20" y="0" z="-10"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_wall2_1"/>
+                <componentref id="ambient3_wall2_2"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall2_1">
+            <transformation>
+                <translate x="1" y="7.5" z="0"/>
+                <scale x="22" y="15" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="spaceTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall2_2">
+            <transformation>
+                <translate x="0" y="0.5" z="2.5"/>
+                <scale x="20" y="1" z="5"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="ambient3_group">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+                <texture id="spaceTexture" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="ambient3_bench"/>
+                <componentref id="ambient3_window"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1">
+            <transformation>
+                <translate x="30" y="0" z="49"/>
+                <rotate axis="y" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_wall1_1"/>
+                <componentref id="ambient3_wall1_2"/>
+                <componentref id="ambient3_wall1_3"/>
+                <componentref id="ambient3_wall1_4"/>
+                <componentref id="ambient3_wall1_5"/>
+                <componentref id="ambient3_wall1_6"/>
+                <componentref id="ambient3_wall1_7"/>
+                <componentref id="ambient3_wall1_8"/>
+                <componentref id="ambient3_wall1_9"/>
+                <componentref id="ambient3_wall1_10"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_1">
+            <transformation>
+                <translate x="0" y="0" z="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_pilar"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_2">
+            <transformation>
+                <translate x="0.5" y="0" z="6"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_group"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_3">
+            <transformation>
+                <translate x="0" y="0" z="12"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_pilar"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_4">
+            <transformation>
+                <translate x="0.5" y="0" z="18"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_group"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_5">
+            <transformation>
+                <translate x="0" y="0" z="24"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_pilar"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_6">
+            <transformation>
+                <translate x="0.5" y="0" z="30"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_group"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_7">
+            <transformation>
+                <translate x="0" y="0" z="36"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_pilar"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_8">
+            <transformation>
+                <translate x="0.5" y="0" z="42"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_group"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_9">
+            <transformation>
+                <translate x="0" y="0" z="48"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_pilar"/>
+            </children>
+        </component>
+
+        <component id="ambient3_wall1_10">
+            <transformation>
+                <translate x="0.5" y="0" z="54"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="ambient3_group"/>
+            </children>
+        </component>
+
+
+        <component id="ambient3_window">
+            <transformation>
+                <translate x="-2.5" y="7.5" z="0"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="10" y="15" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="ambient3_bench">
+            <transformation>
+                <scale x="5" y="2" z="10"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="controlPanelTexture" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="ambient3_bench_1"/>
+                <componentref id="ambient3_bench_2"/>
+                <componentref id="ambient3_bench_3"/>
+            </children>
+        </component>
+
+        <component id="ambient3_bench_1">
+            <transformation>
+                <translate x="0" y="0.25" z="0"/>
+                <scale x="1" y="0.5" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="ambient3_bench_2">
+            <transformation>
+                <translate x="-0.5" y="0.5" z="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="triangle3D"/>
+            </children>
+        </component>
+
+        <component id="ambient3_bench_3">
+            <transformation>
+                <translate x="0" y="1.001" z="0"/>
+                <rotate axis="z" angle="45"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="1" y="1.414213" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="ambient3_pilar">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="ambient3_pilar_1"/>
+                <componentref id="ambient3_pilar_2"/>
+                <componentref id="ambient3_pilar_3"/>
+                <componentref id="ambient3_pilar_4"/>
+            </children>
+        </component>
+
+        <component id="ambient3_pilar_1">
+            <transformation>
+                <translate x="0" y="7.5" z="0"/>
+                <scale x="4" y="15" z="2"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="ambient3_pilar_2">
+            <transformation>
+                <translate x="0" y="7.5" z="0"/>
+                <scale x="4.5" y="4" z="2.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="ambient3_pilar_3">
+            <transformation>
+                <translate x="1" y="0" z="0"/>
+                <scale x="4.5" y="5" z="1.9"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangle3D"/>
+            </children>
+        </component>
+
+        <component id="ambient3_pilar_4">
+            <transformation>
+                <translate x="1" y="15" z="0"/>
+                <scale x="4.5" y="5" z="1.9"/>
+                <rotate axis="x" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="triangle3D"/>
+            </children>
+        </component>
+
+        <component id="ambient3_floor">
+            <transformation>
+                <translate x="20" y="0" z="20"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="ambient3_floor_1"/>
+                <componentref id="ambient3_floor_2"/>
+            </children>
+        </component>
+
+        <component id="ambient3_floor_1">
+            <transformation>
+                <translate x="0" y="0.1" z="0"/>
+                <scale x="10" y="1" z="60"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="metalGridTexture" length_s="1" length_t="0.1"/>
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
+
+        <component id="ambient3_floor_2">
+            <transformation>
+                <scale x="20" y="1" z="60"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="metalTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component>
 
     </components>
 </yas>
