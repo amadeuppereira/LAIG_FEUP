@@ -125,15 +125,20 @@ class XMLscene extends CGFscene {
     }
 
     replay(){
-        if(!this.pente.active_game && this.pente.winner != null){
+        if(!this.pente.active_game && this.pente.winner != null && !this.pente.film){
             this.board.reset();
             this.pente.timeout = 2000;
     
             this.camera = this.views["game_view"];
             this.interface.setActiveCamera(this.camera);
     
-            let updateBoard = (board) => {
-                this.board.updateBoard(board);
+            let updateBoard = (board, currentTimeOut) => {
+                if(this.pente.film)
+                    this.board.updateBoard(board);
+
+                if(this.pente.timeout == currentTimeOut){
+                    this.pente.film = false;
+                }
             }
             this.pente.replay(updateBoard);
         }
