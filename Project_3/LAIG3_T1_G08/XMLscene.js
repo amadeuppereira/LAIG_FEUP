@@ -37,9 +37,8 @@ class XMLscene extends CGFscene {
 
         this.setPickEnabled(true);
 
-        //to check when M/A key is pressed or released
+        //to check when M key is pressed or released
         this.KeyMPressed = false;
-        this.KeyAPressed = false;
         
         //Project 3
         this.mouseHoverEvent = false;
@@ -316,6 +315,10 @@ class XMLscene extends CGFscene {
         this.currentView = this.graph.defaultView;
         this.interface.addViews(this);
 
+        // Adds Ambients
+        this.currentAmbient = this.graph.rootComponent.children.componentref[0].id;
+        this.interface.addAmbients(this);
+
         // Add Camera Near
         this.cameraNear = this.camera.near;
         this.interface.addNear(this);
@@ -399,15 +402,6 @@ class XMLscene extends CGFscene {
             this.graph.materialCounter++;
             this.KeyMPressed = false;
         }
-
-        if(this.gui.isKeyPressed("KeyA") && this.KeyAPressed == false){
-            this.KeyAPressed = true;
-        }
-
-        if(this.gui.isKeyReleased("KeyA") && this.KeyAPressed == true){
-            this.graph.ambientCounter++;
-            this.KeyAPressed = false;
-        }
     }
 
     /**
@@ -434,7 +428,7 @@ class XMLscene extends CGFscene {
             this.checkKeyPressed();
 
             // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            this.graph.displayScene(this.currentAmbient);
 
             this.updateCamera();
 

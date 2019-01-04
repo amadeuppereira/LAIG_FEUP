@@ -143,6 +143,16 @@ class MyInterface extends CGFinterface {
         }
     }
 
+    addAmbients(scene){
+        var ambients = [];
+
+        for(let i = 0; i < scene.graph.rootComponent.children.componentref.length; i++){
+            ambients.push(scene.graph.rootComponent.children.componentref[i].id);
+        }
+
+        this.gui.add(this.scene, 'currentAmbient', ambients);
+    }
+
     /**
      * Adds a folder containing the IDs of the lights passed as parameter.
      * @param {array} lights

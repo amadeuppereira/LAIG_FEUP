@@ -74,7 +74,6 @@
 
         <texture id="wallTexture" file="./scenes/images/wallHouse.png" />
         <texture id="floorTexture" file="./scenes/images/floor.png" />
-        <texture id="couchTexture" file="./scenes/images/couch.png" />
         <texture id="tableTexture" file="./scenes/images/table.png" />
         <texture id="chairTexture" file="./scenes/images/chair.png" />
         <texture id="boardTexture" file="./scenes/images/board.png" />
@@ -86,6 +85,7 @@
         <texture id="waterHeightmap" file="./scenes/heightmaps/water.png" />
         <texture id="terrainTexture" file="./scenes/images/terrain.png" />
         <texture id="terrainHeightmap" file="./scenes/heightmaps/terrain.png" />
+        <texture id="ballTexture" file="./scenes/images/ball.png" />
  
     </textures>
 
@@ -186,6 +186,13 @@
             <emission r="0" g="0" b="0" a="0"/>
             <ambient r="0.23" g="0.36" b="0.2" a="1"/>
             <diffuse r="0.23" g="0.36" b="0.2" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="beachChairMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.71" g="0.71" b="0.16" a="1"/>
+            <diffuse r="0.71" g="0.71" b="0.16" a="1"/>
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 
@@ -327,6 +334,7 @@
                 <componentref id="game"/>
                 <componentref id="beach_chair_1"/>
                 <componentref id="beach_chair_2"/>
+                <componentref id="ball"/>
             </children>
         </component>
 
@@ -379,7 +387,7 @@
                 <scale x="0.005" y="0.005" z="0.005"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="beachChairMaterial"/>
             </materials>
             <texture id="none"/>
             <children>
@@ -393,13 +401,27 @@
                 <scale x="0.005" y="0.005" z="0.005"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="beachChairMaterial"/>
             </materials>
             <texture id="none"/>
             <children>
                 <primitiveref id="beach_chair"/>
             </children>
         </component>
+
+        <component id="ball"> 
+			<transformation>
+                <translate x="15" y="0.5" z="15" />
+                <scale x="2" y="2" z="2" />
+			</transformation>
+			<materials> 
+				<material id="inherit" />
+			</materials> 
+			<texture id="ballTexture" length_s="1.0" length_t="1.0" />
+			<children> 
+                <primitiveref id="sphere"/>
+			</children> 
+		</component>
 
         <component id="human">
             <transformation>

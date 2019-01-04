@@ -51,7 +51,6 @@ class MySceneGraph {
         this.materialDefault = new CGFappearance(this.scene);
 
         this.materialCounter = 0;
-        this.ambientCounter = 0;
     }
 
 
@@ -2047,9 +2046,12 @@ in the primitive with ID = " + primitiveId;
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
-    displayScene() {
-        let index = this.ambientCounter % this.rootComponent.children.componentref.length;
-        let ambientComponent = this.rootComponent.children.componentref[index];
+    displayScene(ambient) {
+        let ambientComponent;
+        for(let i = 0; i < this.rootComponent.children.componentref.length; i++){
+            if(ambient == this.rootComponent.children.componentref[i].id)
+                ambientComponent = this.rootComponent.children.componentref[i];
+        }
 
         let ambientMaterial;
         if(ambientComponent.materials[0].id == "inherit")
