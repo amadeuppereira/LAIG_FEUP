@@ -125,6 +125,63 @@ class MyBoard extends CGFobject
         }            
     }
 
+    updatePieces(deltaTime){
+        this.pieces.forEach(e => {
+            let finalXYZCoords = {x: (e.finalCoords.row-1) *0.99, y: (this.size - e.finalCoords.col)*0.99, z: 0.2};
+            let x_increment = deltaTime/200;
+            let y_increment = deltaTime/200;
+
+            if(Math.abs(finalXYZCoords.x-e.initialCoords.x) > Math.abs(finalXYZCoords.y-e.initialCoords.y)){
+                y_increment = Math.abs(finalXYZCoords.y-e.initialCoords.y)*(deltaTime/200)/Math.abs(finalXYZCoords.x-e.initialCoords.x);
+
+                let half = Math.abs(finalXYZCoords.x-e.initialCoords.x) / 2;
+                if(Math.abs(finalXYZCoords.x-e.currentCoords.x) > half){
+                    e.currentCoords.z += deltaTime/200;
+                }
+                else if(e.currentCoords.z > finalXYZCoords.z){
+                    e.currentCoords.z -= deltaTime/200;
+                }
+                else{
+                    e.currentCoords.z = finalXYZCoords.z;
+                }
+            }
+            else{
+                x_increment = Math.abs(finalXYZCoords.x-e.initialCoords.x)*(deltaTime/200)/Math.abs(finalXYZCoords.y-e.initialCoords.y);
+
+                let half = Math.abs(finalXYZCoords.y-e.initialCoords.y) / 2;
+                if(Math.abs(finalXYZCoords.y-e.currentCoords.y) > half){
+                    e.currentCoords.z += deltaTime/200;
+                }
+                else if(e.currentCoords.z > finalXYZCoords.z){
+                    e.currentCoords.z -= deltaTime/200;
+                }
+                else{
+                    e.currentCoords.z = finalXYZCoords.z;
+                }
+            }
+
+            if(Math.abs(finalXYZCoords.x-e.currentCoords.x) < deltaTime/200){
+                e.currentCoords.x = finalXYZCoords.x;
+            } else{
+                if(finalXYZCoords.x > e.currentCoords.x){
+                    e.currentCoords.x += x_increment;
+                } else{
+                    e.currentCoords.x -= x_increment;
+                }
+            }
+
+            if(Math.abs(finalXYZCoords.y-e.currentCoords.y) < deltaTime/200){
+                e.currentCoords.y = finalXYZCoords.y;
+            } else{
+                if(finalXYZCoords.y > e.currentCoords.y){
+                    e.currentCoords.y += y_increment;
+                } else{
+                    e.currentCoords.y -= y_increment;
+                }
+            }
+        })
+    }
+
     reset(){
         this.pieces.forEach(e => {
             if(e.piece == this.pieceP1){
@@ -261,59 +318,6 @@ class MyBoard extends CGFobject
             this.scene.scale(0.4, 0.4, 0.4);
             e.piece.display();
             this.scene.popMatrix();
-
-            let finalXYZCoords = {x: (e.finalCoords.row-1) *0.99, y: (this.size - e.finalCoords.col)*0.99, z: 0.2};
-            let x_increment = 0.1;
-            let y_increment = 0.1;
-
-            if(Math.abs(finalXYZCoords.x-e.initialCoords.x) > Math.abs(finalXYZCoords.y-e.initialCoords.y)){
-                y_increment = Math.abs(finalXYZCoords.y-e.initialCoords.y)* 0.1/Math.abs(finalXYZCoords.x-e.initialCoords.x);
-
-                let half = Math.abs(finalXYZCoords.x-e.initialCoords.x) / 2;
-                if(Math.abs(finalXYZCoords.x-e.currentCoords.x) > half){
-                    e.currentCoords.z += 0.05;
-                }
-                else if(e.currentCoords.z > finalXYZCoords.z){
-                    e.currentCoords.z -= 0.05;
-                }
-                else{
-                    e.currentCoords.z = finalXYZCoords.z;
-                }
-            }
-            else{
-                x_increment = Math.abs(finalXYZCoords.x-e.initialCoords.x)*0.1/Math.abs(finalXYZCoords.y-e.initialCoords.y);
-
-                let half = Math.abs(finalXYZCoords.y-e.initialCoords.y) / 2;
-                if(Math.abs(finalXYZCoords.y-e.currentCoords.y) > half){
-                    e.currentCoords.z += 0.05;
-                }
-                else if(e.currentCoords.z > finalXYZCoords.z){
-                    e.currentCoords.z -= 0.05;
-                }
-                else{
-                    e.currentCoords.z = finalXYZCoords.z;
-                }
-            }
-
-            if(Math.abs(finalXYZCoords.x-e.currentCoords.x) < 0.1){
-                e.currentCoords.x = finalXYZCoords.x;
-            } else{
-                if(finalXYZCoords.x > e.currentCoords.x){
-                    e.currentCoords.x += x_increment;
-                } else{
-                    e.currentCoords.x -= x_increment;
-                }
-            }
-
-            if(Math.abs(finalXYZCoords.y-e.currentCoords.y) < 0.1){
-                e.currentCoords.y = finalXYZCoords.y;
-            } else{
-                if(finalXYZCoords.y > e.currentCoords.y){
-                    e.currentCoords.y += y_increment;
-                } else{
-                    e.currentCoords.y -= y_increment;
-                }
-            }
         });
     }
 
