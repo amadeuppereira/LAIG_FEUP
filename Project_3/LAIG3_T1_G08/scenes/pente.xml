@@ -84,6 +84,8 @@
         <texture id="booksTexture" file="./scenes/images/books.png" />
         <texture id="waterTexture" file="./scenes/images/water.png" />
         <texture id="waterHeightmap" file="./scenes/heightmaps/water.png" />
+        <texture id="terrainTexture" file="./scenes/images/terrain.png" />
+        <texture id="terrainHeightmap" file="./scenes/heightmaps/terrain.png" />
  
     </textures>
 
@@ -108,13 +110,6 @@
             <ambient r="1" g="1" b="0.9" a="1"/>
             <diffuse r="1" g="1" b="0.9" a="1"/>
             <specular r="1" g="1" b="0.9" a="1"/>
-        </material>
-
-        <material id="couchMaterial" shininess="0.1">
-            <emission r="0" g="0" b="0" a="0"/>
-            <ambient r="0" g="0.3" b="0.55" a="1"/>
-            <diffuse r="0" g="0.3" b="0.55" a="1"/>
-            <specular r="0" g="0" b="0" a="1"/>
         </material>
 
         <material id="tableMaterial" shininess="0.01">
@@ -170,6 +165,27 @@
             <emission r="1" g="1" b="1" a="0"/>
             <ambient r="0" g="0" b="0" a="1"/>
             <diffuse r="0" g="0" b="0" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="fireplaceMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.1" g="0.1" b="0.1" a="1"/>
+            <diffuse r="0.1" g="0.1" b="0.1" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="bookcaseMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.35" g="0.26" b="0.18" a="1"/>
+            <diffuse r="0.35" g="0.26" b="0.18" a="1"/>
+            <specular r="0" g="0" b="0" a="1"/>
+        </material>
+
+        <material id="couchMaterial" shininess="100">
+            <emission r="0" g="0" b="0" a="0"/>
+            <ambient r="0.23" g="0.36" b="0.2" a="1"/>
+            <diffuse r="0.23" g="0.36" b="0.2" a="1"/>
             <specular r="0" g="0" b="0" a="1"/>
         </material>
 
@@ -230,8 +246,12 @@
         </primitive> 
 
         <primitive id="water">
-            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="50" heightscale="0.005" texscale="10"/>
-        </primitive> 
+            <water idtexture="waterTexture" idwavemap="waterHeightmap" parts="50" heightscale="0.03" texscale="2"/>
+        </primitive>
+
+        <primitive id="terrain">
+            <terrain idtexture="terrainTexture" idheightmap="terrainHeightmap" parts="50" heightscale="0.4"/>
+        </primitive>
 
         <primitive id="human">
             <objfile file="./scenes/models/male.obj"/>
@@ -247,6 +267,10 @@
 
         <primitive id="bookcase">
             <objfile file="./scenes/models/bookcase.obj"/>
+        </primitive>
+
+        <primitive id="beach_chair">
+            <objfile file="./scenes/models/beach_chair.obj"/>
         </primitive>
 
     </primitives >
@@ -299,7 +323,10 @@
             <texture id="inherit"/>
             <children>
                 <componentref id="sea"/>
+                <componentref id="sand"/>
                 <componentref id="game"/>
+                <componentref id="beach_chair_1"/>
+                <componentref id="beach_chair_2"/>
             </children>
         </component>
 
@@ -319,8 +346,8 @@
 
         <component id="sea">
             <transformation>
-                <translate x="25" y="0.25" z="25" />
-                <scale x="50" y="50" z="50" />
+                <translate x="20" y="-1" z="20" />
+                <scale x="40" y="20" z="40" />
             </transformation>
             <materials>
                 <material id="inherit"/>
@@ -328,6 +355,49 @@
             <texture id="none"/>
             <children>
                 <primitiveref id="water"/>
+            </children>
+        </component>
+
+        <component id="sand">
+            <transformation>
+                <translate x="20" y="-1.5" z="20" />
+                <scale x="40" y="6" z="40" />
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="terrain"/>
+            </children>
+        </component>
+
+        <component id="beach_chair_1">
+            <transformation>
+                <translate x="20" y="0.2" z="25" />
+                <rotate axis="y" angle="180" />
+                <scale x="0.005" y="0.005" z="0.005"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="beach_chair"/>
+            </children>
+        </component>
+
+        <component id="beach_chair_2">
+            <transformation>
+                <translate x="20" y="0.1" z="15" />
+                <scale x="0.005" y="0.005" z="0.005"/>
+            </transformation>
+            <materials>
+                <material id="default"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="beach_chair"/>
             </children>
         </component>
 
@@ -351,7 +421,7 @@
                 <scale x="0.005" y="0.0065" z="0.005"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="fireplaceMaterial"/>
             </materials>
             <texture id="none"/>
             <children>
@@ -380,7 +450,7 @@
                 <scale x="0.09" y="0.09" z="0.09"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="bookcaseMaterial"/>
             </materials>
             <texture id="none"/>
             <children>
@@ -455,7 +525,7 @@
                 <scale x="0.006" y="0.006" z="0.006"/>
             </transformation>
             <materials>
-                <material id="default"/>
+                <material id="couchMaterial"/>
             </materials>
             <texture id="none"/>
             <children>

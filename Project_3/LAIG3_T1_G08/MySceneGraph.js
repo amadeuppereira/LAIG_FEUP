@@ -49,15 +49,6 @@ class MySceneGraph {
         this.reader.open('scenes/' + filename, this);
 
         this.materialDefault = new CGFappearance(this.scene);
-        this.fireplaceAppearance = new CGFappearance(this.scene);
-        this.fireplaceAppearance.setAmbient(0.1, 0.1, 0.1);
-        this.fireplaceAppearance.setDiffuse(0.1, 0.1, 0.1);
-        this.bookcaseAppearance = new CGFappearance(this.scene);
-        this.bookcaseAppearance.setAmbient(0.35, 0.26, 0.18);
-        this.bookcaseAppearance.setDiffuse(0.35, 0.26, 0.18);
-        this.couchAppearance = new CGFappearance(this.scene);
-        this.couchAppearance.setAmbient(0.23, 0.36, 0.2);
-        this.couchAppearance.setDiffuse(0.23, 0.36, 0.2);
 
         this.materialCounter = 0;
         this.ambientCounter = 0;
@@ -2101,8 +2092,7 @@ in the primitive with ID = " + primitiveId;
         else
             currMaterial.setTexture(null);
 
-        // Updates Obj objects appearence
-        this.objAppearences(currComponent.id, currMaterial);
+        currMaterial.apply();
 
         var length_s = null;
         var length_t = null;
@@ -2139,23 +2129,6 @@ in the primitive with ID = " + primitiveId;
             var temp = currComponent.children.primitiveref[i];
             temp.primitive.updateTexCoords(length_s, length_t);
             temp.primitive.display();
-        }
-    }
-
-    objAppearences(id, currMaterial){
-        switch (id) {
-            case "fireplace":
-                this.fireplaceAppearance.apply();
-                break;
-            case "couch":
-                this.couchAppearance.apply();
-                break;
-            case "bookcase":
-                this.bookcaseAppearance.apply();
-                break;
-            default:
-                currMaterial.apply();
-                break;
         }
     }
 }
