@@ -26,10 +26,17 @@ class MyInterface extends CGFinterface {
         return true;
     }
 
+    /**
+     * Updates Pente status message.
+     */
     updatePenteStatusMessage(msg) {
         this.penteOptions.status = msg;
     }
 
+    /**
+     * Adds all the Pente game information and options/settings.
+     * @param {CGFscene} scene
+     */
     addPenteGroup(scene) {
         let group = this.gui.addFolder("Pente");
         group.open();
@@ -129,6 +136,9 @@ class MyInterface extends CGFinterface {
         options.add(this.penteOptions, 'replay').name("Replay");
     }
 
+    /**
+     * Updates bot settings.
+     */
     update_bot_settings(v, bot_settings) {
         if(v) {
             bot_settings.forEach(e => {
@@ -143,6 +153,10 @@ class MyInterface extends CGFinterface {
         }
     }
 
+    /**
+     * Adds a dropdown for all the ambients in the scene passed as parameter.
+     * @param {CGFscene} scene
+     */
     addAmbients(scene){
         var ambients = [];
 

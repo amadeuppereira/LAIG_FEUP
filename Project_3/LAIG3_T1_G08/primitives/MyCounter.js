@@ -1,11 +1,14 @@
 /**
  * MyCounter
- * @param gl {WebGLRenderingContext}
  * @constructor
  */
 
 class MyCounter extends CGFobject
 {
+    /**
+     * @constructor
+     * @param {CGFscene} scene 
+     */
     constructor(scene) {
         super(scene);
 
@@ -46,6 +49,9 @@ class MyCounter extends CGFobject
         this.redAppearance.setSpecular(1, 1, 1);
     }
 
+    /**
+     * Creates numbers textures from files.
+     */
     openNumbersTextures(){
         this.zero = new CGFtexture(this.scene, "./scenes/images/zero.jpg");
         this.one = new CGFtexture(this.scene, "./scenes/images/one.jpg");
@@ -60,6 +66,9 @@ class MyCounter extends CGFobject
         this.twoPointsTexture = new CGFtexture(this.scene, "./scenes/images/two_points.jpg");
     }
 
+    /**
+     * Updates the counter information (clock, countdown and captures).
+     */
     update(deltaTime, pente){
         this.secondsCounter += deltaTime / 1000;
         if(Math.floor(this.secondsCounter) >= 60){
@@ -86,6 +95,9 @@ class MyCounter extends CGFobject
         this.updateTextures();
     }
 
+    /**
+     * Updates the variables textures.
+     */
     updateTextures(){
         this.dozensPiecesATexture = this.getTexture(Math.floor(this.piecesACounter/10));
         this.unitsPiecesATexture = this.getTexture(this.piecesACounter%10);
@@ -103,6 +115,9 @@ class MyCounter extends CGFobject
         this.unitsCountdownP2 = this.getTexture(Math.floor(this.countdownP2%10));
     }
 
+    /**
+     * Returns the texture corresponding to the number.
+     */
     getTexture(number){
         switch (number) {
             case 0:
@@ -130,6 +145,9 @@ class MyCounter extends CGFobject
         }
     }
     
+    /**
+     * Resets the counter information.
+     */
     reset(){
         this.minutesCounter = 0;
         this.secondsCounter = 0;
@@ -137,6 +155,9 @@ class MyCounter extends CGFobject
         this.piecesBCounter = 0;
     }
 
+    /**
+     * Displays the counter.
+     */
 	display(){
         if(this.scene.pickMode == true) return;
 

@@ -4,6 +4,10 @@
  */
 class MyBoard extends CGFobject
 {
+    /**
+     * @constructor
+     * @param {CGFscene} scene 
+     */
 	constructor(scene, p1_mat, p2_mat, preview_mat) {
         super(scene);
         this.scene.board = this;
@@ -66,6 +70,9 @@ class MyBoard extends CGFobject
         }
     }
 
+    /**
+     * Updates the board state.
+     */
     updateBoard(board) {
         board = board.replace(/[,\[\]]/g, "");
         let flag;
@@ -125,6 +132,9 @@ class MyBoard extends CGFobject
         }            
     }
 
+    /**
+     * Updates pieces postions.
+     */
     updatePieces(deltaTime){
         this.pieces.forEach(e => {
             let finalXYZCoords = {x: (e.finalCoords.row-1) *0.99, y: (this.size - e.finalCoords.col)*0.99, z: 0.2};
@@ -182,6 +192,9 @@ class MyBoard extends CGFobject
         })
     }
 
+    /**
+     * Resets current board state.
+     */
     reset(){
         this.pieces.forEach(e => {
             if(e.piece == this.pieceP1){
@@ -203,6 +216,9 @@ class MyBoard extends CGFobject
         this.incrementPieceP2Col = 0;
     }
 
+    /**
+     * Undo one move on board.
+     */
     undoBoard(board, captures){
         board = board.replace(/[,\[\]]/g, "");
         let flag;
@@ -295,6 +311,9 @@ class MyBoard extends CGFobject
         } 
     }
 
+    /**
+     * Displays preview piece when mouse is over the board.
+     */
     displayPreview() {
         if(this.piecePreviewCoord != undefined && this.scene.pente.active_game) {
             this.scene.pushMatrix();
@@ -309,6 +328,9 @@ class MyBoard extends CGFobject
         }
     }
 
+    /**
+     * Displays all the current game pieces on board.
+     */
     displayPieces() {
         this.pieces.forEach(e => {
             this.scene.pushMatrix();
@@ -321,6 +343,9 @@ class MyBoard extends CGFobject
         });
     }
 
+    /**
+     * Displays the board.
+     */
     display() {
         this.logPicking();
 
@@ -352,6 +377,9 @@ class MyBoard extends CGFobject
         this.scene.popMatrix();
     }
 
+    /**
+     * Updates board texture coordenates.
+     */
     updateTexCoords(s, t) {
         this.board.updateTexCoords(s, t);
     }

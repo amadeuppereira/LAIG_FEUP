@@ -284,10 +284,6 @@
         <primitive id="terrain">
             <terrain idtexture="terrainTexture" idheightmap="terrainHeightmap" parts="50" heightscale="0.4"/>
         </primitive>
-
-        <primitive id="human">
-            <objfile file="./scenes/models/male.obj"/>
-        </primitive>
                 
         <primitive id="couch">
             <objfile file="./scenes/models/couch.obj"/>
@@ -437,20 +433,6 @@
                 <primitiveref id="sphere"/>
 			</children> 
 		</component>
-
-        <component id="human">
-            <transformation>
-                <translate x="10" y="0" z="10"/>
-                <scale x="0.5" y="0.5" z="0.5"/>
-            </transformation>
-            <materials>
-                <material id="default"/>
-            </materials>
-            <texture id="none"/>
-            <children>
-                <primitiveref id="human"/>
-            </children>
-        </component>
 
         <component id="fireplace">
             <transformation>

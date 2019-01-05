@@ -50,171 +50,6 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(1000/this.FPS);
     }
 
-    updateGameMode(mode) {
-        this.pente.maxTime = this.interface.penteOptions.maxTime;
-        let op = this.getOptionsString();
-        let init = this.pente.init(mode, op);
-        if(init) init.then(() => {
-            this.updateMessage();
-            this.board.reset();
-            this.board.updateBoard(this.pente.board);
-            if(mode == 4) this.botvbot();
-        })
-    }
-
-    getOptionsString() {
-        let op = this.interface.penteOptions;
-        let ret = "[";
-        if(op.tournament) ret += "tournament(true)";
-        else ret += "tournament(false)";
-        if(!op.custom) ret += ",difficulty(" + op.difficulty + ")]";
-        else {
-            ret += ",depth(" + op.depth + ")";
-            ret += ",padding(" + op.padding + ")";
-            ret += ",width([" + op.width_1;
-            ret += "," + op.width_2;
-            ret += "," + op.width_3 + "])]";
-        }
-        return ret;
-    }
-
-    updateMessage() {
-        if(this.pente.winner) {
-            this.interface.updatePenteStatusMessage("Gameover ("
-            + ((this.pente.winner == "w") ? "P1" : "P2") + " Won)");
-            return;
-        }
-
-        if(!this.pente.active_game) {
-            this.interface.updatePenteStatusMessage("Choose a game mode");
-            return; 
-        }
-
-        switch(this.pente.game_mode) {
-            case 1: 
-            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("P1 Turn"); 
-            else this.interface.updatePenteStatusMessage("P2 Turn"); 
-            break;
-            case 2: 
-            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("P1 Turn"); 
-            else this.interface.updatePenteStatusMessage("BOT2 Turn"); 
-            break;
-            case 3: 
-            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("BOT1 Turn"); 
-            else this.interface.updatePenteStatusMessage("P2 Turn"); 
-            break;
-            case 4: 
-            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("BOT1 Turn"); 
-            else this.interface.updatePenteStatusMessage("BOT2 Turn"); 
-            break;
-        }
-    }
-
-    undo() {
-        if(this.pente.undo()) {
-            this.board.undoBoard(this.pente.board, this.pente.captures);
-            this.updateMessage();
-        }
-    }
-
-    reset() {
-        this.pente.reset().then( () => {
-            this.board.reset();
-            this.updateMessage();
-        })
-    }
-
-    replay(){
-        if(!this.pente.active_game && this.pente.winner != null && !this.pente.film){
-            this.board.reset();
-            this.pente.timeout = 2000;
-    
-            this.camera = this.views["game_view"];
-            this.interface.setActiveCamera(this.camera);
-    
-            let updateBoard = (board, currentTimeOut) => {
-                if(this.pente.film)
-                    this.board.updateBoard(board);
-
-                if(this.pente.timeout == currentTimeOut){
-                    this.pente.film = false;
-                }
-            }
-            this.pente.replay(updateBoard);
-        }
-    }
-
-    board_click(coords) {        
-        if(this.pente.active_game && this.pente.player_turn) {
-            switch(this.pente.game_mode) {
-                case 1:
-                    this.pente.player_turn = false;
-                    this.pente.move(coords.row, coords.col)
-                    .then(() => {
-                        this.board.updateBoard(this.pente.board);
-                        this.pente.gameover().then(r => {
-                            this.pente.player_turn = true;
-                            this.updateMessage();
-                        })
-                    }) 
-                    break;
-                case 2:
-                    this.pente.player_turn = false;
-                    this.pente.move(coords.row, coords.col)
-                    .then(() => {
-                        this.board.updateBoard(this.pente.board);
-                        this.pente.gameover().then(r => {
-                            if(!r) {
-                                this.pente.bot().then( () => {
-                                    this.board.updateBoard(this.pente.board);
-                                    this.pente.gameover().then(r => {
-                                        this.pente.player_turn = true;
-                                        this.updateMessage();
-                                    })
-                                })  
-                            }
-                            this.updateMessage();
-                        })
-                    }) 
-                    break;
-                case 3:
-                    this.pente.player_turn = false;
-                    this.pente.move(coords.row, coords.col)
-                    .then(() => {
-                        this.board.updateBoard(this.pente.board);
-                        this.pente.gameover().then(r => {
-                            if(!r) {
-                                this.pente.bot().then( () => {
-                                    this.board.updateBoard(this.pente.board);
-                                    this.pente.gameover().then(r => {
-                                        this.pente.player_turn = true;
-                                        this.updateMessage();
-                                    })
-                                })  
-                            }
-                            this.updateMessage();
-                        })
-                    }) 
-                    break;
-            }
-        }    
-    }
-
-    botvbot() {
-        if(this.pente.active_game) {
-            this.pente.bot()
-            .then(() => {
-                this.board.updateBoard(this.pente.board);
-                this.pente.gameover().then(r => {
-                    if(!r) {
-                        this.botvbot();
-                    }
-                    this.updateMessage();
-                })
-            })   
-        }
-    }
-
     /**
      * Initializes the scene cameras.
      */
@@ -367,7 +202,7 @@ class XMLscene extends CGFscene {
      * Rotates the camera between player A and player B view.
      */
     updateCamera(deltaTime){
-        if(this.pente.active_game){
+        if(this.pente.active_game && this.pente.game_mode == 1){
             if(this.pente.next == "w"){
                 if(this.cameraZindex < 30)
                     this.cameraZindex += deltaTime/100;
@@ -380,6 +215,18 @@ class XMLscene extends CGFscene {
 
                 this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(18, 13, this.cameraZindex), vec3.fromValues(20, 3, 20));
             }
+        }
+        else if(this.pente.active_game && this.pente.game_mode == 2){
+            this.camera = this.views["playerA"];
+            this.interface.setActiveCamera(this.camera);
+        }
+        else if(this.pente.active_game && this.pente.game_mode == 3){
+            this.camera = this.views["playerB"];
+            this.interface.setActiveCamera(this.camera);
+        }
+        else if(this.pente.active_game && this.pente.game_mode == 4){
+            this.camera = this.views["game_view"];
+            this.interface.setActiveCamera(this.camera);
         }
         else{
             this.interface.setActiveCamera(this.camera);
@@ -397,6 +244,198 @@ class XMLscene extends CGFscene {
         if(this.gui.isKeyReleased("KeyM") && this.KeyMPressed == true){
             this.graph.materialCounter++;
             this.KeyMPressed = false;
+        }
+    }
+
+    /**
+     * Updates current game mode.
+     */
+    updateGameMode(mode) {
+        this.pente.maxTime = this.interface.penteOptions.maxTime;
+        let op = this.getOptionsString();
+        let init = this.pente.init(mode, op);
+        if(init) init.then(() => {
+            this.updateMessage();
+            this.board.reset();
+            this.board.updateBoard(this.pente.board);
+            if(mode == 4) this.botvbot();
+        })
+    }
+
+    /**
+     * Returns prepared game options to send to prolog game.
+     */
+    getOptionsString() {
+        let op = this.interface.penteOptions;
+        let ret = "[";
+        if(op.tournament) ret += "tournament(true)";
+        else ret += "tournament(false)";
+        if(!op.custom) ret += ",difficulty(" + op.difficulty + ")]";
+        else {
+            ret += ",depth(" + op.depth + ")";
+            ret += ",padding(" + op.padding + ")";
+            ret += ",width([" + op.width_1;
+            ret += "," + op.width_2;
+            ret += "," + op.width_3 + "])]";
+        }
+        return ret;
+    }
+
+    /**
+     * Updates status message from the interface.
+     */
+    updateMessage() {
+        if(this.pente.winner) {
+            this.interface.updatePenteStatusMessage("Gameover ("
+            + ((this.pente.winner == "w") ? "P1" : "P2") + " Won)");
+            return;
+        }
+
+        if(!this.pente.active_game) {
+            this.interface.updatePenteStatusMessage("Choose a game mode");
+            return; 
+        }
+
+        switch(this.pente.game_mode) {
+            case 1: 
+            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("P1 Turn"); 
+            else this.interface.updatePenteStatusMessage("P2 Turn"); 
+            break;
+            case 2: 
+            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("P1 Turn"); 
+            else this.interface.updatePenteStatusMessage("BOT2 Turn"); 
+            break;
+            case 3: 
+            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("BOT1 Turn"); 
+            else this.interface.updatePenteStatusMessage("P2 Turn"); 
+            break;
+            case 4: 
+            if(this.pente.next == "w") this.interface.updatePenteStatusMessage("BOT1 Turn"); 
+            else this.interface.updatePenteStatusMessage("BOT2 Turn"); 
+            break;
+        }
+    }
+
+    /**
+     * Action for undo in interface.
+     * Goes back one move in the current game.
+     */
+    undo() {
+        if(this.pente.undo()) {
+            this.board.undoBoard(this.pente.board, this.pente.captures);
+            this.updateMessage();
+        }
+    }
+
+    /**
+     * Action for reset in interface.
+     * Resets current game.
+     */
+    reset() {
+        this.pente.reset().then( () => {
+            this.board.reset();
+            this.updateMessage();
+        })
+    }
+
+    /**
+     * Action for replay in interface.
+     * Replays all the game plays when a game is finished.
+     */
+    replay(){
+        if(!this.pente.active_game && this.pente.winner != null && !this.pente.film){
+            this.board.reset();
+            this.pente.timeout = 2000;
+    
+            this.camera = this.views["game_view"];
+            this.interface.setActiveCamera(this.camera);
+    
+            let updateBoard = (board, currentTimeOut) => {
+                if(this.pente.film)
+                    this.board.updateBoard(board);
+
+                if(this.pente.timeout == currentTimeOut){
+                    this.pente.film = false;
+                }
+            }
+            this.pente.replay(updateBoard);
+        }
+    }
+
+    /**
+     * Handles board click by the user.
+     */
+    board_click(coords) {        
+        if(this.pente.active_game && this.pente.player_turn) {
+            switch(this.pente.game_mode) {
+                case 1:
+                    this.pente.player_turn = false;
+                    this.pente.move(coords.row, coords.col)
+                    .then(() => {
+                        this.board.updateBoard(this.pente.board);
+                        this.pente.gameover().then(r => {
+                            this.pente.player_turn = true;
+                            this.updateMessage();
+                        })
+                    }) 
+                    break;
+                case 2:
+                    this.pente.player_turn = false;
+                    this.pente.move(coords.row, coords.col)
+                    .then(() => {
+                        this.board.updateBoard(this.pente.board);
+                        this.pente.gameover().then(r => {
+                            if(!r) {
+                                this.pente.bot().then( () => {
+                                    this.board.updateBoard(this.pente.board);
+                                    this.pente.gameover().then(r => {
+                                        this.pente.player_turn = true;
+                                        this.updateMessage();
+                                    })
+                                })  
+                            }
+                            this.updateMessage();
+                        })
+                    }) 
+                    break;
+                case 3:
+                    this.pente.player_turn = false;
+                    this.pente.move(coords.row, coords.col)
+                    .then(() => {
+                        this.board.updateBoard(this.pente.board);
+                        this.pente.gameover().then(r => {
+                            if(!r) {
+                                this.pente.bot().then( () => {
+                                    this.board.updateBoard(this.pente.board);
+                                    this.pente.gameover().then(r => {
+                                        this.pente.player_turn = true;
+                                        this.updateMessage();
+                                    })
+                                })  
+                            }
+                            this.updateMessage();
+                        })
+                    }) 
+                    break;
+            }
+        }    
+    }
+
+    /**
+     * Handles bot vs bot game mode.
+     */
+    botvbot() {
+        if(this.pente.active_game) {
+            this.pente.bot()
+            .then(() => {
+                this.board.updateBoard(this.pente.board);
+                this.pente.gameover().then(r => {
+                    if(!r) {
+                        this.botvbot();
+                    }
+                    this.updateMessage();
+                })
+            })   
         }
     }
 
@@ -430,6 +469,9 @@ class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Updates scene components with time.
+     */
     update(currTime){
         var today = new Date();
 
