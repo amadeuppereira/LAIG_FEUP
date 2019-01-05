@@ -41,6 +41,7 @@ class MyInterface extends CGFinterface {
         let group = this.gui.addFolder("Pente");
         group.open();
 
+        // Pente Interface options/settings
         let PenteOptions = function() {
             this.player_vs_player = () => scene.updateGameMode(1);
             this.player_vs_bot    = () => scene.updateGameMode(2);
@@ -69,6 +70,7 @@ class MyInterface extends CGFinterface {
         group.add(this.penteOptions, 'status').listen().name("Status");
         group.add(this.penteOptions, 'maxTime', 1, 60).name("Seconds/Turn");
 
+        //game modes
         let gamemodes = group.addFolder("Game Modes");
         gamemodes.open();
         gamemodes.add(this.penteOptions, 'player_vs_player').name("Player vs Player");
@@ -76,6 +78,7 @@ class MyInterface extends CGFinterface {
         gamemodes.add(this.penteOptions, 'bot_vs_player').name("Bot vs Player");
         gamemodes.add(this.penteOptions, 'bot_vs_bot').name("Bot vs Bot");
     
+        //options
         let bot_options = group.addFolder("Options");
         bot_options.add(this.penteOptions, 'tournament').name("Tournament Rule");
         bot_options.add(this.penteOptions, 'difficulty', {Trivial: 1, Easy: 2, Medium: 3, Hard: 4, Hardcore: 5}).name("Difficulty")
@@ -120,6 +123,7 @@ class MyInterface extends CGFinterface {
             }
         });
 
+        // bot settings
         let bot_settings = [5];
         bot_options.add(this.penteOptions, 'custom').onChange(value => this.update_bot_settings(value, bot_settings)).name("Custom");
         bot_settings[0] = bot_options.add(this.penteOptions, 'depth', 1, 10).step(1).listen().name("Depth");
@@ -130,6 +134,7 @@ class MyInterface extends CGFinterface {
 
         this.update_bot_settings(this.penteOptions.custom, bot_settings);
 
+        //actions
         let options = group.addFolder("Actions");
         options.add(this.penteOptions, 'undo').name("Undo");
         options.add(this.penteOptions, 'reset').name("Reset");

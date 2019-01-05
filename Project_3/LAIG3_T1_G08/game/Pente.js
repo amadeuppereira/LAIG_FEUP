@@ -1,6 +1,12 @@
+/**
+ * Pente
+ * @constructor
+ */
 class Pente{
     constructor(board, next, captures, turn, options, loaded, previous){
         this.client = new Client();
+
+        // game state
         this.active_game =  false;
         this.game_mode;
         this.player_turn = false;
@@ -9,10 +15,13 @@ class Pente{
         this.maxTime = 10;
         this.film = false;
 
+        // array with all moves 
         this.history = [];
 
+        // previous game
         this.previous = previous || null;
         
+        // game information required for server
         this.board = board || undefined;
         this.next = next || "w";
         this.captures = captures || {w: "0", b: "0"};
@@ -23,6 +32,13 @@ class Pente{
         this.timeout = 2000;
     }
 
+    /**
+     * Initialize a pente game, with given options
+     * mode(1 = player vs player, 2 = player vs bot,
+     *      3 = bot vs player, 4 = bot vs bot)
+     * @param {Integer} mode 
+     * @param {String} options 
+     */
     init(mode, options) {
         if(!this.active_game && !this.film) {
             return this.reset(options).then(() => {
@@ -40,6 +56,9 @@ class Pente{
         return null;
     }
 
+    /**
+     * Convert the options object into server friendly options string
+     */
     getOptions() {
         let ret = "[";
         Object.keys(this.options).forEach(k => {
@@ -50,6 +69,10 @@ class Pente{
         return ret;
     }
 
+    /**
+     * Convert the server options string into an object
+     * @param {String} op 
+     */
     parseOptions(op) {
         let ret = {}
         let o = op.substr(1, op.length - 2);
@@ -63,6 +86,10 @@ class Pente{
         return ret;
     }
 
+    /**
+     * Update the current game with the server returned string
+     * @param {String} game 
+     */
     updateGame(game) {
         this.previous = this.clone();
         let game_parsed = this.parseGameString(game);
@@ -75,6 +102,10 @@ class Pente{
         this.timer = 0;           
     }
 
+    /**
+     * Update the current game with the server returned string (replay mode)
+     * @param {String} game 
+     */
     updateGame_replay(game) {
         let game_parsed = this.parseGameString(game);
         
@@ -83,6 +114,10 @@ class Pente{
         this.captures = game_parsed.captures;
     }
 
+    /**
+     * Convert server string into human friendly object
+     * @param {String} game 
+     */
     parseGameString(game) {
         let board_re = /\[(\[([cwb][,]?)+\][,]?)+\]/;
         let board = board_re.exec(game)[0];
@@ -102,6 +137,11 @@ class Pente{
         return {board: board, next: next, captures: captures, turn: turn, options: options};
     }
 
+    /**
+     * Make a player move at coords R, C
+     * @param {Integer} R 
+     * @param {Integer} C 
+     */
     move(R, C) {
         return this.client.makeRequest("move(" + this + ",[" + R + "," + C + "])")
         .then(r => {
@@ -115,6 +155,9 @@ class Pente{
         }); 
     }
     
+    /**
+     * Make a bot move
+     */
     bot() {
         return this.client.makeRequest("bot(" + this + ")")
         .then( r => {
@@ -130,6 +173,11 @@ class Pente{
         }) 
     }
 
+    /**
+     * Return the bot move coords
+     * @param {String} previousBoard 
+     * @param {String} currentBoard 
+     */
     botMoveCoord(previousBoard, currentBoard) {
         previousBoard = previousBoard.replace(/[,\[\]]/g, "");
         currentBoard = currentBoard.replace(/[,\[\]]/g, "");
@@ -144,6 +192,9 @@ class Pente{
         }
     }
 
+    /**
+     * Check if the game is finished
+     */
     gameover() {
         return this.client.makeRequest("gameover(" + this + ")")
         .then( r => {
@@ -159,6 +210,10 @@ class Pente{
         }) 
     }
     
+    /**
+     * Reset the current game, updating the options if needed
+     * @param {String} options 
+     */
     reset(options) {
         this.active_game = false;
         this.game_mode = undefined;
@@ -191,6 +246,10 @@ class Pente{
             .then(r => aux(r));
     }
 
+    /**
+     * Undo the last move
+     * When playing against a bot, undo the players move and the bot move
+     */
     undo() {
         if(this.player_turn && this.active_game) {
             if(this.game_mode == 1) {
@@ -211,6 +270,9 @@ class Pente{
         return false;
     }
     
+    /**
+     * Undo auxiliary function
+     */
     undo_aux() {
         if(this.previous) {
             this.board       = this.previous.board;
@@ -226,6 +288,11 @@ class Pente{
         }
     }
 
+    /**
+     * Replay mode handler
+     * The callback function will be called at each game iteration
+     * @param {Function} callback 
+     */
     replay(callback) {
         if(!this.active_game && this.winner) {
             this.film = true;
@@ -251,6 +318,9 @@ class Pente{
         }
     }
 
+    /**
+     * Convert the game info into server frindly string
+     */
     toString() {
         return "game(" + this.board
                 + "," + this.next
@@ -259,12 +329,18 @@ class Pente{
                 + "," + this.getOptions() + ")";
     }
 
+    /**
+     * Clone the current game
+     */
     clone() {
         return new Pente(this.board, this.next, this.captures,
                         this.turn, this.options, this.loaded,
                         this.previous);
     }
 
+    /**
+     * Update the game
+     */
     update(deltaTime) {
         if(this.active_game) {
             let s = deltaTime / 1000;

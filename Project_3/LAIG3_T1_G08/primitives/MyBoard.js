@@ -34,13 +34,19 @@ class MyBoard extends CGFobject
 
         this.toPile = false;
     };
-
+    /**
+     * Converser a sensor id to the correspondent board coords
+     * @param {Integer} id 
+     */
     sensorIdToCoord(id) {
         let c = Math.floor(id/this.size);
         return {row: id - c * this.size + 1,
                 col: this.size - c};
     }
 
+    /**
+     * Picking handler
+     */
     logPicking() {
         if(this.scene.pickMode == false) {
             if(this.scene.pickResults != null && this.scene.pickResults.length > 0) {
@@ -71,7 +77,8 @@ class MyBoard extends CGFobject
     }
 
     /**
-     * Updates the board state.
+     * Updates the board state with the server response board
+     * @param {String} board 
      */
     updateBoard(board) {
         board = board.replace(/[,\[\]]/g, "");

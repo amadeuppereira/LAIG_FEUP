@@ -7,6 +7,10 @@ class Client{
         this.requestPort = port || 8081;
     }
 
+    /**
+     * Makes a server request with a given string returning a Promise
+     * @param {String} requestString 
+     */
     makeRequest(requestString){
         let requestPort = this.requestPort;
         return new Promise(function(resolve, reject) {
